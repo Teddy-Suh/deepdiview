@@ -4,10 +4,10 @@ import Link from 'next/link'
 
 export default function TopNav() {
   return (
-    <nav className='navbar hidden md:flex'>
+    <nav className='navbar hidden px-0 md:flex'>
       <div className='flex-1'>
         <Link
-          className='btn btn-ghost hover:text-primary hover:border-transparent hover:bg-transparent hover:shadow-none'
+          className='btn btn-ghost hover:text-primary pl-0 hover:border-transparent hover:bg-transparent hover:shadow-none'
           href='/'
         >
           <h1 className='text-2xl font-bold'>Deepdiview</h1>
