@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import TopNav from '@/components/TopNav'
-import BottomNav from '@/components/BottomNav'
+import TopNav from '@/components/layout/TopNav'
+import BottomNav from '@/components/layout/BottomNav'
 
 export const metadata: Metadata = {
   title: 'Deepdiview',
