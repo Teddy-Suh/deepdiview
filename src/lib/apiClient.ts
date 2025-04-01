@@ -39,6 +39,7 @@ export async function apiClient<T, B = undefined>(
   let res: Response
   try {
     res = await fetch(fullUrl, fetchOptions)
+    console.info(`✅ [apiClient] ${method} ${path} → ${res.status}`)
   } catch (err) {
     console.error(`❌ [apiClient] 네트워크 에러: ${method} ${path}`)
     console.error(err)
@@ -48,7 +49,11 @@ export async function apiClient<T, B = undefined>(
   let data: unknown
 
   try {
-    data = await res.json()
+    if (res.status === 204) {
+      data = null
+    } else {
+      data = await res.json()
+    }
   } catch {
     const raw = await res.text()
     console.error('❌ [apiClient] JSON 파싱 실패: ', raw)
