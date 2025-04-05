@@ -1,5 +1,3 @@
-import { JWT } from 'next-auth/jwt'
-
 declare module 'next-auth' {
   interface User {
     userId: number
@@ -15,7 +13,7 @@ declare module 'next-auth' {
   }
 }
 
-declare module 'next-auth/jwt' {
+export declare module '@auth/core/jwt' {
   interface JWT {
     userId: number
     nickname: string
