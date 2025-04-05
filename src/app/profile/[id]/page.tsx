@@ -1,9 +1,11 @@
 import { auth } from '@/auth'
 import { signOutWithForm } from './actions'
 
-export default async function ProfilePage({ params: { id } }: { params: { id: string } }) {
+export default async function ProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth()
-  const userId = session.user.userId
+  const userId = session?.user?.userId
+  const { id } = await params
+
   return (
     <div>
       <h2>프로필 페이지</h2>
