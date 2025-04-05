@@ -1,23 +1,21 @@
 import NextAuth from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
-import { apiClient } from './lib/apiClient'
+import { login } from './lib/api/user'
+import { LoginRequest } from './types/api/user'
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
       authorize: async (credentials) => {
+        const { email, password } = credentials as unknown as LoginRequest
         try {
-          if (!credentials?.email || !credentials?.password) {
+          if (!email || !password) {
             throw new Error('❌ [authorize] 이메일, 비밀번호 누락')
           }
 
-          // TODO: 로그인 API 모듈 분리 및 타입 정의 예정
-          const user = await apiClient<LoginResponse, LoginRequest>('/users/login', {
-            method: 'POST',
-            body: {
-              email: credentials.email,
-              password: credentials.password,
-            },
+          const user = await login({
+            email,
+            password,
           })
 
           console.log('✅ [authorize] 로그인 성공')
@@ -34,7 +32,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: 'jwt',
-    maxAge: 60 * 60 * 24 * 15 - 60 * 10, // refreshToken 유효기간(15일) 10분 전,
+    maxAge: 60 * 60 * 24 * 15 - 60 * 10, // refreshToken 유효기간(15일) 10분 전
   },
   pages: {
     signIn: '/login',
@@ -42,19 +40,24 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        Object.assign(token, user) // 이미 필요한것만 받아서 다 넣음
+        token.userId = user.userId
+        token.email = user.email!
+        token.nickname = user.nickname
+        token.profileImageUrl = user.profileImageUrl
+        token.role = user.role
+        token.accessToken = user.accessToken
       }
       return token
     },
     async session({ session, token }) {
-      session.user = {
-        userId: token.userId,
-        email: token.email,
-        nickname: token.nickname,
-        profileImageUrl: token.profileImageUrl,
-        role: token.role,
+      if (token) {
+        session.user.userId = token.userId
+        session.user.email = token.email!
+        session.user.nickname = token.nickname
+        session.user.profileImageUrl = token.profileImageUrl
+        session.user.role = token.role
+        session.accessToken = token.accessToken
       }
-      session.accessToken = token.accessToken // refreshToken은 보안을 위해 넣지 않음
       return session
     },
   },
