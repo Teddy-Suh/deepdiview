@@ -48,7 +48,7 @@ export interface Review {
   reviewId: number
   userId: number
   nickname: string
-  profileImageUrl: string
+  profileImageUrl: string | null
   reviewTitle: string
   reviewContent: string
   rating: number

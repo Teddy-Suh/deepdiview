@@ -5,9 +5,15 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'img.daisyui.com',
+        hostname: 'deepdiview.s3.ap-northeast-2.amazonaws.com',
         port: '',
-        pathname: '/**', // 모든 이미지 허용
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'image.tmdb.org',
+        port: '',
+        pathname: '/**',
       },
     ],
   },
