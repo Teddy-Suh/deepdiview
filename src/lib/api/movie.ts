@@ -10,7 +10,7 @@ export async function getMovie(id: string): Promise<GetMovieResponse> {
   return apiClient<GetMovieResponse>(`/movies/${id}`)
 }
 
-// 영화 제목으로 상세정보 조회 encodeURIComponent(title)이거 뭔지 알아보기
+// 영화 제목으로 상세정보 조회
 export async function getSearchedMovies(title: string): Promise<GetSearchedMoviesResponse> {
   return apiClient<GetSearchedMoviesResponse>(
     `/movies/search/list?title=${encodeURIComponent(title)}`
