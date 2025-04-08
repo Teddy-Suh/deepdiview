@@ -3,7 +3,7 @@ export const dynamic = 'force-dynamic'
 import { getIsSunday, getThisWeekMovieId } from '@/lib/api/discussion'
 import { getMovie, getPopularMovies } from '@/lib/api/movie'
 import { getLatestReviews } from '@/lib/api/review'
-import { CircleUserRound, ThumbsUp } from 'lucide-react'
+import { CircleUserRound, MessageCircle, ThumbsUp } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -109,6 +109,8 @@ export default async function HomePage() {
                 </div>
                 <div className='flex'>
                   <ThumbsUp /> {review.likeCount}
+                  <MessageCircle />
+                  {review.commentCount}
                 </div>
               </Link>
             </li>

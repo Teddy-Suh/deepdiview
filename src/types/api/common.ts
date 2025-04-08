@@ -54,6 +54,7 @@ export interface Review {
   rating: number
   createdAt: string
   updatedAt: string
+  commentCount: number
   likeCount: number
   likedByUser: boolean
   tmdbId: number

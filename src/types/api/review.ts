@@ -1,4 +1,4 @@
-import { CertificationStatus, PaginatedResponse, Review, SortDirection } from './common'
+import { PaginatedResponse, Review, SortDirection } from './common'
 
 // API 타입
 
@@ -22,19 +22,13 @@ export interface CreateReviewRequest {
   content: string
   rating: number
 }
-export interface GetCertificationsParams {
-  status?: CertificationStatus
-  page?: number
-  size?: number
-  sort?: `${SortField},${SortDirection}`
-}
+
 export type CreateReviewResponse = Review
 
 // 좋아요 204
 
 // 특정 영화에 대한 리뷰 조회
 export interface GetReviewsParams {
-  tmdbId: number
   certifiedFilter?: boolean
   page?: number
   size?: number

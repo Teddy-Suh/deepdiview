@@ -3,11 +3,13 @@ import {
   CreateReviewResponse,
   GetLatestReviewsResponse,
   GetReviewResponse,
+  GetReviewsParams,
   GetReviewsResponse,
   UpdateReviewRequest,
   UpdateReviewResponse,
 } from '@/types/api/review'
 import { apiClient } from '../apiClient'
+import { toQueryString } from '../utils/query'
 
 // 특정 리뷰 조회
 export async function getReview(id: string): Promise<GetReviewResponse> {
@@ -60,8 +62,12 @@ export async function likeReview(id: string, token: string): Promise<null> {
 }
 
 // 특정 영화에 대한 리뷰 조회 (쿼리)
-export async function getReviews(id: string): Promise<GetReviewsResponse> {
-  return apiClient<GetReviewsResponse>(`/reviews/movie/${id}`)
+export async function getReviews(
+  id: string,
+  params?: GetReviewsParams
+): Promise<GetReviewsResponse> {
+  const query = params ? `?${toQueryString(params)}` : ''
+  return apiClient<GetReviewsResponse>(`/reviews/movie/${id}${query}`)
 }
 
 // 최신 리뷰 3개 조회 (쿼리)
