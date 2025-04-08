@@ -6,8 +6,15 @@ import {
 import { apiClient } from '../apiClient'
 
 // 특정 영화 상세정보 조회
-export async function getMovie(id: string): Promise<GetMovieResponse> {
-  return apiClient<GetMovieResponse>(`/movies/${id}`)
+export async function getMovie(
+  id: string,
+  withAuth?: boolean,
+  token?: string
+): Promise<GetMovieResponse> {
+  return apiClient<GetMovieResponse>(`/movies/${id}`, {
+    withAuth,
+    token,
+  })
 }
 
 // 영화 제목으로 상세정보 조회
