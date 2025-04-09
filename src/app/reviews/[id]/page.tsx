@@ -15,7 +15,6 @@ export default async function ReviewPage({ params }: { params: Promise<{ id: str
   let review
   try {
     review = await getReview(reviewId, !!session, session?.accessToken)
-    console.log('리뷰', review)
   } catch (error) {
     if (error instanceof Error && error.message === 'REVIEW_NOT_FOUND') {
       return notFound()
@@ -27,6 +26,12 @@ export default async function ReviewPage({ params }: { params: Promise<{ id: str
     <>
       <section className='flex'>
         <div className='flex-1'>
+          <h2>{review.reviewTitle}</h2>
+          {currentUserId === review.userId.toString() && (
+            <Link className='btn' href={`/reviews/${reviewId}/edit`}>
+              수정
+            </Link>
+          )}
           <Link className='flex' href={`/profile/${review.userId}`}>
             {review.profileImageUrl ? (
               <Image src={`${review.profileImageUrl}`} alt='프로필 사진' width={20} height={20} />
@@ -35,7 +40,7 @@ export default async function ReviewPage({ params }: { params: Promise<{ id: str
             )}
             <p>{review.nickname}</p>
           </Link>
-          <h2>{review.reviewTitle}</h2>
+          <p>별점: {review.rating}</p>
           <p>{review.reviewContent}</p>
         </div>
         <div>
