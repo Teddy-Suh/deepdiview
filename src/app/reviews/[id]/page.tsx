@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { auth } from '@/auth'
 import CommentSection from './CommentSection'
 import { notFound } from 'next/navigation'
+import { deleteReviewAction } from './actions'
 
 export default async function ReviewPage({ params }: { params: Promise<{ id: string }> }) {
   const [session, { id: reviewId }] = await Promise.all([auth(), params])
@@ -28,9 +29,15 @@ export default async function ReviewPage({ params }: { params: Promise<{ id: str
         <div className='flex-1'>
           <h2>{review.reviewTitle}</h2>
           {currentUserId === review.userId.toString() && (
-            <Link className='btn' href={`/reviews/${reviewId}/edit`}>
-              수정
-            </Link>
+            <>
+              <Link className='btn' href={`/reviews/${reviewId}/edit`}>
+                수정
+              </Link>
+              {/* TODO: 삭제 전에 확인창 구현 */}
+              <form action={deleteReviewAction.bind(null, reviewId)}>
+                <button className='btn'>삭제</button>
+              </form>
+            </>
           )}
           <Link className='flex' href={`/profile/${review.userId}`}>
             {review.profileImageUrl ? (
