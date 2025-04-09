@@ -3,20 +3,20 @@ import {
   CreateCommentResponse,
   GetCommentsParams,
   GetCommentsResponse,
-  UpdateCommentsRequest,
-  UpdateCommentsResponse,
+  UpdateCommentRequest,
+  UpdateCommentResponse,
 } from '@/types/api/comment'
 import { apiClient } from '../apiClient'
 import { toQueryString } from '../utils/query'
 
 // 댓글 수정
-export async function updateComments(
+export async function updateComment(
   reviewId: string,
   commentId: string,
-  body: UpdateCommentsRequest,
+  body: UpdateCommentRequest,
   token: string
-): Promise<UpdateCommentsResponse> {
-  return apiClient<UpdateCommentsResponse, UpdateCommentsRequest>(
+): Promise<UpdateCommentResponse> {
+  return apiClient<UpdateCommentResponse, UpdateCommentRequest>(
     `/reviews/${reviewId}/comments/${commentId}`,
     {
       method: 'PUT',
@@ -28,7 +28,7 @@ export async function updateComments(
 }
 
 // 댓글 삭제
-export async function deleteComments(
+export async function deleteComment(
   reviewId: string,
   commentId: string,
   token: string

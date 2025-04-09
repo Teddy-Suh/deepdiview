@@ -12,8 +12,15 @@ import { apiClient } from '../apiClient'
 import { toQueryString } from '../utils/query'
 
 // 특정 리뷰 조회
-export async function getReview(id: string): Promise<GetReviewResponse> {
-  return apiClient<GetReviewResponse>(`/reviews/${id}`)
+export async function getReview(
+  id: string,
+  withAuth?: boolean,
+  token?: string
+): Promise<GetReviewResponse> {
+  return apiClient<GetReviewResponse>(`/reviews/${id}`, {
+    withAuth,
+    token,
+  })
 }
 
 // 리뷰글 수정

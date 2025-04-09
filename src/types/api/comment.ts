@@ -3,8 +3,8 @@ import { Comment, PaginatedResponse, SortDirection } from './common'
 // API 타입
 
 // 댓글 수정
-export type UpdateCommentsRequest = CommentsRequest
-export type UpdateCommentsResponse = Comment
+export type UpdateCommentRequest = CommentsRequest
+export type UpdateCommentResponse = Comment
 
 // 댓글 삭제
 
