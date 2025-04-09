@@ -24,7 +24,9 @@ export default function ReviewForm({
       <input type='text' name='title' defaultValue={initialValue?.title} required />
       <textarea name='content' defaultValue={initialValue?.content} required />
 
-      <button type='submit'>{isEdit ? '수정' : '작성'}</button>
+      <button className='btn' type='submit'>
+        {isEdit ? '수정' : '작성'}
+      </button>
     </form>
   )
 }
