@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { auth } from '@/auth'
 import { getIsSunday, getThisWeekMovieId } from '@/lib/api/discussion'
 import { getMovie } from '@/lib/api/movie'
