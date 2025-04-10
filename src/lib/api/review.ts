@@ -71,10 +71,15 @@ export async function likeReview(id: string, token: string): Promise<null> {
 // 특정 영화에 대한 리뷰 조회 (쿼리)
 export async function getReviews(
   id: string,
+  withAuth?: boolean,
+  token?: string,
   params?: GetReviewsParams
 ): Promise<GetReviewsResponse> {
   const query = params ? `?${toQueryString(params)}` : ''
-  return apiClient<GetReviewsResponse>(`/reviews/movie/${id}${query}`)
+  return apiClient<GetReviewsResponse>(`/reviews/movie/${id}${query}`, {
+    withAuth,
+    token,
+  })
 }
 
 // 최신 리뷰 3개 조회 (쿼리)
