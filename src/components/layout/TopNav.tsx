@@ -1,12 +1,9 @@
-'use client'
-
-import { Search } from 'lucide-react'
-import { useSession } from 'next-auth/react'
 import Link from 'next/link'
+import SearchForm from '@/components/form/SearchForm'
+import { auth } from '@/auth'
 
-export default function TopNav() {
-  // TODO: 바로 세션 변화 알아차리게 구현
-  const { data: session } = useSession()
+export default async function TopNav() {
+  const session = await auth()
 
   return (
     <nav className='navbar hidden px-0 md:flex'>
@@ -19,10 +16,7 @@ export default function TopNav() {
         </Link>
       </div>
       <div className='flex'>
-        <label className='input focus-within:border-primary focus-within:outline-none'>
-          <Search className='h-[1em] opacity-50' />
-          <input type='search' required placeholder='영화 제목을 입력해주세요.' />
-        </label>
+        <SearchForm />
         <Link
           href='/board'
           className='btn btn-ghost hover:text-primary hover:bg-transparent hover:shadow-none'
