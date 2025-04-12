@@ -97,7 +97,7 @@ export interface ProfileResponse {
   rejectionReason: CertificationRejectionReason | null
 }
 
-type Rating = '0.5' | '1.0' | '1.5' | '2.0' | '2.5' | '3.0' | '3.5' | '4.0' | '4.5' | '5.0'
+export type Rating = '0.5' | '1.0' | '1.5' | '2.0' | '2.5' | '3.0' | '3.5' | '4.0' | '4.5' | '5.0'
 
 export interface ProfileImgRequest {
   file: string
