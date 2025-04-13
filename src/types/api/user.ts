@@ -20,15 +20,14 @@ export type CreateProfileImgResponse = ProfileImgResponse
 
 // 프로필사진 삭제
 
-// 내 정보 확인
-export type GetMyProfileResponse = ProfileResponse
-
-// 회원정보 수정
-export interface UpdateMyProfileRequest {
-  newNickname: string
+// 비밀번호 수정
+export interface UpdatePasswordRequest {
   newPassword: string
   newConfirmPassword: string
 }
+
+// 내 정보 확인
+export type GetMyProfileResponse = ProfileResponse
 
 // 회원탈퇴
 export interface DeleteMyProfileRequest {
