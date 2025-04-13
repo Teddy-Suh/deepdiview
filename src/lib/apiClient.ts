@@ -71,6 +71,12 @@ export async function apiClient<T, B = undefined>(
     console.error(`📦 상태 코드: ${res.status}`)
     console.error(`📦 에러 코드: ${errorCode}`)
 
+    // VALIDATION_FAILED일 경우 전체 에러 응답 그대로 throw
+    if (errorCode === 'VALIDATION_FAILED') {
+      console.error('🧾 검증 실패 응답:', data)
+      throw data
+    }
+
     // 디버깅을 위해 전체 응답 출력
     if (errorCode === 'UNEXPECTED_ERROR') {
       console.error('🧾 예상치 못한 에러 응답:', data)

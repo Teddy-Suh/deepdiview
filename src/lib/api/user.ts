@@ -13,7 +13,7 @@ import {
   RefreshAccessTokenResponse,
   RegisterRequest,
   UpdateIntroRequest,
-  UpdateMyProfileRequest,
+  UpdatePasswordRequest,
   UpdateProfileImgRequest,
   UpdateProfileImgResponse,
 } from '@/types/api/user'
@@ -55,19 +55,19 @@ export async function deleteProfileImg(token: string): Promise<null> {
   })
 }
 
-// 내 정보 확인
-export async function getMyProfile(token: string): Promise<GetMyProfileResponse> {
-  return apiClient<GetMyProfileResponse>(`/users/me`, {
+// 비밀번호 수정
+export async function updatePassword(token: string, body: UpdatePasswordRequest): Promise<null> {
+  return apiClient<null, UpdatePasswordRequest>(`/users/me/password`, {
+    method: 'PUT',
+    body,
     withAuth: true,
     token,
   })
 }
 
-// 회원정보 수정
-export async function updateMyProfile(token: string, body: UpdateMyProfileRequest): Promise<null> {
-  return apiClient<null, UpdateMyProfileRequest>(`/users/me`, {
-    method: 'PUT',
-    body,
+// 내 정보 확인
+export async function getMyProfile(token: string): Promise<GetMyProfileResponse> {
+  return apiClient<GetMyProfileResponse>(`/users/me`, {
     withAuth: true,
     token,
   })
