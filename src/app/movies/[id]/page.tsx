@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic'
 
 import { auth } from '@/auth'
-import { getThisWeekMovieId } from '@/lib/api/discussion'
+import { getIsSunday, getThisWeekMovieId } from '@/lib/api/discussion'
 import { getMovie } from '@/lib/api/movie'
 import { getVoteParticipationStatus } from '@/lib/api/vote'
 import { CircleUserRound, ThumbsUp } from 'lucide-react'
@@ -10,11 +10,16 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 export default async function MoviesPage({ params }: { params: Promise<{ id: string }> }) {
-  const [{ id }, session, { tmdbId }] = await Promise.all([params, auth(), getThisWeekMovieId()])
+  const [{ id }, session, { tmdbId }, { isSunday }] = await Promise.all([
+    params,
+    auth(),
+    getThisWeekMovieId(),
+    getIsSunday(),
+  ])
   const isThisWeekMovie = Number(id) === tmdbId
 
   let participated = false
-  if (session) {
+  if (session && !isSunday) {
     participated = (await getVoteParticipationStatus(session.accessToken)).participated
   }
 
@@ -67,7 +72,7 @@ export default async function MoviesPage({ params }: { params: Promise<{ id: str
                 </Link>
               ) : (
                 <>
-                  {isThisWeekMovie ? (
+                  {isThisWeekMovie && !isSunday ? (
                     <>
                       {participated ? (
                         <Link className='btn' href={`/board/create`}>
