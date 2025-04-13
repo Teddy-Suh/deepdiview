@@ -11,23 +11,26 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 export default async function BoardPage() {
-  const [{ isSunday }, { tmdbId }] = await Promise.all([getIsSunday(), getThisWeekMovieId()])
+  const [session, { isSunday }, { tmdbId }] = await Promise.all([
+    auth(),
+    getIsSunday(),
+    getThisWeekMovieId(),
+  ])
 
   const movieId = tmdbId.toString()
+  const moviePromise = getMovie(movieId, !!session, session?.accessToken)
+  const thisWeekMovie = await moviePromise
 
-  let session, participated, certificationStatus, thisWeekMovie, reviews
-
+  let participated, certificationStatus, reviews
   if (!isSunday) {
-    session = await auth()
     if (session) {
-      ;[{ participated }, { certificationStatus }, thisWeekMovie, reviews] = await Promise.all([
+      ;[{ participated }, { certificationStatus }, reviews] = await Promise.all([
         getVoteParticipationStatus(session?.accessToken),
         getMyProfile(session?.accessToken),
-        getMovie(movieId, !!session, session?.accessToken),
         getReviews(movieId, !!session, session?.accessToken),
       ])
     } else {
-      ;[thisWeekMovie, reviews] = await Promise.all([getMovie(movieId), getReviews(movieId)])
+      ;[reviews] = await Promise.all([getReviews(movieId)])
     }
   }
 
