@@ -6,6 +6,7 @@ import { getMyProfile, getUserProfile } from '@/lib/api/user'
 import Image from 'next/image'
 import { Rating } from '@/types/api/user'
 import Link from 'next/link'
+import IntroForm from './IntroForm'
 
 export default async function ProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth()
@@ -21,7 +22,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
   } else {
     profile = await getUserProfile(session?.accessToken, id)
   }
-
+  console.log(profile)
   return (
     <>
       <section>
@@ -29,7 +30,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
         <Image src={`${profile.profileImageUrl}`} alt='프로필 사진' width={100} height={100} />
         <p>닉네임: {profile.nickname}</p>
         <p>이메일: {profile.email}</p>
-        <p>한줄 소개: {profile.oneLineIntro}</p>
+        <IntroForm isCurrentUser={isCurrentUser} oneLineIntro={profile.oneLineIntro ?? ''} />
       </section>
       <hr />
       <section>

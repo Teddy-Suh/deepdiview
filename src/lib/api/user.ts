@@ -13,6 +13,7 @@ import {
   RefreshAccessTokenResponse,
   RegisterRequest,
   UpdateIntroRequest,
+  UpdateIntroResponse,
   UpdateNicknameRequest,
   UpdateNicknameResponse,
   UpdatePasswordRequest,
@@ -99,8 +100,11 @@ export async function deleteMyProfile(token: string, body: DeleteMyProfileReques
 }
 
 // 한줄소개 설정/수정
-export async function updateIntro(token: string, body: UpdateIntroRequest): Promise<null> {
-  return apiClient<null, UpdateIntroRequest>(`/users/me/intro`, {
+export async function updateIntro(
+  token: string,
+  body: UpdateIntroRequest
+): Promise<UpdateIntroResponse> {
+  return apiClient<UpdateIntroResponse, UpdateIntroRequest>(`/users/me/intro`, {
     method: 'PUT',
     body,
     withAuth: true,

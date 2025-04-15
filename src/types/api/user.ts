@@ -47,6 +47,9 @@ export interface DeleteMyProfileRequest {
 export interface UpdateIntroRequest {
   oneLineIntro: string
 }
+export interface UpdateIntroResponse {
+  updatedOneLineIntro: string | null
+}
 
 // 회원가입
 export interface RegisterRequest {
@@ -97,7 +100,7 @@ export interface ProfileResponse {
   nickname: string
   email: string
   profileImageUrl: string
-  oneLineIntro: string
+  oneLineIntro: string | null
   reviewCount: number
   commentCount: number
   ratingDistribution: Partial<Record<Rating, number>>
