@@ -26,6 +26,15 @@ export interface UpdatePasswordRequest {
   newConfirmPassword: string
 }
 
+// 닉네임 수정
+export interface UpdateNicknameRequest {
+  newNickname: string
+}
+
+export interface UpdateNicknameResponse {
+  updatedNickname: string
+}
+
 // 내 정보 확인
 export type GetMyProfileResponse = ProfileResponse
 

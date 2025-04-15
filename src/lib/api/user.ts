@@ -13,6 +13,8 @@ import {
   RefreshAccessTokenResponse,
   RegisterRequest,
   UpdateIntroRequest,
+  UpdateNicknameRequest,
+  UpdateNicknameResponse,
   UpdatePasswordRequest,
   UpdateProfileImgRequest,
   UpdateProfileImgResponse,
@@ -58,6 +60,19 @@ export async function deleteProfileImg(token: string): Promise<null> {
 // 비밀번호 수정
 export async function updatePassword(token: string, body: UpdatePasswordRequest): Promise<null> {
   return apiClient<null, UpdatePasswordRequest>(`/users/me/password`, {
+    method: 'PUT',
+    body,
+    withAuth: true,
+    token,
+  })
+}
+
+// 닉네임 수정
+export async function updateNickname(
+  token: string,
+  body: UpdateNicknameRequest
+): Promise<UpdateNicknameResponse> {
+  return apiClient<UpdateNicknameResponse, UpdateNicknameRequest>(`/users/me/nickname`, {
     method: 'PUT',
     body,
     withAuth: true,
