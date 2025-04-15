@@ -3,7 +3,13 @@ import Credentials from 'next-auth/providers/credentials'
 import { login } from './lib/api/user'
 import { LoginRequest } from './types/api/user'
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+export const {
+  handlers,
+  signIn,
+  signOut,
+  auth,
+  unstable_update: update,
+} = NextAuth({
   providers: [
     Credentials({
       authorize: async (credentials) => {
@@ -38,7 +44,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     signIn: '/login',
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.userId = user.userId
         token.email = user.email!
@@ -46,6 +52,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.profileImageUrl = user.profileImageUrl
         token.role = user.role
         token.accessToken = user.accessToken
+      }
+      if (trigger === 'update' && session) {
+        token.nickname = session.user.nickname
       }
       return token
     },
