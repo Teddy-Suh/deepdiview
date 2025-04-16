@@ -10,11 +10,13 @@ import ProfileImageForm from './ProfileImageForm'
 
 export default async function ProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth()
-  const userId = session?.user?.userId
-  const { id } = await params
-
   if (!session) throw new Error('UNAUTHORIZED')
+
+  const userId = session.user?.userId
+  const { id } = await params
   const isCurrentUser = userId === Number(id)
+
+  const role = session.user?.role
 
   let profile
   if (isCurrentUser) {
@@ -71,15 +73,8 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
               시청 인증 하기 {profile.certificationStatus}
             </Link>
           )}
-
           <Link className='btn' href='/profile/settings/nickname'>
             닉네임 수정
-          </Link>
-          <Link className='btn' href='/profile/settings/intro'>
-            한줄 소개 수정
-          </Link>
-          <Link className='btn' href='/profile/settings/profile-image'>
-            프로필 사진 수정
           </Link>
           <Link className='btn' href='/profile/settings/password'>
             비밀번호 수정
@@ -87,6 +82,11 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
           <Link className='btn' href='/profile/settings/delete-account'>
             회원 탈퇴
           </Link>
+          {role === 'ADMIN' && (
+            <Link className='btn' href='/admin'>
+              관리자 페이지
+            </Link>
+          )}
           <form action={signOutWithForm}>
             <button className='btn'>로그아웃</button>
           </form>
