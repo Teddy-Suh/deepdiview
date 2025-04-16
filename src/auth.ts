@@ -53,8 +53,14 @@ export const {
         token.role = user.role
         token.accessToken = user.accessToken
       }
+
       if (trigger === 'update' && session) {
-        token.nickname = session.user.nickname
+        if (session.user.nickname) {
+          token.nickname = session.user.nickname
+        }
+        if (session.user.profileImageUrl) {
+          token.profileImageUrl = session.user.profileImageUrl
+        }
       }
       return token
     },

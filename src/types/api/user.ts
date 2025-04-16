@@ -3,6 +3,7 @@ import {
   CertificationRejectionReason,
   CertificationStatus,
   Comment,
+  ImgRequest,
   PaginatedResponse,
   Review,
   SortDirection,
@@ -10,15 +11,12 @@ import {
 
 // API 타입
 
-// 프로필사진 수정
-export type UpdateProfileImgRequest = ProfileImgRequest
+// 프로필사진 등록/수정
+export type UpdateProfileImgRequest = ImgRequest
 export type UpdateProfileImgResponse = ProfileImgResponse
 
-// 프로필사진 등록
-export type CreateProfileImgRequest = ProfileImgRequest
-export type CreateProfileImgResponse = ProfileImgResponse
-
 // 프로필사진 삭제
+export type DeleteProfileImgResponse = ProfileImgResponse
 
 // 비밀번호 수정
 export interface UpdatePasswordRequest {
@@ -110,9 +108,6 @@ export interface ProfileResponse {
 
 export type Rating = '0.5' | '1.0' | '1.5' | '2.0' | '2.5' | '3.0' | '3.5' | '4.0' | '4.5' | '5.0'
 
-export interface ProfileImgRequest {
-  file: string
-}
 export interface ProfileImgResponse {
   profileImageUrl: string
 }
