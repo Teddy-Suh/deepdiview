@@ -74,5 +74,6 @@ export interface Comment {
   createdAt: string
   updatedAt: string
 }
+export type ImgRequest = FormData
 
 export type SortDirection = 'asc' | 'desc'

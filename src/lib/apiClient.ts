@@ -5,6 +5,7 @@ type ApiFetchOptions<B = undefined> = {
   withAuth?: boolean
   token?: string | null
   cache?: RequestCache
+  isFormData?: boolean
 }
 
 export async function apiClient<T, B = undefined>(
@@ -16,12 +17,13 @@ export async function apiClient<T, B = undefined>(
     withAuth = false,
     token,
     cache = 'no-store',
+    isFormData = false,
   }: ApiFetchOptions<B> = {}
 ): Promise<T> {
   const fullUrl = `${process.env.NEXT_PUBLIC_API_URL}${path}`
 
   const finalHeaders: Record<string, string> = {
-    'Content-Type': 'application/json',
+    ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
     ...headers,
   }
 
@@ -32,7 +34,7 @@ export async function apiClient<T, B = undefined>(
   const fetchOptions: RequestInit = {
     method,
     headers: finalHeaders,
-    body: body ? JSON.stringify(body) : undefined,
+    body: isFormData ? (body as BodyInit) : body ? JSON.stringify(body) : undefined,
     cache,
   }
 

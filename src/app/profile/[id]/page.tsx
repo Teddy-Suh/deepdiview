@@ -3,10 +3,10 @@ export const dynamic = 'force-dynamic'
 import { auth } from '@/auth'
 import { signOutWithForm } from './actions'
 import { getMyProfile, getUserProfile } from '@/lib/api/user'
-import Image from 'next/image'
 import { Rating } from '@/types/api/user'
 import Link from 'next/link'
 import IntroForm from './IntroForm'
+import ProfileImageForm from './ProfileImageForm'
 
 export default async function ProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth()
@@ -22,12 +22,15 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
   } else {
     profile = await getUserProfile(session?.accessToken, id)
   }
-  console.log(profile)
+
+  console.log('api응답 유저 정보', profile)
+  console.log('서버 세션 유저 정보', session.user)
+
   return (
     <>
       <section>
         <h2>{isCurrentUser ? '내 프로필' : '다른 사람 프로필'}</h2>
-        <Image src={`${profile.profileImageUrl}`} alt='프로필 사진' width={100} height={100} />
+        <ProfileImageForm profileImageUrl={profile.profileImageUrl} />
         <p>닉네임: {profile.nickname}</p>
         <p>이메일: {profile.email}</p>
         <IntroForm isCurrentUser={isCurrentUser} oneLineIntro={profile.oneLineIntro ?? ''} />

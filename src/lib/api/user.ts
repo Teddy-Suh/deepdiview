@@ -1,7 +1,6 @@
 import {
-  CreateProfileImgRequest,
-  CreateProfileImgResponse,
   DeleteMyProfileRequest,
+  DeleteProfileImgResponse,
   GetMyProfileResponse,
   GetUserCommentsParams,
   GetUserCommentsResponse,
@@ -23,35 +22,23 @@ import {
 import { apiClient } from '../apiClient'
 import { toQueryString } from '../utils/query'
 
-// 프로필사진 수정
+// 프로필사진 등록/수정
 export async function updateProfileImg(
   token: string,
-  body: UpdateProfileImgRequest
+  formData: UpdateProfileImgRequest
 ): Promise<UpdateProfileImgResponse> {
   return apiClient<UpdateProfileImgResponse, UpdateProfileImgRequest>(`/users/profile-image`, {
     method: 'PUT',
-    body,
-    withAuth: true,
-    token,
-  })
-}
-
-// 프로필사진 등록
-export async function createProfileImg(
-  token: string,
-  body: CreateProfileImgRequest
-): Promise<CreateProfileImgResponse> {
-  return apiClient<CreateProfileImgResponse, CreateProfileImgRequest>(`/users/profile-image`, {
-    method: 'POST',
-    body,
+    body: formData,
+    isFormData: true,
     withAuth: true,
     token,
   })
 }
 
 // 프로필사진 삭제
-export async function deleteProfileImg(token: string): Promise<null> {
-  return apiClient<null>(`/users/profile-image`, {
+export async function deleteProfileImg(token: string): Promise<DeleteProfileImgResponse> {
+  return apiClient<DeleteProfileImgResponse>(`/users/profile-image`, {
     method: 'DELETE',
     withAuth: true,
     token,
