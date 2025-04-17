@@ -8,6 +8,7 @@ import { auth } from '@/auth'
 import CommentSection from './CommentSection'
 import { notFound } from 'next/navigation'
 import { deleteReviewAction } from './actions'
+import LikeButton from '@/components/ui/LikeButton'
 
 export default async function ReviewPage({ params }: { params: Promise<{ id: string }> }) {
   const [session, { id: reviewId }] = await Promise.all([auth(), params])
@@ -62,6 +63,11 @@ export default async function ReviewPage({ params }: { params: Promise<{ id: str
           </Link>
         </div>
       </section>
+      <LikeButton
+        likedByUser={review.likedByUser}
+        likeCount={review.likeCount}
+        reviewId={reviewId}
+      />
       <CommentSection
         comments={review.comments}
         currentUserId={currentUserId}
