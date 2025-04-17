@@ -60,7 +60,7 @@ export async function createReview(
 }
 
 // 좋아요
-export async function likeReview(id: string, token: string): Promise<null> {
+export async function toggleLike(id: string, token: string): Promise<null> {
   return apiClient<null>(`/reviews/like/${id}`, {
     method: 'POST',
     withAuth: true,

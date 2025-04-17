@@ -25,7 +25,7 @@ export interface CreateReviewRequest {
 
 export type CreateReviewResponse = Review
 
-// 좋아요 204
+// 좋아요
 
 // 특정 영화에 대한 리뷰 조회
 export interface GetReviewsParams {
