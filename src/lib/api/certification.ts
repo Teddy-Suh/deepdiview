@@ -14,12 +14,13 @@ import { toQueryString } from '../utils/query'
 
 // 인증샷 수정
 export async function updateCertification(
-  body: UpdateCertificationRequest,
-  token: string
+  token: string,
+  formData: UpdateCertificationRequest
 ): Promise<UpdateCertificationResponse> {
   return apiClient<UpdateCertificationResponse, UpdateCertificationRequest>(`/certifications`, {
     method: 'PUT',
-    body,
+    body: formData,
+    isFormData: true,
     withAuth: true,
     token,
   })
@@ -27,12 +28,13 @@ export async function updateCertification(
 
 // 인증샷 제출
 export async function createCertification(
-  body: CreateCertificationRequest,
-  token: string
+  token: string,
+  formData: CreateCertificationRequest
 ): Promise<CreateCertificationResponse> {
   return apiClient<CreateCertificationResponse, CreateCertificationRequest>(`/certifications`, {
     method: 'POST',
-    body,
+    body: formData,
+    isFormData: true,
     withAuth: true,
     token,
   })

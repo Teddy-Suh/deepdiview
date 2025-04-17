@@ -1,6 +1,7 @@
 import {
   CertificationRejectionReason,
   CertificationStatus,
+  ImgRequest,
   PaginatedResponse,
   SortDirection,
 } from './common'
@@ -8,15 +9,11 @@ import {
 // API 타입
 
 // 인증샷 수정
-export interface UpdateCertificationRequest {
-  file: string
-}
+export type UpdateCertificationRequest = ImgRequest
 export type UpdateCertificationResponse = CertificationPendingResponse
 
 // 인증샷 제출
-export interface CreateCertificationRequest {
-  file: string
-}
+export type CreateCertificationRequest = ImgRequest
 export type CreateCertificationResponse = CertificationPendingResponse
 
 // 인증샷 삭제
@@ -30,7 +27,7 @@ export interface UpdateCertificationStatusRequest {
 export type UpdateCertificationStatusResponse = Certification
 
 // 인증샷 상태 확인
-export type GetCertificationResponse = Certification
+export type GetCertificationResponse = NullableCertification
 
 // 인증 목록 조회
 export interface GetCertificationsParams {
@@ -56,6 +53,9 @@ export interface Certification {
   certificationUrl: string
   status: CertificationStatus
   createdAt: string
-  rejectionReason: CertificationRejectionReason | null
+  rejectionReason: CertificationRejectionReason
+}
+export type NullableCertification = {
+  [K in keyof Certification]: Certification[K] | null
 }
 export type SortField = 'id' | 'createdAt' | 'status'
