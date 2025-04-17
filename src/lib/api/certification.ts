@@ -7,6 +7,7 @@ import {
   UpdateCertificationRequest,
   UpdateCertificationResponse,
   UpdateCertificationStatusRequest,
+  UpdateCertificationStatusResponse,
 } from '@/types/api/certification'
 import { apiClient } from '../apiClient'
 import { toQueryString } from '../utils/query'
@@ -48,11 +49,11 @@ export async function deleteCertification(token: string) {
 
 // 인증 승인/거절
 export async function updateCertificationStatus(
-  id: string | number,
+  id: string,
   token: string,
   body: UpdateCertificationStatusRequest
-): Promise<null> {
-  return apiClient<null, UpdateCertificationStatusRequest>(
+): Promise<UpdateCertificationStatusResponse> {
+  return apiClient<UpdateCertificationStatusResponse, UpdateCertificationStatusRequest>(
     `/certifications/admin/proceeding/${id}`,
     {
       method: 'POST',

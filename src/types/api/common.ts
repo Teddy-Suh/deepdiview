@@ -15,30 +15,13 @@ export type CertificationRejectionReason =
   | 'WRONG_IMAGE'
   | 'UNIDENTIFIABLE_IMAGE'
 
-export interface PageableInfo {
-  offset: number
-  sort: SortInfo
-  pageSize: number
-  paged: boolean
-  pageNumber: number
-  unpaged: boolean
-}
-
-export interface SortInfo {
-  empty: boolean
-  sorted: boolean
-  unsorted: boolean
-}
-
 export interface PaginatedResponse<T> {
-  totalElements: number
-  totalPages: number
-  size: number
   content: T[]
   number: number
-  sort: SortInfo
+  size: number
+  totalPages: number
+  totalElements: number
   numberOfElements: number
-  pageable: PageableInfo
   first: boolean
   last: boolean
   empty: boolean

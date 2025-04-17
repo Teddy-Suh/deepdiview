@@ -27,6 +27,8 @@ export interface UpdateCertificationStatusRequest {
   rejectionReason?: CertificationRejectionReason
 }
 
+export type UpdateCertificationStatusResponse = Certification
+
 // 인증샷 상태 확인
 export type GetCertificationResponse = Certification
 
