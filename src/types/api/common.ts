@@ -8,7 +8,7 @@ export interface BaseUser {
   refreshToken: string
 }
 
-export type CertificationStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | null
+export type CertificationStatus = 'NONE' | 'PENDING' | 'APPROVED' | 'REJECTED' | null
 
 export type CertificationRejectionReason =
   | 'OTHER_MOVIE_IMAGE'
