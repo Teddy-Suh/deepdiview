@@ -27,7 +27,7 @@ export interface UpdateCertificationStatusRequest {
 export type UpdateCertificationStatusResponse = Certification
 
 // 인증샷 상태 확인
-export type GetCertificationResponse = Certification
+export type GetCertificationResponse = NullableCertification
 
 // 인증 목록 조회
 export interface GetCertificationsParams {
@@ -48,11 +48,14 @@ export type CertificationPendingResponse = {
   rejectionReason: null
 }
 export interface Certification {
-  id: number | null
-  userId: number | null
-  certificationUrl: string | null
-  status: CertificationStatus | null
-  createdAt: string | null
-  rejectionReason: CertificationRejectionReason | null
+  id: number
+  userId: number
+  certificationUrl: string
+  status: CertificationStatus
+  createdAt: string
+  rejectionReason: CertificationRejectionReason
+}
+export type NullableCertification = {
+  [K in keyof Certification]: Certification[K] | null
 }
 export type SortField = 'id' | 'createdAt' | 'status'
