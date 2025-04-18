@@ -4,7 +4,7 @@ import { apiClient } from '../apiClient'
 // 특정 알림 읽음처리
 export async function readNotification(id: string, token: string): Promise<null> {
   return apiClient<null>(`/notifications/${id}/read`, {
-    method: 'POST',
+    method: 'PUT',
     withAuth: true,
     token,
   })
@@ -13,7 +13,7 @@ export async function readNotification(id: string, token: string): Promise<null>
 // 전체 알림 읽음처리
 export async function readAllNotifications(token: string): Promise<null> {
   return apiClient<null>(`/notifications/read-all`, {
-    method: 'POST',
+    method: 'PUT',
     withAuth: true,
     token,
   })
