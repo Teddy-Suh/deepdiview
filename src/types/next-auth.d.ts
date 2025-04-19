@@ -10,6 +10,7 @@ declare module 'next-auth' {
 
   interface Session {
     accessToken: string
+    accessTokenExpires: number
   }
 }
 
@@ -21,5 +22,6 @@ export declare module '@auth/core/jwt' {
     role: 'USER' | 'ADMIN'
     accessToken: string
     refreshToken: string
+    accessTokenExpires: number
   }
 }
