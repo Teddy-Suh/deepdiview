@@ -2,8 +2,8 @@
 
 import { useActionState, useEffect, useState } from 'react'
 import { createCommentAction, updateCommentAction } from './actions'
-import { useSession } from 'next-auth/react'
 import Link from 'next/link'
+import { useSession } from 'next-auth/react'
 
 export default function CommentForm({
   reviewId,
@@ -17,7 +17,7 @@ export default function CommentForm({
   }
   onCancel: () => void
 }) {
-  const { data: session } = useSession()
+  const session = useSession()
   const isEdit = !!editComment
   const [content, setContent] = useState('')
 

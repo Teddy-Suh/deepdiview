@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import TopNav from '@/components/layout/TopNav'
 import BottomNav from '@/components/layout/BottomNav'
-import Providers from '@/providers/providers'
+import { SessionProvider } from '@/providers/providers'
 import SSEClient from '@/components/layout/SSEClient'
 
 export const metadata: Metadata = {
@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang='ko'>
       <body>
-        <Providers>
+        <SessionProvider>
           <SSEClient />
           <div className='mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8'>
             <header>
@@ -28,7 +28,7 @@ export default function RootLayout({
               <BottomNav />
             </footer>
           </div>
-        </Providers>
+        </SessionProvider>
       </body>
     </html>
   )
