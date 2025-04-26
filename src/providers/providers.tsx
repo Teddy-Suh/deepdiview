@@ -1,7 +1,25 @@
 'use client'
 
-import { SessionProvider } from 'next-auth/react'
+import { Session } from 'next-auth'
+import { usePathname } from 'next/navigation'
+import { createContext, useContext, useEffect, useState } from 'react'
+import { getServerSession } from './actions'
 
-export default function Providers({ children }: { children: React.ReactNode }) {
-  return <SessionProvider>{children}</SessionProvider>
+const SessionContent = createContext<Session | null>(null)
+
+export function SessionProvider({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname()
+  const [session, setSession] = useState<Session | null>(null)
+
+  useEffect(() => {
+    getServerSession().then((res) => {
+      setSession(res)
+    })
+  }, [pathname])
+
+  return <SessionContent.Provider value={session}>{children}</SessionContent.Provider>
+}
+
+export function useSession() {
+  return useContext(SessionContent)
 }

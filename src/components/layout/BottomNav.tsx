@@ -4,12 +4,11 @@ import { Bell, Home, KeyRound, NotebookPen, Search, UserRound } from 'lucide-rea
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import clsx from 'clsx'
-import { useSession } from 'next-auth/react'
+import { useSession } from '@/providers/providers'
 
 export default function BottomNav() {
   const pathname = usePathname()
-  // TODO: 바로 세션 변화 알아차리게 구현
-  const { data: session } = useSession()
+  const session = useSession()
 
   return (
     <nav className='dock md:hidden'>

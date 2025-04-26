@@ -1,11 +1,11 @@
 'use client'
 
-import { useSession } from 'next-auth/react'
 import { useEffect } from 'react'
 import { EventSourcePolyfill } from 'event-source-polyfill'
+import { useSession } from '@/providers/providers'
 
 export default function SSEClient() {
-  const { data: session } = useSession()
+  const session = useSession()
 
   useEffect(() => {
     const userId = session?.user?.userId
