@@ -3,6 +3,7 @@ import './globals.css'
 import TopNav from '@/components/layout/TopNav'
 import BottomNav from '@/components/layout/BottomNav'
 import Providers from '@/providers/providers'
+import SSEClient from '@/components/layout/SSEClient'
 
 export const metadata: Metadata = {
   title: 'Deepdiview',
@@ -17,6 +18,7 @@ export default function RootLayout({
     <html lang='ko'>
       <body>
         <Providers>
+          <SSEClient />
           <div className='mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8'>
             <header>
               <TopNav />
