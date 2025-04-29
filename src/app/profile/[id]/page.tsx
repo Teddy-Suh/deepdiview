@@ -7,10 +7,11 @@ import { Rating } from '@/types/api/user'
 import Link from 'next/link'
 import IntroForm from './IntroForm'
 import ProfileImageForm from './ProfileImageForm'
+import { redirect } from 'next/navigation'
 
 export default async function ProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth()
-  if (!session) throw new Error('UNAUTHORIZED')
+  if (!session) redirect('/login')
 
   const userId = session.user?.userId
   const { id } = await params

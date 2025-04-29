@@ -1,10 +1,11 @@
 import { auth } from '@/auth'
 import { getCertification } from '@/lib/api/certification'
 import ImgForm from './ImgForm'
+import { redirect } from 'next/navigation'
 
 export default async function WatchVerificationPage() {
   const session = await auth()
-  if (!session) throw new Error('UNAUTHORIZED')
+  if (!session) redirect('/login')
 
   const certification = await getCertification(session.accessToken)
   console.log(certification)

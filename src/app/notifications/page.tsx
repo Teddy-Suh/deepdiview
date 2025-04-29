@@ -1,10 +1,11 @@
 import { auth } from '@/auth'
 import { getNotifications } from '@/lib/api/notification'
 import NotificationList from './NotificationList'
+import { redirect } from 'next/navigation'
 
 export default async function NotificationsPage() {
   const session = await auth()
-  if (!session) throw new Error('UNAUTHORIZED')
+  if (!session) redirect('/login')
 
   const notifications = await getNotifications(session.accessToken)
   console.log(notifications)
