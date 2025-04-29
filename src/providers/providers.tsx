@@ -3,7 +3,7 @@
 import { Session } from 'next-auth'
 import { usePathname } from 'next/navigation'
 import { createContext, useContext, useEffect, useState } from 'react'
-import { getServerSession } from './actions'
+import { getServerSession } from '../lib/actions/auth'
 
 const SessionContent = createContext<Session | null>(null)
 
