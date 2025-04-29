@@ -4,13 +4,14 @@ import { auth } from '@/auth'
 import { getUserReviews } from '@/lib/api/user'
 import Image from 'next/image'
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
 
 // TODO: 페이지네이션 무한스크롤
 export default async function UserReviewsPage({ params }: { params: Promise<{ id: string }> }) {
-  const [{ id }, session] = await Promise.all([params, auth()])
+  const session = await auth()
+  if (!session) redirect('/login')
 
-  if (!session) throw new Error('UNAUTHORIZED')
-
+  const { id } = await params
   const data = await getUserReviews(session.accessToken, id)
   const reviews = data.content
 

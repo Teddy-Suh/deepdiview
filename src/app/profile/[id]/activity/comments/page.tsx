@@ -6,12 +6,14 @@ import { getUserComments } from '@/lib/api/user'
 import { Review } from '@/types/api/common'
 import Image from 'next/image'
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
 
 // TODO: 페이지네이션 무한스크롤
 export default async function UserCommentsPage({ params }: { params: Promise<{ id: string }> }) {
-  const [{ id }, session] = await Promise.all([params, auth()])
-  if (!session) throw new Error('UNAUTHORIZED')
+  const session = await auth()
+  if (!session) redirect('/login')
 
+  const { id } = await params
   const data = await getUserComments(session.accessToken, id)
 
   const uniqueReviewIds = [...new Set(data.content.map((c) => c.reviewId))]

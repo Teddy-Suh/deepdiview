@@ -5,12 +5,11 @@ import { getMovie } from '@/lib/api/movie'
 import { getVoteOptions } from '@/lib/api/vote'
 import { participateVoteAction } from './actions'
 import Image from 'next/image'
+import { redirect } from 'next/navigation'
 
 export default async function VotePage() {
   const session = await auth()
-  if (!session?.accessToken) {
-    throw new Error('UNAUTHORIZED')
-  }
+  if (!session) redirect('/login')
 
   const voteOptions = await getVoteOptions(session?.accessToken)
   const moviePromises = voteOptions.tmdbIds.map((id) => getMovie(id.toString()))

@@ -1,10 +1,13 @@
 import { auth } from '@/auth'
 import { getCertifications } from '@/lib/api/certification'
 import CertificationItem from './CertificationItem'
+import { redirect } from 'next/navigation'
 
 export default async function AdminWatchApprovalPage() {
   const session = await auth()
-  if (!session) throw new Error('UNAUTHORIZED')
+  if (!session) redirect('/login')
+  if (session.user?.role !== 'ADMIN') redirect('/')
+
   const certifications = await getCertifications(session.accessToken)
 
   // TODO: 페이지네이션 무한스크롤, 필터링

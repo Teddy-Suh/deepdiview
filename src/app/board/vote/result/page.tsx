@@ -1,11 +1,16 @@
 export const dynamic = 'force-dynamic'
 
+import { auth } from '@/auth'
 import { getMovie } from '@/lib/api/movie'
 import { getVoteResult } from '@/lib/api/vote'
 import Image from 'next/image'
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
 
 export default async function VoteResultPage() {
+  const session = await auth()
+  if (!session) redirect('/login')
+
   const { results } = await getVoteResult()
   const movieWithResultPromises = results.map(async (result) => {
     const movie = await getMovie(result.tmdbId.toString())
