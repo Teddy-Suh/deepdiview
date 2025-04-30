@@ -4,9 +4,11 @@ import {
   CertificationStatus,
   Comment,
   ImgRequest,
+  PaginationParamsWithSort,
   PaginatedResponse,
   Review,
-  SortDirection,
+  ReviewSortField,
+  BasePaginationParams,
 } from './common'
 
 // API 타입
@@ -74,21 +76,11 @@ export type LoginResponse = BaseUser
 export type GetUserProfileResponse = ProfileResponse
 
 // 특정 사용자가 작성한 리뷰 조회
-export interface GetUserReviewsParams {
-  page?: number
-  size?: number
-  sort?: `${ReviewSortField},${SortDirection}`
-}
-
+export type GetUserReviewsParams = PaginationParamsWithSort<ReviewSortField>
 export type GetUserReviewsResponse = PaginatedResponse<Review>
 
 // 특정 사용자가 작성한 댓글 조회
-export interface GetUserCommentsParams {
-  page?: number
-  size?: number
-  sort?: `${CommentSortField},${SortDirection}`
-}
-
+export type GetUserCommentsParams = BasePaginationParams
 export type GetUserCommentsResponse = PaginatedResponse<Comment>
 
 // 로그아웃
@@ -111,9 +103,3 @@ export type Rating = '0.5' | '1.0' | '1.5' | '2.0' | '2.5' | '3.0' | '3.5' | '4.
 export interface ProfileImgResponse {
   profileImageUrl: string
 }
-
-export type ReviewSortField = 'createdAt' | 'likeCount' | 'rating'
-// | 'updatedAt' | 'movieTitle' | 'user.nickname' | 'movie.tmdbId'
-
-export type CommentSortField = 'createdAt'
-// | 'id' | 'updatedAt' | 'user.nickname'

@@ -15,6 +15,15 @@ export type CertificationRejectionReason =
   | 'WRONG_IMAGE'
   | 'UNIDENTIFIABLE_IMAGE'
 
+export interface BasePaginationParams {
+  page?: number
+  size?: number
+}
+
+export interface PaginationParamsWithSort<T extends string> extends BasePaginationParams {
+  sort?: `${T},${SortDirection}`
+}
+
 export interface PaginatedResponse<T> {
   content: T[]
   number: number
@@ -58,5 +67,7 @@ export interface Comment {
   updatedAt: string
 }
 export type ImgRequest = FormData
+
+export type ReviewSortField = 'createdAt' | 'likeCount' | 'rating'
 
 export type SortDirection = 'asc' | 'desc'

@@ -7,8 +7,7 @@ export default async function NotificationsPage() {
   const session = await auth()
   if (!session) redirect('/login')
 
-  const notifications = await getNotifications(session.accessToken)
-  console.log(notifications)
+  const { content: notifications } = await getNotifications(session.accessToken, { page: 0 })
 
   return (
     <>

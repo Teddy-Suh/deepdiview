@@ -1,11 +1,14 @@
-import { Review } from './common'
+import { BasePaginationParams, PaginatedResponse, Review } from './common'
 
 // API 타입
 // 특정 영화 상세정보 조회
 export type GetMovieResponse = Movie
 
 // 영화 제목으로 상세정보 조회
-export type GetSearchedMoviesResponse = Movie[]
+export type GetSearchedMoviesParams = BasePaginationParams & {
+  title?: string
+}
+export type GetSearchedMoviesResponse = PaginatedResponse<Movie>
 
 // 넷플릭스 인기도 탑20의 영화 리스트 조회
 export type GetPopularMoviesResponse = Movie[]

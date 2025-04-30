@@ -8,7 +8,16 @@ export default async function AdminWatchApprovalPage() {
   if (!session) redirect('/login')
   if (session.user?.role !== 'ADMIN') redirect('/')
 
-  const certifications = await getCertifications(session.accessToken)
+  const now = new Date()
+  const createdAt = now.toISOString()
+
+  const certifications = await getCertifications(session.accessToken, {
+    createdAt,
+    status: 'PENDING',
+    page: 1,
+  })
+
+  console.log(certifications)
 
   // TODO: 페이지네이션 무한스크롤, 필터링
   return (
