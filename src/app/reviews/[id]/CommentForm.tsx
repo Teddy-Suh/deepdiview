@@ -3,7 +3,7 @@
 import { useActionState, useEffect, useState } from 'react'
 import { createCommentAction, updateCommentAction } from './actions'
 import Link from 'next/link'
-import { useSession } from 'next-auth/react'
+import { useSession } from '@/providers/providers'
 
 export default function CommentForm({
   reviewId,

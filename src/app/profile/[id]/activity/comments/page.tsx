@@ -14,7 +14,7 @@ export default async function UserCommentsPage({ params }: { params: Promise<{ i
   if (!session) redirect('/login')
 
   const { id } = await params
-  const data = await getUserComments(session.accessToken, id)
+  const data = await getUserComments(session.accessToken, id, { page: 0 })
 
   const uniqueReviewIds = [...new Set(data.content.map((c) => c.reviewId))]
   const reviewMap = new Map<number, Review>()

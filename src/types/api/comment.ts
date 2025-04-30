@@ -1,4 +1,4 @@
-import { Comment, PaginatedResponse, SortDirection } from './common'
+import { BasePaginationParams, Comment, PaginatedResponse } from './common'
 
 // API 타입
 
@@ -9,11 +9,7 @@ export type UpdateCommentResponse = Comment
 // 댓글 삭제
 
 // 특정 리뷰에 달린 댓글 조회
-export interface GetCommentsParams {
-  page?: number
-  size?: number
-  sort?: `${SortField},${SortDirection}`
-}
+export type GetCommentsParams = BasePaginationParams
 
 export type GetCommentsResponse = PaginatedResponse<Comment>
 
@@ -26,5 +22,3 @@ export type CreateCommentResponse = Comment
 export interface CommentsRequest {
   content: string
 }
-
-export type SortField = 'id' | 'createdAt' | 'updatedAt'

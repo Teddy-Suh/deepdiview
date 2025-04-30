@@ -12,7 +12,7 @@ export default async function UserReviewsPage({ params }: { params: Promise<{ id
   if (!session) redirect('/login')
 
   const { id } = await params
-  const data = await getUserReviews(session.accessToken, id)
+  const data = await getUserReviews(session.accessToken, id, { page: 0 })
   const reviews = data.content
 
   return (

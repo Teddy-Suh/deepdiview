@@ -2,8 +2,7 @@ import {
   CertificationRejectionReason,
   CertificationStatus,
   ImgRequest,
-  PaginatedResponse,
-  SortDirection,
+  PaginationParamsWithSort,
 } from './common'
 
 // API 타입
@@ -30,13 +29,17 @@ export type UpdateCertificationStatusResponse = Certification
 export type GetCertificationResponse = NullableCertification
 
 // 인증 목록 조회
-export interface GetCertificationsParams {
+export type GetCertificationsParams = PaginationParamsWithSort<CertificationSortField> & {
   status?: CertificationStatus
-  page?: number
-  size?: number
-  sort?: `${SortField},${SortDirection}`
+  createdAt?: string
+  nextCertificationId?: number
 }
-export type GetCertificationsResponse = PaginatedResponse<Certification>
+export interface GetCertificationsResponse {
+  content: Certification[]
+  hasNext: boolean
+  nextCertificationId: number
+  nextCreatedAt: string
+}
 
 // 보조 타입
 export type CertificationPendingResponse = {
@@ -58,4 +61,4 @@ export interface Certification {
 export type NullableCertification = {
   [K in keyof Certification]: Certification[K] | null
 }
-export type SortField = 'id' | 'createdAt' | 'status'
+export type CertificationSortField = 'createdAt' | 'status'

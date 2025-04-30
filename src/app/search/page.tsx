@@ -25,7 +25,7 @@ export default async function SearchPage({
   // 검색 결과가 없는 경우
   let movies = []
   try {
-    movies = await getSearchedMovies(title)
+    movies = (await getSearchedMovies({ title, page: 0 })).content
   } catch (error) {
     const errorCode = (error as Error).message
     if (errorCode === 'KEYWORD_NOT_FOUND') {

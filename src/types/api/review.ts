@@ -1,4 +1,4 @@
-import { PaginatedResponse, Review, SortDirection } from './common'
+import { PaginatedResponse, PaginationParamsWithSort, Review, ReviewSortField } from './common'
 
 // API 타입
 
@@ -28,17 +28,8 @@ export type CreateReviewResponse = Review
 // 좋아요
 
 // 특정 영화에 대한 리뷰 조회
-export interface GetReviewsParams {
-  certifiedFilter?: boolean
-  page?: number
-  size?: number
-  sort?: `${SortField},${SortDirection}`
-}
-
+export type GetReviewsParams = PaginationParamsWithSort<ReviewSortField>
 export type GetReviewsResponse = PaginatedResponse<Review>
 
 // 최신 리뷰 3개 조회 (쿼리)
 export type GetLatestReviewsResponse = Review[]
-
-// 보조 타입
-export type SortField = 'rating' | 'createdAt' | 'likeCount' | 'nickname'
