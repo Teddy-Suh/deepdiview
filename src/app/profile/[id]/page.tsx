@@ -3,7 +3,7 @@ export const dynamic = 'force-dynamic'
 import { auth } from '@/auth'
 import { signOutWithForm } from './actions'
 import { getMyProfile, getUserProfile } from '@/lib/api/user'
-import { Rating } from '@/types/api/user'
+
 import Link from 'next/link'
 import IntroForm from './IntroForm'
 import ProfileImageForm from './ProfileImageForm'
@@ -44,16 +44,6 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
         <div>
           <h3>별점 분포</h3>
           {/* TODO: 막대 그래프 */}
-          {Array.from({ length: 10 }, (_, i) => (0.5 + i * 0.5).toFixed(1)).map((rating) => {
-            const count = profile.ratingDistribution?.[rating as Rating] ?? 0
-            return (
-              <div key={rating}>
-                <span>
-                  {rating} / {count}
-                </span>
-              </div>
-            )
-          })}
         </div>
         <Link className='btn' href={`/profile/${id}/activity/reviews`}>
           작성한 리뷰 목록 {profile.reviewCount}

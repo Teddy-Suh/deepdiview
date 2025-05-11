@@ -54,7 +54,7 @@ export default async function MoviesPage({ params }: { params: Promise<{ id: str
           <p>{movie.original_title}</p>
           <p>{movie.release_date}</p>
           <p>{movie.genre_names}</p>
-          <p>{movie.ratingAverage}</p>
+          <p>{movie.ratingStats.ratingAverage}</p>
           <p>{movie.overview}</p>
         </div>
       </section>
