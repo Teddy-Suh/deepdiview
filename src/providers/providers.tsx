@@ -7,9 +7,15 @@ import { getServerSession } from '../lib/actions/auth'
 
 const SessionContent = createContext<Session | null>(null)
 
-export function SessionProvider({ children }: { children: React.ReactNode }) {
+export function SessionProvider({
+  children,
+  initialSession,
+}: {
+  children: React.ReactNode
+  initialSession: Session | null
+}) {
   const pathname = usePathname()
-  const [session, setSession] = useState<Session | null>(null)
+  const [session, setSession] = useState<Session | null>(initialSession)
 
   useEffect(() => {
     getServerSession().then((res) => {

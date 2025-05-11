@@ -4,30 +4,30 @@ import TopNav from '@/components/layout/TopNav'
 import BottomNav from '@/components/layout/BottomNav'
 import { SessionProvider } from '@/providers/providers'
 import SSEClient from '@/components/layout/SSEClient'
+import { auth } from '@/auth'
+import Footer from '@/components/layout/Footer'
 
 export const metadata: Metadata = {
   title: 'Deepdiview',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const session = await auth()
   return (
     <html lang='ko'>
-      <body>
-        <SessionProvider>
+      <body className='flex min-h-screen flex-col'>
+        <SessionProvider initialSession={session}>
           <SSEClient />
-          <div className='mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8'>
-            <header>
-              <TopNav />
-            </header>
-            <main>{children}</main>
-            <footer>
-              <BottomNav />
-            </footer>
-          </div>
+          <header>
+            <TopNav />
+          </header>
+          <main className='flex-1 pb-18 md:pb-4'>{children}</main>
+          <BottomNav />
+          <Footer />
         </SessionProvider>
       </body>
     </html>

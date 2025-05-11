@@ -11,7 +11,7 @@ export default function BottomNav() {
   const session = useSession()
 
   return (
-    <nav className='dock md:hidden'>
+    <nav className='dock z-50 md:hidden'>
       <Link href='/' className={clsx({ 'dock-active text-primary': pathname === '/' })}>
         <Home />
       </Link>
