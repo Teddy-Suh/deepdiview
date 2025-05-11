@@ -82,7 +82,10 @@ export async function getReviews(
   })
 }
 
-// 최신 리뷰 3개 조회 (쿼리)
-export async function getLatestReviews(): Promise<GetLatestReviewsResponse> {
-  return apiClient<GetLatestReviewsResponse>(`/reviews/latest`)
+// 최신 리뷰 조회
+export async function getLatestReviews(
+  params?: GetReviewsParams
+): Promise<GetLatestReviewsResponse> {
+  const query = params ? `?${toQueryString(params)}` : ''
+  return apiClient<GetLatestReviewsResponse>(`/reviews/latest${query}`)
 }

@@ -1,4 +1,10 @@
-import { PaginatedResponse, PaginationParamsWithSort, Review, ReviewSortField } from './common'
+import {
+  BasePaginationParams,
+  PaginatedResponse,
+  PaginationParamsWithSort,
+  Review,
+  ReviewSortField,
+} from './common'
 
 // API 타입
 
@@ -31,5 +37,6 @@ export type CreateReviewResponse = Review
 export type GetReviewsParams = PaginationParamsWithSort<ReviewSortField>
 export type GetReviewsResponse = PaginatedResponse<Review>
 
-// 최신 리뷰 3개 조회 (쿼리)
-export type GetLatestReviewsResponse = Review[]
+// 최신 리뷰 조회
+export type GetLatestReviewsParams = BasePaginationParams
+export type GetLatestReviewsResponse = PaginatedResponse<Review>
