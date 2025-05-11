@@ -5,6 +5,10 @@
     dark --prefersdark;
 }
 
+@utility no-scrollbar {
+  @apply [scrollbar-width:none] [&::-webkit-scrollbar]:hidden;
+}
+
 @layer components {
   .container-wrapper {
     @apply mx-auto max-w-[1440px] px-4 md:px-8 lg:px-16;
