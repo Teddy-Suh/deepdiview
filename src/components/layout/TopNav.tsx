@@ -1,51 +1,77 @@
+'use client'
+
 import Link from 'next/link'
 import SearchForm from '@/components/form/SearchForm'
-import { auth } from '@/auth'
+import { useSession } from '@/providers/providers'
+import { useEffect, useState } from 'react'
+import clsx from 'clsx'
+import { usePathname } from 'next/navigation'
 
-export default async function TopNav() {
-  const session = await auth()
+export default function TopNav() {
+  const session = useSession()
+  const [scrolled, setScrolled] = useState(false)
+  const pathname = usePathname()
+
+  const overlaidPaths = ['/', '/board']
+  const overlaidDynamicPaths = /^\/(movies)\/[^/]+$/.test(pathname)
+  const isOverlaid = overlaidPaths.includes(pathname) || overlaidDynamicPaths
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   return (
-    <nav className='navbar hidden px-0 md:flex'>
-      <div className='flex-1'>
-        <Link
-          className='btn btn-ghost hover:text-primary pl-0 hover:border-transparent hover:bg-transparent hover:shadow-none'
-          href='/'
-        >
-          <h1 className='text-2xl font-bold'>Deepdiview</h1>
-        </Link>
-      </div>
-      <div className='flex'>
-        <SearchForm />
-        <Link
-          href='/board'
-          className='btn btn-ghost hover:text-primary hover:bg-transparent hover:shadow-none'
-        >
-          <span className='text-base'>게시판</span>
-        </Link>
-        <Link
-          href='/notifications'
-          className='btn btn-ghost hover:text-primary pl-0 hover:border-transparent hover:bg-transparent hover:shadow-none'
-        >
-          <span className='text-base'>알림</span>
-        </Link>
-
-        {session?.user ? (
-          <Link
-            className='btn btn-ghost hover:text-primary pl-0 hover:border-transparent hover:bg-transparent hover:shadow-none'
-            href={`/profile/${session.user.userId}`}
-          >
-            프로필
-          </Link>
-        ) : (
-          <Link
-            className='btn btn-ghost hover:text-primary pl-0 hover:border-transparent hover:bg-transparent hover:shadow-none'
-            href='/login'
-          >
-            로그인
-          </Link>
+    <>
+      <nav
+        className={clsx(
+          'container-wrapper fixed right-0 left-0 z-50 hidden h-16 items-center border-b-1 transition-colors duration-300 md:flex',
+          scrolled ? 'bg-base-100 border-b-gray-700' : 'border-b-transparent'
         )}
-      </div>
-    </nav>
+      >
+        <div className='flex-1'>
+          <Link
+            className='btn btn-ghost hover:text-primary pl-0 hover:border-transparent hover:bg-transparent hover:shadow-none'
+            href='/'
+          >
+            <h1 className='text-2xl font-bold'>Deepdiview</h1>
+          </Link>
+        </div>
+        <div className='hidden md:flex'>
+          <SearchForm />
+          <Link
+            href='/board'
+            className='btn btn-ghost hover:text-primary pr-0 text-base hover:border-transparent hover:bg-transparent hover:shadow-none'
+          >
+            게시판
+          </Link>
+          <Link
+            href='/notifications'
+            className='btn btn-ghost hover:text-primary pr-0 text-base hover:border-transparent hover:bg-transparent hover:shadow-none'
+          >
+            알림
+          </Link>
+          {session?.user ? (
+            <Link
+              className='btn btn-ghost hover:text-primary pr-0 hover:border-transparent hover:bg-transparent hover:shadow-none'
+              href={`/profile/${session.user.userId}`}
+            >
+              <span className='text-base'>프로필</span>
+            </Link>
+          ) : (
+            <Link
+              className='btn btn-ghost hover:text-primary pr-0 text-base hover:border-transparent hover:bg-transparent hover:shadow-none'
+              href='/login'
+            >
+              로그인
+            </Link>
+          )}
+        </div>
+      </nav>
+      {!isOverlaid && <div className='hidden pb-16 md:block' />}
+    </>
   )
 }
