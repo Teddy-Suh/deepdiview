@@ -1,4 +1,4 @@
-import { BasePaginationParams, PaginatedResponse, Review } from './common'
+import { BasePaginationParams, PaginatedResponse, RatingDistribution, Review } from './common'
 
 // API 타입
 // 특정 영화 상세정보 조회
@@ -20,6 +20,7 @@ export interface Movie {
   original_title: string
   overview: string
   release_date: string
+  runtime: number | null
   popularity: number
   poster_path: string
   backdrop_path: string
@@ -27,5 +28,9 @@ export interface Movie {
   genre_names: string[]
   reviews: Review[]
   myReview: Review | null
-  ratingAverage: number
+  ratingStats: {
+    ratingAverage: number
+    ratingDistribution: RatingDistribution
+  }
+  available: boolean
 }

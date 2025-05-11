@@ -24,7 +24,7 @@ export default async function VotePage() {
             <li key={movie.id}>
               <label>
                 <p>{movie.title}</p>
-                <p>{movie.ratingAverage}</p>
+                <p>{movie.ratingStats.ratingAverage}</p>
                 <p>{movie.genre_names}</p>
                 <p>{movie.release_date}</p>
                 <Image
