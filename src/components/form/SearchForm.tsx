@@ -14,6 +14,8 @@ export default function SearchForm() {
     if (pathname === '/search') {
       const titleFromUrl = searchParams.get('title') ?? ''
       setQuery(titleFromUrl)
+    } else {
+      setQuery('')
     }
   }, [pathname, searchParams])
 
@@ -23,8 +25,8 @@ export default function SearchForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label className='input focus-within:border-primary focus-within:outline-none'>
+    <form onSubmit={handleSubmit} className='w-full'>
+      <label className='input focus-within:border-primary w-full bg-transparent focus-within:outline-none'>
         <Search className='h-[1em] opacity-50' />
         <input
           type='search'
