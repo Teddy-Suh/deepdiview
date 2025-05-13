@@ -28,8 +28,8 @@ export default function TopNav() {
     <>
       <nav
         className={clsx(
-          'container-wrapper fixed right-0 left-0 z-50 hidden h-16 items-center border-b-1 transition-colors duration-300 md:flex',
-          scrolled ? 'bg-base-100 border-b-gray-700' : 'border-b-transparent'
+          'container-wrapper fixed right-0 left-0 z-50 hidden h-16 items-center border-b-1 transition-colors duration-200 md:flex',
+          !isOverlaid || scrolled ? 'bg-base-100 border-b-gray-700' : 'border-b-transparent'
         )}
       >
         <div className='flex-1'>
