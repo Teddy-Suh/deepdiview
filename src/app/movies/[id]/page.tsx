@@ -1,13 +1,15 @@
 export const dynamic = 'force-dynamic'
 
 import { auth } from '@/auth'
+import GoBackHeader from '@/components/layout/MobileHeader/GoBackHeader'
+import LatestReviewSection from '@/components/ui/LatestReviewSection'
+import OverlaidMovieHero from '@/components/ui/OverlaidMovieHero'
+import { getCertification } from '@/lib/api/certification'
 import { getIsSunday, getThisWeekMovieId } from '@/lib/api/discussion'
 import { getMovie } from '@/lib/api/movie'
-import { getVoteParticipationStatus } from '@/lib/api/vote'
-import { CircleUserRound, ThumbsUp } from 'lucide-react'
-import Image from 'next/image'
-import Link from 'next/link'
+
 import { notFound } from 'next/navigation'
+import MyReviewSection from './MyReviewSection'
 
 export default async function MoviesPage({ params }: { params: Promise<{ id: string }> }) {
   const [{ id }, session, { tmdbId }, { isSunday }] = await Promise.all([
@@ -18,9 +20,9 @@ export default async function MoviesPage({ params }: { params: Promise<{ id: str
   ])
   const isThisWeekMovie = Number(id) === tmdbId
 
-  let participated = false
+  let certificationStatus = null
   if (session && !isSunday) {
-    participated = (await getVoteParticipationStatus(session.accessToken)).participated
+    certificationStatus = (await getCertification(session.accessToken)).status
   }
 
   let movie
@@ -35,110 +37,23 @@ export default async function MoviesPage({ params }: { params: Promise<{ id: str
 
   return (
     <>
-      <section
-        className='flex h-96 bg-cover bg-center'
-        style={{
-          backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
-        }}
-      >
-        <div>
-          <Image
-            src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-            width={200}
-            height={300}
-            alt='포스터'
-          />
-        </div>
-        <div>
-          <h2>{movie.title}</h2>
-          <p>{movie.original_title}</p>
-          <p>{movie.release_date}</p>
-          <p>{movie.genre_names}</p>
-          <p>{movie.ratingStats.ratingAverage}</p>
-          <p>{movie.overview}</p>
-        </div>
-      </section>
-      <section>
-        <div>
-          {/* 우선 가장 직관적이고 에러 안나게 구현해둠 */}
-          {session ? (
-            <>
-              {movie.myReview ? (
-                <Link href={`/reviews/${movie.myReview.reviewId}`}>
-                  <h2>내 리뷰</h2>
-                  <p>별점:{movie.myReview.rating}</p>
-                  <p>제목:{movie.myReview.reviewTitle}</p>
-                  <p>내용:{movie.myReview.reviewContent}</p>
-                </Link>
-              ) : (
-                <>
-                  {isThisWeekMovie && !isSunday ? (
-                    <>
-                      {participated ? (
-                        <Link className='btn' href={`/board/create`}>
-                          인증했으니 게시판 작성으로 가짐
-                        </Link>
-                      ) : (
-                        <Link className='btn' href={`/movies/${id}/reviews/create`}>
-                          인증 안햇으니 리뷰 작성으로 가짐
-                        </Link>
-                      )}
-                    </>
-                  ) : (
-                    <Link className='btn' href={`/movies/${id}/reviews/create`}>
-                      리뷰 작성하러가기
-                    </Link>
-                  )}
-                </>
-              )}
-            </>
-          ) : (
-            <Link className='btn' href='/login'>
-              로그인 하고 리뷰 작성하기
-            </Link>
-          )}
-        </div>
-        <hr />
-        <div className='flex justify-between'>
-          <h2>리뷰</h2>
-          <Link className='btn' href={`/movies/${id}/reviews`}>
-            더보기
-          </Link>
-        </div>
-        <ul className='flex'>
-          {movie.reviews.map((review) => (
-            <li key={review.reviewId}>
-              <Link href={`/reviews/${review.reviewId}`}>
-                <div className='flex'>
-                  <div className='flex'>
-                    {review.profileImageUrl ? (
-                      <Image
-                        src={`${review.profileImageUrl}`}
-                        alt='프로필 사진'
-                        width={20}
-                        height={20}
-                      />
-                    ) : (
-                      <CircleUserRound />
-                    )}
-                    <p>{review.nickname}</p>
-                  </div>
-                  <div>별점{review.rating}</div>
-                </div>
-
-                <div>
-                  <p>{review.reviewTitle}</p>
-                  <p>{review.reviewContent}</p>
-                </div>
-
-                <div className='flex'>
-                  <ThumbsUp /> {review.likeCount}
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </section>
+      <GoBackHeader />
+      <OverlaidMovieHero movie={movie} withTitle={false} isMovieLinkActive={false} />
+      <div className='space-y-8'>
+        <MyReviewSection
+          session={session}
+          myReview={movie.myReview}
+          isThisWeekMovie={isThisWeekMovie}
+          isSunday={isSunday}
+          certificationStatus={certificationStatus}
+          movieId={id}
+        />
+        <LatestReviewSection
+          latestReviews={movie.reviews}
+          href={`/movies/${id}/reviews`}
+          withMovie={false}
+        />
+      </div>
     </>
   )
 }
