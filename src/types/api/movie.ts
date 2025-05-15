@@ -26,7 +26,6 @@ export interface Movie {
   backdrop_path: string
   genre_ids: number[]
   genre_names: string[]
-  reviews: Review[]
   myReview: Review | null
   ratingStats: {
     ratingAverage: number
