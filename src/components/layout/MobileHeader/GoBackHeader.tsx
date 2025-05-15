@@ -1,13 +1,16 @@
 'use client'
 
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect, useRef, useState } from 'react'
 import clsx from 'clsx'
 import { usePathname, useRouter } from 'next/navigation'
 import { ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
 
 export default function GoBackHeader({ children }: { children?: ReactNode }) {
+  const [hideHeader, setHideHeader] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const lastScrollY = useRef(0)
+
   const pathname = usePathname()
   const router = useRouter()
 
@@ -17,8 +20,21 @@ export default function GoBackHeader({ children }: { children?: ReactNode }) {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 0)
+      const currentY = window.scrollY
+
+      // 헤더 배경, 하단 보더 처리 (스크롤이 10px 이상 내려간 후에만 불투명 적용)
+      setScrolled(currentY > 10)
+
+      // 헤더 숨김 처리 (스크롤을 아래로 내릴 경우 숨기기, 위로 올리면 다시 보이기)
+      if (currentY > lastScrollY.current && currentY > 5) {
+        setHideHeader(true)
+      } else if (currentY < lastScrollY.current) {
+        setHideHeader(false)
+      }
+
+      lastScrollY.current = currentY
     }
+
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
@@ -27,8 +43,9 @@ export default function GoBackHeader({ children }: { children?: ReactNode }) {
     <>
       <div
         className={clsx(
-          'container-wrapper fixed right-0 left-0 z-50 flex items-center overflow-hidden transition-all duration-100 md:hidden',
-          scrolled ? 'h-0' : 'h-16'
+          'container-wrapper fixed right-0 left-0 z-50 flex items-center border-b-1 transition-all duration-200 md:hidden',
+          hideHeader ? 'h-0 overflow-hidden' : 'h-16',
+          scrolled ? 'bg-base-100 border-b-gray-700' : 'border-b-transparent bg-transparent'
         )}
       >
         <div className='flex flex-1 gap-2'>
