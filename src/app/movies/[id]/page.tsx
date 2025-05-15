@@ -10,6 +10,7 @@ import { getMovie } from '@/lib/api/movie'
 
 import { notFound } from 'next/navigation'
 import MyReviewSection from './MyReviewSection'
+import { getReviews } from '@/lib/api/review'
 
 export default async function MoviesPage({ params }: { params: Promise<{ id: string }> }) {
   const [{ id }, session, { tmdbId }, { isSunday }] = await Promise.all([
@@ -35,6 +36,8 @@ export default async function MoviesPage({ params }: { params: Promise<{ id: str
     throw error
   }
 
+  const { content: reviews } = await getReviews(id, !!session, session?.accessToken, { size: 9 })
+
   return (
     <>
       <GoBackHeader />
@@ -49,7 +52,7 @@ export default async function MoviesPage({ params }: { params: Promise<{ id: str
           movieId={id}
         />
         <LatestReviewSection
-          latestReviews={movie.reviews}
+          latestReviews={reviews}
           href={`/movies/${id}/reviews`}
           withMovie={false}
         />
