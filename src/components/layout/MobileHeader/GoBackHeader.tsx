@@ -1,12 +1,12 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import clsx from 'clsx'
 import { usePathname, useRouter } from 'next/navigation'
-import Link from 'next/link'
 import { ChevronLeft } from 'lucide-react'
+import Link from 'next/link'
 
-export default function GoBackHeader() {
+export default function GoBackHeader({ children }: { children?: ReactNode }) {
   const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
   const router = useRouter()
@@ -35,12 +35,14 @@ export default function GoBackHeader() {
           <button onClick={() => router.back()} type='button'>
             <ChevronLeft strokeWidth={3} />
           </button>
-          <Link href='/'>
-            <h1 className='text-2xl font-bold'>Deepdiview</h1>
-          </Link>
+          {children ?? (
+            <Link href='/'>
+              <h1 className='text-2xl font-bold'>Deepdiview</h1>
+            </Link>
+          )}
         </div>
       </div>
-      {!isOverlaid && <div className='hidden pb-16 md:block' />}
+      {!isOverlaid && <div className='pb-16 md:hidden' />}
     </>
   )
 }
