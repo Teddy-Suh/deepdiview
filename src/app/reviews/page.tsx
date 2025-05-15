@@ -1,7 +1,7 @@
 import { auth } from '@/auth'
 import GoBackHeader from '@/components/layout/MobileHeader/GoBackHeader'
-import ReviewItem from '@/components/ui/ReviewItem'
 import { getLatestReviews } from '@/lib/api/review'
+import ReviewList from '../../components/ui/ReviewList'
 
 export default async function ReviewsPage() {
   const session = await auth()
@@ -10,6 +10,8 @@ export default async function ReviewsPage() {
     size: 12,
   })
 
+  console.log(reviews)
+
   return (
     <>
       <GoBackHeader>
@@ -17,11 +19,7 @@ export default async function ReviewsPage() {
       </GoBackHeader>
       <div className='container-wrapper'>
         <h2 className='mt-4 mb-3 hidden text-xl font-semibold md:block'>최신 리뷰</h2>
-        <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
-          {reviews.content.map((review) => (
-            <ReviewItem key={review.reviewId} review={review} />
-          ))}
-        </div>
+        <ReviewList initialReviews={reviews.content} initialLast={reviews.last} />
       </div>
     </>
   )
