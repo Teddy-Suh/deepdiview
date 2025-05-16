@@ -84,8 +84,13 @@ export async function getReviews(
 
 // 최신 리뷰 조회
 export async function getLatestReviews(
+  withAuth?: boolean,
+  token?: string,
   params?: GetReviewsParams
 ): Promise<GetLatestReviewsResponse> {
   const query = params ? `?${toQueryString(params)}` : ''
-  return apiClient<GetLatestReviewsResponse>(`/reviews/latest${query}`)
+  return apiClient<GetLatestReviewsResponse>(`/reviews/latest${query}`, {
+    withAuth,
+    token,
+  })
 }
