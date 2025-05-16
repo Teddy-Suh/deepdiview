@@ -8,9 +8,11 @@ import type { Review } from '@/types/api/common'
 export default function ReviewList({
   initialReviews,
   initialLast,
+  withMovie = true,
 }: {
   initialReviews: Review[]
   initialLast: boolean
+  withMovie?: boolean
 }) {
   const [reviews, setReviews] = useState(initialReviews)
   const [page, setPage] = useState(1)
@@ -52,7 +54,7 @@ export default function ReviewList({
     <>
       <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
         {reviews.map((review) => (
-          <ReviewItem key={review.reviewId} review={review} />
+          <ReviewItem key={review.reviewId} review={review} withMovie={withMovie} />
         ))}
       </div>
       {isFetching && (
