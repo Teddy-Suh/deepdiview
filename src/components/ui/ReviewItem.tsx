@@ -60,15 +60,19 @@ export default function ReviewItem({
           </div>
         </div>
         {/* 하단 영화 제목 & 좋아요, 댓글 */}
-        <div className='flex justify-between gap-3'>
+        <div className={clsx('flex', withMovie && 'justify-between gap-3')}>
           {withMovie && (
             <p className='truncate overflow-hidden whitespace-nowrap'>{review.movieTitle}</p>
           )}
-          <div className='flex'>
-            <Heart />
-            <p className='mr-3'>{review.likeCount}</p>
-            <MessageCircle />
-            <p>{review.commentCount}</p>
+          <div className='flex gap-3'>
+            <div className='flex gap-1'>
+              <Heart className={clsx(review.likedByUser && 'fill-primary stroke-primary')} />
+              <p>{review.likeCount}</p>
+            </div>
+            <div className='flex gap-1'>
+              <MessageCircle />
+              <p>{review.commentCount}</p>
+            </div>
           </div>
         </div>
       </div>

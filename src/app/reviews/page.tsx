@@ -19,7 +19,7 @@ export default async function ReviewsPage() {
       </GoBackHeader>
       <div className='container-wrapper'>
         <h2 className='mt-4 mb-3 hidden text-xl font-semibold md:block'>최신 리뷰</h2>
-        <ReviewList initialReviews={reviews.content} initialLast={reviews.last} />
+        <ReviewList session={session} initialReviews={reviews.content} initialLast={reviews.last} />
       </div>
     </>
   )

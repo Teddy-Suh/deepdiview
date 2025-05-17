@@ -2,23 +2,38 @@
 
 import { useEffect, useRef, useState } from 'react'
 import ReviewItem from '@/components/ui/ReviewItem'
-import { getLatestReviews } from '@/lib/api/review'
-import type { Review } from '@/types/api/common'
+import { getLatestReviews, getReviews } from '@/lib/api/review'
+import type { Review, ReviewSortField } from '@/types/api/common'
+import { Session } from 'next-auth'
 
 export default function ReviewList({
+  session,
   initialReviews,
   initialLast,
+  withMovie = true,
+  movieId,
+  sort,
 }: {
+  session: Session | null
   initialReviews: Review[]
   initialLast: boolean
+  withMovie?: boolean
+  movieId?: string
+  sort?: ReviewSortField
 }) {
-  const [reviews, setReviews] = useState(initialReviews)
+  const [reviews, setReviews] = useState<Review[]>([])
   const [page, setPage] = useState(1)
-  const [hasMore, setHasMore] = useState(!initialLast)
+  const [hasMore, setHasMore] = useState<boolean>()
   const [isFetching, setIsFetching] = useState(false)
 
   const loaderRef = useRef<HTMLDivElement | null>(null)
   const isFetchingRef = useRef(false)
+
+  useEffect(() => {
+    setReviews(initialReviews)
+    setPage(1)
+    setHasMore(!initialLast)
+  }, [initialLast, initialReviews])
 
   useEffect(() => {
     const target = loaderRef.current
@@ -30,7 +45,17 @@ export default function ReviewList({
           isFetchingRef.current = true
           setIsFetching(true)
 
-          const res = await getLatestReviews(false, undefined, { page, size: 12 })
+          let res
+          if (movieId && sort) {
+            res = await getReviews(movieId, !!session, session?.accessToken, {
+              page,
+              size: 12,
+              sort: `${sort},desc`,
+            })
+          } else {
+            res = await getLatestReviews(!!session, session?.accessToken, { page, size: 12 })
+          }
+
           setReviews((prev) => [...prev, ...res.content])
           setPage((prev) => prev + 1)
           if (res.last) setHasMore(false)
@@ -46,13 +71,13 @@ export default function ReviewList({
 
     observer.observe(target)
     return () => observer.disconnect()
-  }, [page, hasMore])
+  }, [page, hasMore, movieId, sort, session])
 
   return (
     <>
       <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
         {reviews.map((review) => (
-          <ReviewItem key={review.reviewId} review={review} />
+          <ReviewItem key={review.reviewId} review={review} withMovie={withMovie} />
         ))}
       </div>
       {isFetching && (

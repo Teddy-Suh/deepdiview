@@ -48,7 +48,7 @@ export default function GoBackHeader({ children }: { children?: ReactNode }) {
           scrolled ? 'bg-base-100 border-b-gray-700' : 'border-b-transparent bg-transparent'
         )}
       >
-        <div className='flex flex-1 gap-2'>
+        <div className='flex flex-1 items-center gap-2'>
           <button onClick={() => router.back()} type='button'>
             <ChevronLeft strokeWidth={3} />
           </button>

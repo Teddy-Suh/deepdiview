@@ -1,5 +1,6 @@
 export const dynamic = 'force-dynamic'
 
+import { auth } from '@/auth'
 import BaseHeader from '@/components/layout/MobileHeader/BaseHeader'
 import LatestReviewSection from '@/components/ui/LatestReviewSection'
 import MovieCarousel from '@/components/ui/MovieCarousel'
@@ -9,14 +10,17 @@ import { getMovie, getPopularMovies } from '@/lib/api/movie'
 import { getLatestReviews } from '@/lib/api/review'
 
 export default async function HomePage() {
-  const [popularMovies, { isSunday }, latestReviews, { tmdbId }] = await Promise.all([
+  const [session, popularMovies, { isSunday }, { tmdbId }] = await Promise.all([
+    auth(),
     getPopularMovies(),
     getIsSunday(),
-    getLatestReviews(),
     getThisWeekMovieId(),
   ])
 
-  const thisWeekMovie = await getMovie(tmdbId.toString())
+  const [latestReviews, thisWeekMovie] = await Promise.all([
+    getLatestReviews(!!session, session?.accessToken),
+    getMovie(tmdbId.toString()),
+  ])
 
   return (
     <>
