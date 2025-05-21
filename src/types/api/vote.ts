@@ -1,29 +1,22 @@
 // API 타입
 
+import { Movie } from './movie'
+
 // 투표 생성
-export interface CreateVoteResponse {
-  voteId: number
-  title: string
-  startDate: string
-  endDate: string
-  movieDetails: VoteMovie[]
-}
+export type CreateVoteResponse = VoteOptionsResponse
 
 // 현재 진행중인 투표에 참여하기
 export interface ParticipateVoteRequest {
   tmdbId: number
 }
 
-export interface ParticipateVoteResponse {
-  voteSuccess: boolean
-  tmdbId: number
-}
+export type ParticipateVoteResponse = VoteResponse
 
 // 현재 진행중인 투표 결과 확인
-export type GetVoteResultResponse = VoteResult
+export type GetVoteResultResponse = VoteResponse
 
 // 지난주 투표 전체 결과 조회
-export type GetVoteLatestResultResponse = VoteResult
+export type GetVoteLatestResultResponse = VoteResponse
 
 // 현재 진행중인 투표에 참여했는지 여부 T/F
 export interface GetVoteParticipationStatusResponse {
@@ -31,25 +24,25 @@ export interface GetVoteParticipationStatusResponse {
 }
 
 // 현재 진행중인 투표의 선택지 조회
-export interface GetVoteOptionsResponse {
-  voteId: number
-  tmdbIds: number[]
-}
+export type GetVoteOptionsResponse = VoteOptionsResponse
 
 // 투표 삭제
 
 // 보조 타입
-export interface VoteMovie {
+export interface VoteResult {
   tmdbId: number
   voteCount: number
   rank: number
   lastVotedTime: string
+  voted: boolean | null
 }
 
-export interface VoteResult {
-  voteId: number
-  startDate: string
-  endDate: string
-  results: VoteMovie[]
-  activating: boolean
+export interface VoteResponse {
+  results: VoteResult[]
 }
+
+export interface VoteOptionsResponse {
+  tmdbIds: number[]
+}
+
+export type VoteResultWithMovie = Movie & VoteResult

@@ -34,7 +34,9 @@ export type CreateReviewResponse = Review
 // 좋아요
 
 // 특정 영화에 대한 리뷰 조회
-export type GetReviewsParams = PaginationParamsWithSort<ReviewSortField>
+export type GetReviewsParams = PaginationParamsWithSort<ReviewSortField> & {
+  certifiedFilter?: boolean
+}
 export type GetReviewsResponse = PaginatedResponse<Review>
 
 // 최신 리뷰 조회
