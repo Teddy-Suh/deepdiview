@@ -32,8 +32,11 @@ export async function participateVote(
 }
 
 // 현재 진행중인 투표 결과 확인
-export async function getVoteResult(): Promise<GetVoteResultResponse> {
-  return apiClient<GetVoteResultResponse>(`/votes/result`)
+export async function getVoteResult(token: string): Promise<GetVoteResultResponse> {
+  return apiClient<GetVoteResultResponse>(`/votes/result`, {
+    withAuth: true,
+    token,
+  })
 }
 
 // 지난주 투표 전체 결과 조회

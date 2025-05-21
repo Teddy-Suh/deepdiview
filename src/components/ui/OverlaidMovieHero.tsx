@@ -29,9 +29,9 @@ export default function OverlaidMovieHero({
         {withTitle && (
           <h3 className='mb-3 text-xl font-semibold'>{isSunday ? '다음주 영화' : '이주의 영화'}</h3>
         )}
-        <div className='flex flex-col items-center gap-4 md:flex-row md:items-start md:gap-0'>
+        <div className='flex flex-col items-center gap-4 md:flex-row md:items-start md:gap-0 lg:px-6'>
           {/* 포스터 */}
-          <div className='w-full flex-2 px-16 md:pr-6 md:pl-0 lg:pr-10 lg:pl-0'>
+          <div className='w-full flex-2 px-16 md:pr-6 md:pl-0 lg:pr-12 lg:pl-0'>
             <div className='relative aspect-2/3 w-full'>
               <Link
                 href={`/movies/${movie.id}`}

@@ -13,6 +13,7 @@ export default function ReviewList({
   withMovie = true,
   movieId,
   sort,
+  certifiedFilter = false,
 }: {
   session: Session | null
   initialReviews: Review[]
@@ -20,6 +21,7 @@ export default function ReviewList({
   withMovie?: boolean
   movieId?: string
   sort?: ReviewSortField
+  certifiedFilter?: boolean
 }) {
   const [reviews, setReviews] = useState<Review[]>([])
   const [page, setPage] = useState(1)
@@ -48,6 +50,7 @@ export default function ReviewList({
           let res
           if (movieId && sort) {
             res = await getReviews(movieId, !!session, session?.accessToken, {
+              certifiedFilter,
               page,
               size: 12,
               sort: `${sort},desc`,
@@ -71,7 +74,7 @@ export default function ReviewList({
 
     observer.observe(target)
     return () => observer.disconnect()
-  }, [page, hasMore, movieId, sort, session])
+  }, [page, hasMore, movieId, sort, session, certifiedFilter])
 
   return (
     <>
