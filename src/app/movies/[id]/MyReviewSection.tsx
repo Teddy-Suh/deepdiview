@@ -1,5 +1,5 @@
 import ReviewItem from '@/components/ui/ReviewItem'
-import { Review } from '@/types/api/common'
+import { CertificationStatus, Review } from '@/types/api/common'
 import { Session } from 'next-auth'
 import Link from 'next/link'
 
@@ -15,7 +15,7 @@ export default function MyReviewSection({
   myReview: Review | null
   isThisWeekMovie: boolean
   isSunday: boolean
-  certificationStatus: string | null
+  certificationStatus: CertificationStatus
   movieId: string
 }) {
   return (
