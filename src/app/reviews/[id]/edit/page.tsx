@@ -5,27 +5,35 @@ import { updateReviewAction } from './actions'
 import { getReview } from '@/lib/api/review'
 import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
+import ReviewFormSection from '@/components/layout/ReviewFormSection'
 
-export default async function ReviewsEditPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function ReviewsEditPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>
+  searchParams: Promise<{ title: string }>
+}) {
   const session = await auth()
   if (!session) redirect('/login')
 
-  const { id: reviewId } = await params
-  const review = await getReview(reviewId)
+  const [{ id: reviewId }, { title: movieTitle }] = await Promise.all([params, searchParams])
 
+  const review = await getReview(reviewId)
   const action = updateReviewAction.bind(null, reviewId)
 
   return (
-    <>
-      <h2>리뷰 수정 페이지</h2>
+    <ReviewFormSection>
       <ReviewForm
         action={action}
+        movieTitle={movieTitle}
         initialValue={{
           title: review.reviewTitle,
           content: review.reviewContent,
           rating: review.rating,
         }}
+        certified={review.certified}
       />
-    </>
+    </ReviewFormSection>
   )
 }

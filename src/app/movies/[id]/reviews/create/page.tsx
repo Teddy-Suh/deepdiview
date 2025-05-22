@@ -6,29 +6,35 @@ import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
 import { getCertification } from '@/lib/api/certification'
 import { getThisWeekMovieId } from '@/lib/api/discussion'
+import ReviewFormSection from '@/components/layout/ReviewFormSection'
 
 export default async function MoviesReviewsCreatePage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>
+  searchParams: Promise<{ title: string }>
 }) {
   const session = await auth()
   if (!session) redirect('/login')
 
-  const [{ status }, { tmdbId: thisWeekMovieId }, { id: tmdbId }] = await Promise.all([
-    getCertification(session?.accessToken),
-    getThisWeekMovieId(),
-    params,
-  ])
+  const [{ title: movieTitle }, { id: tmdbId }, { status }, { tmdbId: thisWeekMovieId }] =
+    await Promise.all([
+      searchParams,
+      params,
+      getCertification(session?.accessToken),
+      getThisWeekMovieId(),
+    ])
 
-  if (thisWeekMovieId.toString() === tmdbId && status === 'APPROVED') redirect('/board/create')
+  if (thisWeekMovieId.toString() === tmdbId && status === 'APPROVED') {
+    redirect(`/board/create?title=${encodeURIComponent(movieTitle)}`)
+  }
 
   const action = createReviewAction.bind(null, tmdbId)
 
   return (
-    <>
-      <h2>모든 사용자가 접근 가능한 영화 리뷰 작성 페이지</h2>
-      <ReviewForm action={action} />
-    </>
+    <ReviewFormSection>
+      <ReviewForm action={action} movieTitle={movieTitle} certified={false} />
+    </ReviewFormSection>
   )
 }

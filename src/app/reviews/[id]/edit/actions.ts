@@ -2,9 +2,12 @@
 
 import { auth } from '@/auth'
 import { updateReview } from '@/lib/api/review'
-import { redirect } from 'next/navigation'
 
-export const updateReviewAction = async (reviewId: string, formData: FormData) => {
+export const updateReviewAction = async (
+  reviewId: string,
+  state: { message: string; responseReviewId: string },
+  formData: FormData
+) => {
   const session = await auth()
   if (!session) throw new Error('UNAUTHORIZED')
 
@@ -12,22 +15,21 @@ export const updateReviewAction = async (reviewId: string, formData: FormData) =
   const title = formData.get('title') as string
   const content = formData.get('content') as string
   const rating = formData.get('rating') as string // form에서 온거라 string임
-
-  let data
   try {
-    data = await updateReview(reviewId, session.accessToken, {
+    const { reviewId: responseReviewId } = await updateReview(reviewId, session.accessToken, {
       title,
       content,
       rating: Number(rating),
     })
+    return { ...state, message: 'success', responseReviewId: responseReviewId.toString() }
   } catch (error) {
     // TODO: 에러 처리 구현 (우선 분기 처리만 해둠)
     const errorCode = (error as Error).message
     switch (errorCode) {
       case 'REVIEW_NOT_FOUND':
-        throw error
+        return { ...state, message: '존재하지 않는 리뷰입니다.' }
       case 'INVALID_USER':
-        throw error
+        return { ...state, message: '작성자만 가능합니다.' }
       case 'UNEXPECTED_ERROR':
         throw new Error('UNEXPECTED_ERROR')
       // 코드 오류나 프레임워크 내부 예외 등 완전히 예상치 못한 예외 (ex. NEXT_REDIRECT, CallbackRouteError, ReferenceError 등)
@@ -37,5 +39,4 @@ export const updateReviewAction = async (reviewId: string, formData: FormData) =
         throw new Error('UNHANDLED_ERROR')
     }
   }
-  redirect(`/reviews/${data.reviewId}`)
 }

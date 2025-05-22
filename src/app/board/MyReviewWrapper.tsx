@@ -5,11 +5,14 @@ import Link from 'next/link'
 export default async function MyReviewWrapper({
   session,
   movieId,
+  movieTitle,
 }: {
   session: Session
   movieId: string
+  movieTitle: string
 }) {
   const { status: certificationStatus } = await getCertification(session?.accessToken)
+
   return (
     <div className='bg-base-300 flex flex-col items-center gap-4 rounded-2xl p-4 md:flex-row md:justify-between md:gap-0'>
       <p className='text-center break-keep'>
@@ -19,7 +22,7 @@ export default async function MyReviewWrapper({
       {certificationStatus === 'APPROVED' ? (
         // 인증된 경우 - 리뷰 작성 안내
         <>
-          <Link className='btn btn-primary' href='/board/create'>
+          <Link className='btn btn-primary' href={`/board/create?title=${movieTitle}`}>
             인증된 리뷰 작성하기
           </Link>
         </>
@@ -32,7 +35,7 @@ export default async function MyReviewWrapper({
             </Link>
             <Link
               className='btn btn-primary btn-sm md:btn-md'
-              href={`/movies/${movieId}/reviews/create`}
+              href={`/movies/${movieId}/reviews/create?title=${movieTitle}`}
             >
               일반 리뷰 작성하기
             </Link>
