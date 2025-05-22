@@ -31,7 +31,7 @@ export default async function ReviewPage({ params }: { params: Promise<{ id: str
           <h2>{review.reviewTitle}</h2>
           {currentUserId === review.userId.toString() && (
             <>
-              <Link className='btn' href={`/reviews/${reviewId}/edit`}>
+              <Link className='btn' href={`/reviews/${reviewId}/edit?title=${review.movieTitle}`}>
                 수정
               </Link>
               {/* TODO: 삭제 전에 확인창 구현 */}

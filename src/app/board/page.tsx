@@ -31,6 +31,7 @@ export default async function BoardPage() {
           isSunday={isSunday}
           session={session}
           movieId={movieId}
+          movieTitle={thisWeekMovie.title}
           myReview={thisWeekMovie.myReview}
         />
         {/* 최신 리뷰 유무로 제목 옆에 더보기 버튼 유무를 결정하기 때문에 이것만 다르게 컴포넌트화 함 */}

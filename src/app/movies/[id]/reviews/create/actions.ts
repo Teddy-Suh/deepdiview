@@ -2,9 +2,12 @@
 
 import { auth } from '@/auth'
 import { createReview } from '@/lib/api/review'
-import { redirect } from 'next/navigation'
 
-export const createReviewAction = async (tmdbId: string, formData: FormData) => {
+export const createReviewAction = async (
+  tmdbId: string,
+  state: { message: string; responseReviewId: string },
+  formData: FormData
+) => {
   const session = await auth()
   if (!session) throw new Error('UNAUTHORIZED')
 
@@ -13,22 +16,25 @@ export const createReviewAction = async (tmdbId: string, formData: FormData) => 
   const content = formData.get('content') as string
   const rating = formData.get('rating') as string // form에서 온거라 string임
 
-  let data
   try {
-    data = await createReview(session.accessToken, {
+    const { reviewId: responseReviewId } = await createReview(session.accessToken, {
       tmdbId: Number(tmdbId),
       title,
       content,
       rating: Number(rating),
     })
+    return { ...state, message: 'success', responseReviewId: responseReviewId.toString() }
   } catch (error) {
     // TODO: 에러 처리 구현 (우선 분기 처리만 해둠)
     const errorCode = (error as Error).message
     switch (errorCode) {
       case 'MOVIE_NOT_FOUND':
-        throw error
+        return { ...state, message: '존재하지 않는 영화입니다.' }
       case 'ALREADY_COMMITTED_REVIEW':
-        throw error
+        return {
+          ...state,
+          message: '이미 해당 영화에 대한 리뷰를 작성했습니다. 수정만 가능합니다.',
+        }
       case 'UNEXPECTED_ERROR':
         throw new Error('UNEXPECTED_ERROR')
       // 코드 오류나 프레임워크 내부 예외 등 완전히 예상치 못한 예외 (ex. NEXT_REDIRECT, CallbackRouteError, ReferenceError 등)
@@ -38,5 +44,4 @@ export const createReviewAction = async (tmdbId: string, formData: FormData) => 
         throw new Error('UNHANDLED_ERROR')
     }
   }
-  redirect(`/reviews/${data.reviewId}`)
 }

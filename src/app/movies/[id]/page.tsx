@@ -50,6 +50,7 @@ export default async function MoviesPage({ params }: { params: Promise<{ id: str
           isSunday={isSunday}
           certificationStatus={certificationStatus}
           movieId={id}
+          movieTitle={movie.title}
         />
         <LatestReviewSection
           latestReviews={reviews}

@@ -10,6 +10,7 @@ export default function MyReviewSection({
   isSunday,
   certificationStatus,
   movieId,
+  movieTitle,
 }: {
   session: Session | null
   myReview: Review | null
@@ -17,6 +18,7 @@ export default function MyReviewSection({
   isSunday: boolean
   certificationStatus: CertificationStatus
   movieId: string
+  movieTitle: string
 }) {
   return (
     <section className='container-wrapper'>
@@ -30,7 +32,6 @@ export default function MyReviewSection({
             <ReviewItem review={myReview} withMovie={false} />
           ) : (
             // 작성한 리뷰가 없는 경우
-            // MyReviewBox으로 안내
             <div className='bg-base-300 flex flex-col items-center gap-4 rounded-2xl p-4 md:flex-row md:justify-between md:gap-0'>
               {isThisWeekMovie && !isSunday ? (
                 // 인증된 리뷰가 작성 가능한 경우 (이주의 영화이면서 일요일이 아닌 경우)
@@ -39,11 +40,11 @@ export default function MyReviewSection({
                     // 인증된 경우
                     // 리뷰 작성 안내
                     <>
-                      <p>
+                      <p className='text-center break-keep'>
                         이 영화에 대한 <span className='font-bold'>{session.user?.nickname}</span>{' '}
                         님의 생각이 궁금해요!
                       </p>
-                      <Link className='btn btn-primary' href={`/board/create`}>
+                      <Link className='btn btn-primary' href={`/board/create?title=${movieTitle}`}>
                         인증된 리뷰 작성하기
                       </Link>
                     </>
@@ -65,7 +66,7 @@ export default function MyReviewSection({
                         </Link>
                         <Link
                           className='btn btn-primary btn-sm md:btn-md'
-                          href={`/movies/${movieId}/reviews/create`}
+                          href={`/movies/${movieId}/reviews/create?title=${movieTitle}`}
                         >
                           일반 리뷰 작성하기
                         </Link>
@@ -77,13 +78,13 @@ export default function MyReviewSection({
                 // 인증된 리뷰가 작성 불가능한 경우 (이주의 영화가 아니거나 일요일인 경우)
                 // 일반 리뷰 작성 안내
                 <>
-                  <p>
+                  <p className='text-center break-keep'>
                     이 영화에 대한 <span className='font-bold'>{session.user?.nickname}</span> 님의
                     생각이 궁금해요!
                   </p>
                   <Link
                     className='btn btn-primary btn-sm md:btn-md'
-                    href={`/movies/${movieId}/reviews/create`}
+                    href={`/movies/${movieId}/reviews/create?title=${movieTitle}`}
                   >
                     리뷰 작성하기
                   </Link>

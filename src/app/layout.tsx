@@ -25,7 +25,7 @@ export default async function RootLayout({
           <header>
             <TopNav />
           </header>
-          <main className='flex-1 pb-2 md:pb-4'>{children}</main>
+          <main className='flex flex-1 flex-col pb-2 md:pb-4'>{children}</main>
           <BottomNav />
           <Footer />
         </SessionProvider>

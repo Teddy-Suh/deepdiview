@@ -9,11 +9,13 @@ export default function MyReviewSection({
   isSunday,
   session,
   movieId,
+  movieTitle,
   myReview,
 }: {
   isSunday: boolean
   session: Session | null
   movieId: string
+  movieTitle: string
   myReview: Review | null
 }) {
   return (
@@ -27,7 +29,7 @@ export default function MyReviewSection({
                 <ReviewItem review={myReview} withMovie={false} />
               ) : (
                 <Suspense fallback={<div className='skeleton h-18 rounded-2xl' />}>
-                  <MyReviewWrapper session={session} movieId={movieId} />
+                  <MyReviewWrapper session={session} movieId={movieId} movieTitle={movieTitle} />
                 </Suspense>
               )}
             </>
