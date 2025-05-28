@@ -57,7 +57,6 @@ export default function CommentSection({
   // 댓글 수정
   // Comments에 성공 응답으로 받은 댓글로 교체
   const handleEditSuccess = (updatedComment: Comment) => {
-    console.log('수정응답', updatedComment)
     setComments((prev) =>
       prev.map((comment) => (comment.id === updatedComment.id ? updatedComment : comment))
     )

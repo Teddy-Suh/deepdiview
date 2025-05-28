@@ -208,7 +208,9 @@ export default function CommentForm({
                   )}
                 </>
               ) : (
-                <Link href='/login'>로그인</Link>
+                <Link className='btn btn-primary rounded-2xl' href='/login'>
+                  로그인
+                </Link>
               )}
             </div>
           </div>

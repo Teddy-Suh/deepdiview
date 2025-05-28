@@ -2,7 +2,6 @@
 
 import { ClientComment, Comment } from '@/types/api/common'
 import CommentItem from './CommentItem'
-import { useSession } from '@/providers/providers'
 import { useEffect, useRef } from 'react'
 
 export default function CommentList({
@@ -24,7 +23,6 @@ export default function CommentList({
   onEditClick: (comment: Comment) => void
   onDeleteSuccess: (commentId: string) => void
 }) {
-  const session = useSession()
   const optimisticRef = useRef<HTMLLIElement | null>(null)
 
   useEffect(() => {
@@ -34,7 +32,6 @@ export default function CommentList({
     }
   }, [comments])
 
-  if (!session?.user) return
   return (
     <ul>
       {comments.map((comment) => (
