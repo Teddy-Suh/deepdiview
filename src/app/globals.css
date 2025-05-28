@@ -24,3 +24,16 @@
     }
   }
 }
+
+@theme {
+  --animate-create-comment-success: yellow-fade-out 1s ease-in;
+
+  @keyframes yellow-fade-out {
+    0% {
+      background-color: oklch(82% 0.189 84.429 / 0.2);
+    }
+    100% {
+      background-color: transparent;
+    }
+  }
+}

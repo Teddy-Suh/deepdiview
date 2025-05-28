@@ -2,7 +2,7 @@ declare module 'next-auth' {
   interface User {
     userId: number
     nickname: string
-    profileImageUrl: string | null
+    profileImageUrl: string
     role: 'USER' | 'ADMIN'
     accessToken: string
     refreshToken: string
