@@ -1,6 +1,8 @@
 'use client'
 
 import { toggleLikeAction } from '@/lib/actions/like'
+import clsx from 'clsx'
+import { Heart } from 'lucide-react'
 import { useActionState } from 'react'
 
 export default function LikeButton({
@@ -20,10 +22,10 @@ export default function LikeButton({
 
   return (
     <form action={formAction}>
-      <button className='btn' disabled={likedByUser === null}>
-        {state.likedByUser ? '❤️' : '🤍'}
+      <button className='flex gap-1' disabled={likedByUser === null}>
+        <Heart className={clsx(state.likedByUser && 'fill-primary stroke-primary')} />
+        <p>{state.likeCount}</p>
       </button>
-      {state.likeCount}
       {state.message && <p>좋아요 실패</p>}
     </form>
   )

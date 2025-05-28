@@ -2,7 +2,7 @@ export interface BaseUser {
   userId: number
   email: string
   nickname: string
-  profileImageUrl: string | null
+  profileImageUrl: string
   role: 'USER' | 'ADMIN'
   accessToken: string
   refreshToken: string
@@ -53,7 +53,6 @@ export interface Review {
   movieTitle: string
   posterPath: string
   certified: boolean
-  comments: Comment[]
 }
 
 export interface Comment {
@@ -66,6 +65,11 @@ export interface Comment {
   createdAt: string
   updatedAt: string
 }
+
+export type ClientComment = Comment & {
+  optimisticStatus?: 'creating' | 'updating' | 'deleting'
+}
+
 export type ImgRequest = FormData
 
 export type ReviewSortField = 'createdAt' | 'likeCount' | 'rating'

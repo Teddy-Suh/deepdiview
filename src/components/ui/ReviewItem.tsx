@@ -6,46 +6,50 @@ import Rating from './Rating'
 import { Heart, MessageCircle } from 'lucide-react'
 import clsx from 'clsx'
 import CertifiedBadge from './CertifiedBadge'
+import LikeButton from './LikeButton'
 
 export default function ReviewItem({
   review,
   withMovie = true,
+  isDetail = false,
 }: {
   review: Review
   withMovie?: boolean
+  isDetail?: boolean
 }) {
-  return (
-    <Link href={`/reviews/${review.reviewId}`}>
-      <div
-        className={clsx(
-          'bg-base-300 rounded-xl p-4',
-          withMovie ? 'space-y-2' : 'flex h-56 flex-col gap-3'
-        )}
-      >
-        {/* 상단 유저 정보 */}
-        <div className='flex items-center justify-between'>
-          <div className='flex items-center gap-2'>
-            <Image
-              src={`${review.profileImageUrl}`}
-              alt='프로필 사진'
-              width={33}
-              height={33}
-              className='aspect-square rounded-full'
-            />
-            <div>
-              <div className='flex items-center gap-1'>
-                <p className='text-sm'>{review.nickname}</p>
-                {review.certified && <CertifiedBadge />}
-              </div>
-              <p className='text-xs text-gray-500'>{getRelativeTime(review.createdAt)}</p>
+  const content = (
+    <div
+      className={clsx(
+        'bg-base-300 rounded-xl p-4',
+        withMovie ? 'space-y-3' : 'flex flex-col gap-3',
+        withMovie === false && isDetail === false && 'h-64'
+      )}
+    >
+      {/* 상단 유저 정보 */}
+      <div className='flex items-center justify-between'>
+        <div className='flex items-center gap-2'>
+          <Image
+            src={`${review.profileImageUrl}`}
+            alt='프로필 사진'
+            width={33}
+            height={33}
+            className='aspect-square rounded-full'
+          />
+          <div>
+            <div className='flex items-center gap-1'>
+              <p className='text-sm'>{review.nickname}</p>
+              {review.certified && <CertifiedBadge />}
             </div>
+            <p className='text-xs text-gray-500'>{getRelativeTime(review.createdAt)}</p>
           </div>
-          <Rating rating={review.rating} readOnly={true} />
         </div>
-        {/* 중간 영화 포스터 & 리뷰 */}
-        <div className={clsx(withMovie ? 'flex gap-3' : 'flex-1 space-y-1 overflow-hidden')}>
-          {withMovie && (
-            <div className='relative aspect-[2/3] flex-1 shrink-0'>
+        <Rating rating={review.rating} readOnly={true} />
+      </div>
+      {/* 중간 영화 포스터 & 리뷰 */}
+      <div className={clsx(withMovie ? 'flex gap-3' : 'flex-1 space-y-1 overflow-hidden')}>
+        {withMovie && (
+          <div className='flex flex-1 flex-col gap-1.5'>
+            <div className='relative aspect-[2/3] shrink-0'>
               <Image
                 src={`https://image.tmdb.org/t/p/w500${review.posterPath}`}
                 alt={`${review.movieTitle} 포스터`}
@@ -53,29 +57,64 @@ export default function ReviewItem({
                 className='rounded-lg object-cover'
               />
             </div>
-          )}
-          <div className={clsx(withMovie ? 'flex-2 space-y-1 overflow-hidden' : 'space-y-1')}>
-            <p className='line-clamp-1 text-lg font-bold'>{review.reviewTitle}</p>
-            <p className='line-clamp-3 break-words'>{review.reviewContent}</p>
+            <p className='line-clamp-1 text-center'>{review.movieTitle}</p>
           </div>
-        </div>
-        {/* 하단 영화 제목 & 좋아요, 댓글 */}
-        <div className={clsx('flex', withMovie && 'justify-between gap-3')}>
-          {withMovie && (
-            <p className='truncate overflow-hidden whitespace-nowrap'>{review.movieTitle}</p>
+        )}
+        <div className={clsx('space-y-2', withMovie && 'flex-2 overflow-hidden')}>
+          {isDetail && (
+            <Link href={`/movies/${review.tmdbId}`}>
+              <div className='flex flex-col items-center gap-3 py-2 md:float-left md:mr-6 md:py-0'>
+                <Image
+                  className='rounded-2xl'
+                  src={`https://image.tmdb.org/t/p/w500${review.posterPath}`}
+                  alt={`${review.movieTitle} 포스터`}
+                  width={200}
+                  height={300}
+                />
+                <p>{review.movieTitle}</p>
+              </div>
+            </Link>
           )}
-          <div className='flex gap-3'>
-            <div className='flex gap-1'>
-              <Heart className={clsx(review.likedByUser && 'fill-primary stroke-primary')} />
-              <p>{review.likeCount}</p>
-            </div>
-            <div className='flex gap-1'>
-              <MessageCircle />
-              <p>{review.commentCount}</p>
-            </div>
+          <p
+            className={clsx(
+              'text-lg font-bold break-words',
+              isDetail ? 'whitespace-pre-wrap' : 'line-clamp-1'
+            )}
+          >
+            {review.reviewTitle}
+          </p>
+          <p className={clsx('break-words', isDetail ? 'whitespace-pre-wrap' : 'line-clamp-4')}>
+            {review.reviewContent}
+          </p>
+        </div>
+      </div>
+      <hr className='text-gray-600' />
+      {/* 하단 영화 제목 & 좋아요, 댓글 */}
+      <div className={clsx('flex', withMovie && 'justify-between gap-3')}>
+        <div className={clsx('flex flex-2 gap-3', withMovie ? 'justify-start' : 'justify-start')}>
+          <div className='flex gap-1'>
+            {isDetail ? (
+              <LikeButton
+                likedByUser={review.likedByUser}
+                likeCount={review.likeCount}
+                reviewId={review.reviewId.toString()}
+              />
+            ) : (
+              <>
+                <Heart className={clsx(review.likedByUser && 'fill-primary stroke-primary')} />
+                <p>{review.likeCount}</p>
+              </>
+            )}
+          </div>
+          <div className='flex gap-1'>
+            <MessageCircle />
+            <p>{review.commentCount}</p>
           </div>
         </div>
       </div>
-    </Link>
+    </div>
+  )
+  return (
+    <>{isDetail ? <>{content}</> : <Link href={`/reviews/${review.reviewId}`}>{content}</Link>}</>
   )
 }
