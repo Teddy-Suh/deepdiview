@@ -2,7 +2,7 @@ export interface BaseUser {
   userId: number
   email: string
   nickname: string
-  profileImageUrl: string | null
+  profileImageUrl: string
   role: 'USER' | 'ADMIN'
   accessToken: string
   refreshToken: string

@@ -18,7 +18,7 @@ export declare module '@auth/core/jwt' {
   interface JWT {
     userId: number
     nickname: string
-    profileImageUrl: string | null
+    profileImageUrl: string
     role: 'USER' | 'ADMIN'
     accessToken: string
     refreshToken: string
