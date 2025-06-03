@@ -57,7 +57,7 @@ export default function TopNav() {
           {session?.user ? (
             <Link
               className='btn btn-ghost hover:text-primary pr-0 hover:border-transparent hover:bg-transparent hover:shadow-none'
-              href={`/profile/${session.user.userId}`}
+              href={`/profile/${session.user.userId}?from=nav`}
             >
               <span className='text-base'>프로필</span>
             </Link>

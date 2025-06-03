@@ -1,15 +1,27 @@
 'use server'
 
 import { auth, signOut, update } from '@/auth'
-import { deleteProfileImg, logout, updateIntro, updateProfileImg } from '@/lib/api/user'
+import {
+  deleteProfileImg,
+  logout,
+  updateIntro,
+  updateNickname,
+  updateProfileImg,
+} from '@/lib/api/user'
 import { redirect } from 'next/navigation'
 
 export const updateProfileImgAction = async (
-  state: { message: string } = { message: '' },
-  formData: FormData
+  croppedImage: Blob | null,
+  state: { success: boolean | null; message: string }
 ) => {
   const session = await auth()
   if (!session?.user) throw new Error('UNAUTHORIZED')
+  if (croppedImage === null) throw new Error('NO_PHOTO')
+  const formData = new FormData()
+
+  // name 없는 Blob → File로 감싸기
+  const file = new File([croppedImage], 'profile.jpg', { type: croppedImage.type })
+  formData.append('file', file)
 
   try {
     const { profileImageUrl } = await updateProfileImg(session.accessToken, formData)
@@ -18,6 +30,7 @@ export const updateProfileImgAction = async (
         profileImageUrl,
       },
     })
+    return { ...state, success: true }
   } catch (error) {
     const errorCode = (error as Error).message
     switch (errorCode) {
@@ -38,10 +51,9 @@ export const updateProfileImgAction = async (
         throw new Error('UNHANDLED_ERROR')
     }
   }
-  redirect(`/profile/${session.user.userId}`)
 }
 
-export const deleteProfileImgAction = async (state: { message: string } = { message: '' }) => {
+export const deleteProfileImgAction = async (state: { message: string }) => {
   const session = await auth()
   if (!session?.user) throw new Error('UNAUTHORIZED')
 
@@ -52,6 +64,7 @@ export const deleteProfileImgAction = async (state: { message: string } = { mess
         profileImageUrl,
       },
     })
+    return { ...state }
   } catch (error) {
     const errorCode = (error as Error).message
     switch (errorCode) {
@@ -66,11 +79,45 @@ export const deleteProfileImgAction = async (state: { message: string } = { mess
         throw new Error('UNHANDLED_ERROR')
     }
   }
-  redirect(`/profile/${session.user.userId}`)
+}
+
+export const updateNicknameAction = async (
+  state: { message: string; nickname: string },
+  formData: FormData
+) => {
+  const session = await auth()
+  if (!session?.user) throw new Error('UNAUTHORIZED')
+  const newNickname = formData.get('newNickname') as string
+
+  try {
+    const { updatedNickname } = await updateNickname(session.accessToken, {
+      newNickname,
+    })
+    // 서버 사이드에서 세션 업데이트
+    await update({
+      user: {
+        nickname: updatedNickname,
+      },
+    })
+    return { ...state, message: 'success', nickname: updatedNickname }
+  } catch (error) {
+    const errorCode = (error as Error).message
+    switch (errorCode) {
+      case 'ALREADY_EXIST_NICKNAME':
+        return { ...state, message: '중복 닉네임 입니다' }
+      case 'UNEXPECTED_ERROR':
+        throw new Error('UNEXPECTED_ERROR')
+      // 코드 오류나 프레임워크 내부 예외 등 완전히 예상치 못한 예외 (ex. NEXT_REDIRECT, CallbackRouteError, ReferenceError 등)
+      default:
+        console.error(error)
+        // TODO: error.tsx 제대로 구현 후 error도 넘겨주게 변경
+        throw new Error('UNHANDLED_ERROR')
+    }
+  }
 }
 
 export const updateIntroAction = async (
-  state: { message: string; intro: string } = { message: '', intro: '' },
+  state: { message: string; intro: string },
   formData: FormData
 ) => {
   const session = await auth()
@@ -98,13 +145,11 @@ export const updateIntroAction = async (
   }
 }
 
-export const signOutWithForm = async () => {
+export const signOutAction = async () => {
   try {
     const session = await auth()
-    const accessToken = session?.accessToken
-    if (accessToken) {
-      await logout(accessToken)
-    }
+    if (!session) throw new Error('UNAUTHORIZED')
+    await logout(session.accessToken)
   } catch (error) {
     console.error(error)
     throw new Error('UNHANDLED_ERROR')

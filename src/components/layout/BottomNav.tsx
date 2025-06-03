@@ -2,13 +2,16 @@
 
 import { Bell, Home, KeyRound, NotebookPen, Search, UserRound } from 'lucide-react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 import clsx from 'clsx'
 import { useSession } from '@/providers/providers'
 import { useEffect, useState } from 'react'
 
 export default function BottomNav() {
   const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const isFromNav = searchParams.get('from') === 'nav'
+
   const session = useSession()
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false)
 
@@ -28,7 +31,7 @@ export default function BottomNav() {
   return (
     <>
       <div className={clsx('pt-16 md:hidden', isKeyboardVisible && 'hidden')} />
-      <nav className={clsx('dock z-50 md:hidden', isKeyboardVisible && 'hidden')}>
+      <nav className={clsx('dock z-40 md:hidden', isKeyboardVisible && 'hidden')}>
         <Link href='/' className={clsx({ 'dock-active text-primary': pathname === '/' })}>
           <Home />
         </Link>
@@ -51,9 +54,9 @@ export default function BottomNav() {
           <Bell />
         </Link>
         <Link
-          href={session?.user ? `/profile/${session.user.userId}` : '/login'}
+          href={session?.user ? `/profile/${session.user.userId}?from=nav` : '/login'}
           className={clsx({
-            'dock-active text-primary': pathname.startsWith('/profile'),
+            'dock-active text-primary': pathname.startsWith('/profile') && isFromNav,
           })}
         >
           {session?.user ? <UserRound /> : <KeyRound />}

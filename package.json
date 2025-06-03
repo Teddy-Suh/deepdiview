@@ -18,7 +18,8 @@
     "next-auth": "^5.0.0-beta.25",
     "path-to-regexp": "^8.2.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-easy-crop": "^5.4.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

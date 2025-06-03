@@ -35,7 +35,7 @@ export default function BaseHeader() {
           </Link>
         </div>
       </div>
-      {!isOverlaid && <div className='hidden pb-16 md:block' />}
+      {!isOverlaid && <div className='pb-16 md:hidden' />}
     </>
   )
 }
