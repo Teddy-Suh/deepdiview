@@ -89,12 +89,15 @@ export type GetUserCommentsResponse = PaginatedResponse<Comment>
 // 보조 타입
 export interface ProfileResponse {
   nickname: string
-  email: string
+  email: string | null
   profileImageUrl: string
   oneLineIntro: string | null
   reviewCount: number
   commentCount: number
-  ratingDistribution: RatingDistribution
+  ratingStats: {
+    ratingAverage: number
+    ratingDistribution: RatingDistribution
+  }
   certificationStatus: CertificationStatus
   rejectionReason: CertificationRejectionReason | null
 }

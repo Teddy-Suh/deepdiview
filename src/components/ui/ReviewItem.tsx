@@ -1,12 +1,12 @@
 import { getRelativeTime } from '@/lib/utils/date'
 import { Review } from '@/types/api/common'
 import Image from 'next/image'
-import Link from 'next/link'
 import Rating from './Rating'
-import { Heart, MessageCircle } from 'lucide-react'
+import { MessageCircle } from 'lucide-react'
 import clsx from 'clsx'
 import CertifiedBadge from './CertifiedBadge'
 import LikeButton from './LikeButton'
+import Link from 'next/link'
 
 export default function ReviewItem({
   review,
@@ -17,6 +17,24 @@ export default function ReviewItem({
   withMovie?: boolean
   isDetail?: boolean
 }) {
+  const profile = (
+    <div className='flex items-center gap-2'>
+      <Image
+        src={`${review.profileImageUrl}`}
+        alt='프로필 사진'
+        width={33}
+        height={33}
+        className='aspect-square rounded-full'
+      />
+      <div>
+        <div className='flex items-center gap-1'>
+          <p className='text-sm'>{review.nickname}</p>
+          {review.certified && <CertifiedBadge />}
+        </div>
+        <p className='text-xs text-gray-500'>{getRelativeTime(review.createdAt)}</p>
+      </div>
+    </div>
+  )
   const content = (
     <div
       className={clsx(
@@ -25,24 +43,9 @@ export default function ReviewItem({
         withMovie === false && isDetail === false && 'h-64'
       )}
     >
-      {/* 상단 유저 정보 */}
+      {/* 상단 유저 정보 & 별점*/}
       <div className='flex items-center justify-between'>
-        <div className='flex items-center gap-2'>
-          <Image
-            src={`${review.profileImageUrl}`}
-            alt='프로필 사진'
-            width={33}
-            height={33}
-            className='aspect-square rounded-full'
-          />
-          <div>
-            <div className='flex items-center gap-1'>
-              <p className='text-sm'>{review.nickname}</p>
-              {review.certified && <CertifiedBadge />}
-            </div>
-            <p className='text-xs text-gray-500'>{getRelativeTime(review.createdAt)}</p>
-          </div>
-        </div>
+        {isDetail ? <Link href={`/profile/${review.userId}`}>{profile}</Link> : <>{profile}</>}
         <Rating rating={review.rating} readOnly={true} />
       </div>
       {/* 중간 영화 포스터 & 리뷰 */}
@@ -92,20 +95,12 @@ export default function ReviewItem({
       {/* 하단 영화 제목 & 좋아요, 댓글 */}
       <div className={clsx('flex', withMovie && 'justify-between gap-3')}>
         <div className={clsx('flex flex-2 gap-3', withMovie ? 'justify-start' : 'justify-start')}>
-          <div className='flex gap-1'>
-            {isDetail ? (
-              <LikeButton
-                likedByUser={review.likedByUser}
-                likeCount={review.likeCount}
-                reviewId={review.reviewId.toString()}
-              />
-            ) : (
-              <>
-                <Heart className={clsx(review.likedByUser && 'fill-primary stroke-primary')} />
-                <p>{review.likeCount}</p>
-              </>
-            )}
-          </div>
+          <LikeButton
+            likedByUser={review.likedByUser}
+            likeCount={review.likeCount}
+            reviewId={review.reviewId.toString()}
+            readOnly={!isDetail}
+          />
           <div className='flex gap-1'>
             <MessageCircle />
             <p>{review.commentCount}</p>
@@ -114,6 +109,7 @@ export default function ReviewItem({
       </div>
     </div>
   )
+
   return (
     <>{isDetail ? <>{content}</> : <Link href={`/reviews/${review.reviewId}`}>{content}</Link>}</>
   )
