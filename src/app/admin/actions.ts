@@ -1,15 +1,19 @@
 'use server'
 
 import { auth } from '@/auth'
+import { getMovie } from '@/lib/api/movie'
 import { createVote } from '@/lib/api/vote'
+import { Movie } from '@/types/api/movie'
 
-export const createVoteAction = async (state: { message: string } = { message: '' }) => {
+export const createVoteAction = async (state: { voteOptions: Movie[]; message: string }) => {
   const session = await auth()
   if (!session) throw new Error('UNAUTHORIZED')
 
   try {
-    await createVote(session.accessToken)
-    return { ...state, message: '투표 생성 성공' }
+    const { tmdbIds } = await createVote(session.accessToken)
+    const voteOptions = await Promise.all(tmdbIds.map((id) => getMovie(id.toString())))
+
+    return { ...state, voteOptions, message: 'success' }
   } catch (error) {
     const errorCode = (error as Error).message
     switch (errorCode) {
@@ -17,7 +21,7 @@ export const createVoteAction = async (state: { message: string } = { message: '
         return { ...state, message: '관리자만 할 수 있는 기능입니다.' }
       case 'INVALID_VOTE_CREATE_DATE':
         return { ...state, message: '투표 생성은 일요일에만 가능합니다.' }
-      case '"ALREADY_EXIST_VOTE",':
+      case 'ALREADY_EXIST_VOTE':
         return { ...state, message: '이미 이번주에 생성한 투표가 있습니다.' }
       case 'UNEXPECTED_ERROR':
         throw new Error('UNEXPECTED_ERROR')
