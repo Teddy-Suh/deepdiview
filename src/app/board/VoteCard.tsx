@@ -9,7 +9,13 @@ import { ChevronRight } from 'lucide-react'
 import VoteResultCard from './VoteResultCard'
 import { VoteResultWithMovie } from '@/types/api/vote'
 
-export default function VoteCard({ voteOptions }: { voteOptions: Movie[] }) {
+export default function VoteCard({
+  voteOptions,
+  readOnly = false,
+}: {
+  voteOptions: Movie[]
+  readOnly?: boolean
+}) {
   const [isVoted, setIsVoted] = useState(false)
   const [voteResults, setVoteResults] = useState<VoteResultWithMovie[]>([])
   const [state, formAction, isPending] = useActionState(participateVoteAction, {
@@ -41,6 +47,7 @@ export default function VoteCard({ voteOptions }: { voteOptions: Movie[] }) {
                     value={voteOption.id}
                     className='peer hidden'
                     onChange={() => setSelected(voteOption.id)}
+                    disabled={readOnly}
                   />
                   <div className='bg-base-100 peer-checked:ring-primary flex gap-4 rounded-lg p-4 peer-checked:ring-2'>
                     <div className='relative aspect-2/3 flex-2 overflow-hidden rounded-lg'>
@@ -58,7 +65,7 @@ export default function VoteCard({ voteOptions }: { voteOptions: Movie[] }) {
                         <p className='text-sm break-keep text-gray-300'>
                           {voteOption.release_date.slice(0, 4)} ·{' '}
                           {voteOption.genre_names.join(' / ')}
-                          {voteOption.runtime && ` · ${voteOption.runtime}분`}
+                          {!!voteOption.runtime && ` · ${voteOption.runtime}분`}
                         </p>
                       </div>
                       <div className='flex justify-end'>
@@ -74,18 +81,19 @@ export default function VoteCard({ voteOptions }: { voteOptions: Movie[] }) {
                 </label>
               </li>
             ))}
-            <li className='col-span-full text-center'>
-              <button className='btn btn-primary' type='submit' disabled={!selected || isPending}>
-                {isPending ? (
-                  <>
-                    <span className='loading loading-ring' />
-                    투표 중
-                  </>
-                ) : (
-                  '투표 하기'
-                )}
-              </button>
-            </li>
+            {!readOnly && (
+              <li className='col-span-full text-center'>
+                <button className='btn btn-primary' type='submit' disabled={!selected || isPending}>
+                  {isPending ? (
+                    <>
+                      <span className='loading loading-ring' />
+                    </>
+                  ) : (
+                    '투표 하기'
+                  )}
+                </button>
+              </li>
+            )}
           </ul>
         </form>
       )}
