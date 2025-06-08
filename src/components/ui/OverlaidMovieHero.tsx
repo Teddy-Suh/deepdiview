@@ -55,7 +55,7 @@ export default function OverlaidMovieHero({
               <p className='text-sm text-gray-300'>{movie.original_title}</p>
               <p className='text-sm text-gray-300'>
                 {movie.release_date.slice(0, 4)} · {movie.genre_names.join(' / ')}
-                {movie.runtime && ` · ${movie.runtime}분`}
+                {!!movie.runtime && ` · ${movie.runtime}분`}
               </p>
             </div>
 

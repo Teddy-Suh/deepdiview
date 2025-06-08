@@ -21,7 +21,7 @@ export default function SearchMovieItem({ movie }: { movie: Movie }) {
             <p className='text-md font-semibold md:text-lg md:font-bold'>{movie.title}</p>
             <p className='md:text-md text-sm'>
               {movie.release_date.slice(0, 4)} · {movie.genre_names.join(' / ')}
-              {movie.runtime && ` · ${movie.runtime}분`}
+              {!!movie.runtime && ` · ${movie.runtime}분`}
             </p>
           </div>
           <p className='text-md line-clamp-3 text-justify'>{movie.overview}</p>

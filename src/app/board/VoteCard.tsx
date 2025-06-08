@@ -58,7 +58,7 @@ export default function VoteCard({ voteOptions }: { voteOptions: Movie[] }) {
                         <p className='text-sm break-keep text-gray-300'>
                           {voteOption.release_date.slice(0, 4)} ·{' '}
                           {voteOption.genre_names.join(' / ')}
-                          {voteOption.runtime && ` · ${voteOption.runtime}분`}
+                          {!!voteOption.runtime && ` · ${voteOption.runtime}분`}
                         </p>
                       </div>
                       <div className='flex justify-end'>
