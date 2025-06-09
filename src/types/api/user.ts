@@ -1,3 +1,4 @@
+import { z } from 'zod'
 import {
   BaseUser,
   CertificationRejectionReason,
@@ -11,6 +12,10 @@ import {
   BasePaginationParams,
   RatingDistribution,
 } from './common'
+import { updatePasswordSchema } from '@/schemas/auth/updatePasswordSchema'
+import { deleteAccountSchema } from '@/schemas/auth/deleteAccountSchema'
+import { registerSchema } from '@/schemas/auth/registerSchema'
+import { loginSchema } from '@/schemas/auth/loginSchema'
 
 // API 타입
 
@@ -22,10 +27,7 @@ export type UpdateProfileImgResponse = ProfileImgResponse
 export type DeleteProfileImgResponse = ProfileImgResponse
 
 // 비밀번호 수정
-export interface UpdatePasswordRequest {
-  newPassword: string
-  newConfirmPassword: string
-}
+export type UpdatePasswordRequest = z.infer<typeof updatePasswordSchema>
 
 // 닉네임 수정
 export interface UpdateNicknameRequest {
@@ -40,9 +42,7 @@ export interface UpdateNicknameResponse {
 export type GetMyProfileResponse = ProfileResponse
 
 // 회원탈퇴
-export interface DeleteMyProfileRequest {
-  password: string
-}
+export type DeleteMyProfileRequest = z.infer<typeof deleteAccountSchema>
 
 // 한줄소개 설정/수정
 export interface UpdateIntroRequest {
@@ -53,12 +53,7 @@ export interface UpdateIntroResponse {
 }
 
 // 회원가입
-export interface RegisterRequest {
-  email: string
-  password: string
-  confirmPassword: string
-  nickname: string
-}
+export type RegisterRequest = z.infer<typeof registerSchema>
 
 // 리프레시 토큰으로 엑세스 토큰 재발급
 export interface RefreshAccessTokenResponse {
@@ -66,11 +61,7 @@ export interface RefreshAccessTokenResponse {
 }
 
 // 로그인
-export interface LoginRequest {
-  email: string
-  password: string
-}
-
+export type LoginRequest = z.infer<typeof loginSchema>
 export type LoginResponse = BaseUser
 
 // 다른 유저 정보 확인

@@ -26,6 +26,14 @@
   .profile-btn {
     @apply btn text-base-100 bg-base-content absolute flex h-7 w-7 items-center justify-center rounded-full border-0 p-1;
   }
+
+  .user-input {
+    @apply input bg-base-300 focus-within:bg-primary/10 w-full rounded-xl border-none p-0 px-4 shadow-none outline-none focus-within:shadow-none focus-within:outline-none;
+  }
+
+  .auth-form {
+    @apply w-full space-y-3 md:w-96;
+  }
 }
 
 @theme {

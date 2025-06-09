@@ -1,21 +1,20 @@
 import Link from 'next/link'
 import LoginForm from './LoginForm'
-import { auth } from '@/auth'
-import { redirect } from 'next/navigation'
+import GoBackHeader from '@/components/layout/MobileHeader/GoBackHeader'
+import AuthFormWrapper from '@/components/ui/AuthFormWrapper'
 
-export default async function LoginPage() {
-  const session = await auth()
-  if (session) redirect('/')
-
+export default function LoginPage() {
   return (
-    <div>
-      <h2>로그인 페이지</h2>
-      <div>
-        <LoginForm />
-        <Link href='/register' className='btn btn-secondary'>
+    <>
+      <GoBackHeader>
+        <h2 className='flex-1 text-xl font-semibold'>로그인</h2>
+        <Link href='/register/1-send-email' className='btn btn-secondary rounded-xl'>
           회원가입
         </Link>
-      </div>
-    </div>
+      </GoBackHeader>
+      <AuthFormWrapper title={'로그인'}>
+        <LoginForm />
+      </AuthFormWrapper>
+    </>
   )
 }

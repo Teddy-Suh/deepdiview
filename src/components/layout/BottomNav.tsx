@@ -1,32 +1,19 @@
 'use client'
 
-import { Bell, Home, KeyRound, NotebookPen, Search, UserRound } from 'lucide-react'
+import { Bell, Home, KeyRound, NotebookPen, Search } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
 import clsx from 'clsx'
 import { useSession } from '@/providers/providers'
-import { useEffect, useState } from 'react'
+import Image from 'next/image'
+import { useKeyboardVisible } from '@/hooks/useKeyboardVisible'
 
 export default function BottomNav() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const isFromNav = searchParams.get('from') === 'nav'
-
   const session = useSession()
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false)
-
-  useEffect(() => {
-    const threshold = 150 // 높이 차이가 이 이상이면 키보드가 올라왔다고 판단
-    const initialHeight = window.innerHeight
-
-    const handleResize = () => {
-      const heightDiff = initialHeight - window.innerHeight
-      setIsKeyboardVisible(heightDiff > threshold)
-    }
-
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+  const isKeyboardVisible = useKeyboardVisible()
 
   return (
     <>
@@ -47,20 +34,41 @@ export default function BottomNav() {
         >
           <NotebookPen />
         </Link>
-        <Link
-          href='/notifications'
-          className={clsx({ 'dock-active text-primary': pathname.startsWith('/notifications') })}
-        >
-          <Bell />
-        </Link>
-        <Link
-          href={session?.user ? `/profile/${session.user.userId}?from=nav` : '/login'}
-          className={clsx({
-            'dock-active text-primary': pathname.startsWith('/profile') && isFromNav,
-          })}
-        >
-          {session?.user ? <UserRound /> : <KeyRound />}
-        </Link>
+        {session?.user ? (
+          <>
+            <Link
+              href='/notifications'
+              className={clsx({
+                'dock-active text-primary': pathname.startsWith('/notifications'),
+              })}
+            >
+              <Bell />
+            </Link>
+            <Link
+              href={`/profile/${session.user.userId}?from=nav`}
+              className={clsx({
+                'dock-active text-primary': pathname.startsWith('/profile') && isFromNav,
+              })}
+            >
+              <Image
+                className='rounded-full'
+                src={session.user.profileImageUrl}
+                width={32}
+                height={32}
+                alt='프로필 사진'
+              />
+            </Link>
+          </>
+        ) : (
+          <Link
+            href='/login'
+            className={clsx({
+              'dock-active text-primary': pathname.startsWith('/login'),
+            })}
+          >
+            <KeyRound />
+          </Link>
+        )}
       </nav>
     </>
   )
