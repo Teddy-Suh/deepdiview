@@ -7,7 +7,7 @@ export default function SettingsSection({ isAdmin }: { isAdmin: boolean }) {
     <section className='mt-4 w-full'>
       <div className='bg-base-300 rounded-2xl p-4'>
         <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
-          <Link className='btn btn-soft w-full rounded-2xl' href='/profile/settings/password'>
+          <Link className='btn btn-soft w-full rounded-2xl' href='/profile/update-password'>
             비밀번호 변경
           </Link>
 
@@ -16,7 +16,7 @@ export default function SettingsSection({ isAdmin }: { isAdmin: boolean }) {
               관리자 페이지
             </Link>
           ) : (
-            <Link className='btn btn-soft rounded-2xl' href='/profile/settings/delete-account'>
+            <Link className='btn btn-soft rounded-2xl' href='/profile/delete-account'>
               회원 탈퇴
             </Link>
           )}

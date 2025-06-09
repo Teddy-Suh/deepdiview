@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.1.0",
     "@tailwindcss/postcss": "^4.0.6",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
@@ -19,7 +20,10 @@
     "path-to-regexp": "^8.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-easy-crop": "^5.4.2"
+    "react-easy-crop": "^5.4.2",
+    "react-hook-form": "^7.57.0",
+    "zod": "^3.25.56",
+    "zustand": "^5.0.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
