@@ -5,13 +5,20 @@ export function useKeyboardVisible() {
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
-    const initialHeight = window.innerHeight
+    const threshold = 150 // 키보드 예상 최소 높이
     const handleResize = () => {
-      const heightDiff = initialHeight - window.innerHeight
-      setIsVisible(heightDiff > 150)
+      if (window.visualViewport) {
+        const heightDiff = window.innerHeight - window.visualViewport.height
+        setIsVisible(heightDiff > threshold)
+      }
     }
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
+
+    window.visualViewport?.addEventListener('resize', handleResize)
+    handleResize() // 초기 실행
+
+    return () => {
+      window.visualViewport?.removeEventListener('resize', handleResize)
+    }
   }, [])
 
   return isVisible
