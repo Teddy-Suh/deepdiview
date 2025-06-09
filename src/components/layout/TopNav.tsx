@@ -6,6 +6,7 @@ import { useSession } from '@/providers/providers'
 import { useEffect, useState } from 'react'
 import clsx from 'clsx'
 import { usePathname } from 'next/navigation'
+import Image from 'next/image'
 
 export default function TopNav() {
   const session = useSession()
@@ -34,36 +35,45 @@ export default function TopNav() {
       >
         <div className='flex-1'>
           <Link
-            className='btn btn-ghost hover:text-primary pl-0 hover:border-transparent hover:bg-transparent hover:shadow-none'
+            className='btn btn-ghost hover:text-primary p-0 hover:border-transparent hover:bg-transparent hover:shadow-none'
             href='/'
           >
             <h1 className='text-2xl font-bold'>Deepdiview</h1>
           </Link>
         </div>
-        <div className='hidden md:flex'>
+        <div className='hidden md:flex md:gap-4'>
           <SearchForm />
           <Link
             href='/board'
-            className='btn btn-ghost hover:text-primary pr-0 text-base hover:border-transparent hover:bg-transparent hover:shadow-none'
+            className='btn btn-ghost hover:text-primary p-0 text-base hover:border-transparent hover:bg-transparent hover:shadow-none'
           >
             게시판
           </Link>
-          <Link
-            href='/notifications'
-            className='btn btn-ghost hover:text-primary pr-0 text-base hover:border-transparent hover:bg-transparent hover:shadow-none'
-          >
-            알림
-          </Link>
+
           {session?.user ? (
-            <Link
-              className='btn btn-ghost hover:text-primary pr-0 hover:border-transparent hover:bg-transparent hover:shadow-none'
-              href={`/profile/${session.user.userId}?from=nav`}
-            >
-              <span className='text-base'>프로필</span>
-            </Link>
+            <>
+              <Link
+                href='/notifications'
+                className='btn btn-ghost hover:text-primary p-0 text-base hover:border-transparent hover:bg-transparent hover:shadow-none'
+              >
+                알림
+              </Link>
+              <Link
+                className='btn btn-ghost hover:text-primary p-0 hover:border-transparent hover:bg-transparent hover:shadow-none'
+                href={`/profile/${session.user.userId}?from=nav`}
+              >
+                <Image
+                  className='rounded-full'
+                  src={session.user.profileImageUrl}
+                  width={35}
+                  height={35}
+                  alt='프로필 사진'
+                />
+              </Link>
+            </>
           ) : (
             <Link
-              className='btn btn-ghost hover:text-primary pr-0 text-base hover:border-transparent hover:bg-transparent hover:shadow-none'
+              className='btn btn-ghost hover:text-primary p-0 text-base hover:border-transparent hover:bg-transparent hover:shadow-none'
               href='/login'
             >
               로그인
