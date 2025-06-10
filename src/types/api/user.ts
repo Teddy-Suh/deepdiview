@@ -3,7 +3,6 @@ import {
   BaseUser,
   CertificationRejectionReason,
   CertificationStatus,
-  Comment,
   ImgRequest,
   PaginationParamsWithSort,
   PaginatedResponse,
@@ -11,6 +10,7 @@ import {
   ReviewSortField,
   BasePaginationParams,
   RatingDistribution,
+  CommentFields,
 } from './common'
 import { updatePasswordSchema } from '@/schemas/auth/updatePasswordSchema'
 import { deleteAccountSchema } from '@/schemas/auth/deleteAccountSchema'
@@ -73,7 +73,7 @@ export type GetUserReviewsResponse = PaginatedResponse<Review>
 
 // 특정 사용자가 작성한 댓글 조회
 export type GetUserCommentsParams = BasePaginationParams
-export type GetUserCommentsResponse = PaginatedResponse<Comment>
+export type GetUserCommentsResponse = PaginatedResponse<CommentWithReview>
 
 // 로그아웃
 
@@ -95,4 +95,14 @@ export interface ProfileResponse {
 
 export interface ProfileImgResponse {
   profileImageUrl: string
+}
+
+// 특정 사용자가 작성한 댓글 조회 응답용 (review가 null이 아님)
+export type CommentWithReview = CommentFields & {
+  review: Review
+}
+
+// ReviewList 컴포넌트를 재사용하기 위해 CommentWithReview를 재가공한 타입
+export interface ReviewWithComment extends Review {
+  comment: CommentFields
 }

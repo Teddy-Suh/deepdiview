@@ -55,7 +55,7 @@ export interface Review {
   certified: boolean
 }
 
-export interface Comment {
+export interface CommentFields {
   id: number
   reviewId: number
   userId: number
@@ -64,6 +64,10 @@ export interface Comment {
   content: string
   createdAt: string
   updatedAt: string
+}
+
+export type Comment = CommentFields & {
+  review: null
 }
 
 export type ClientComment = Comment & {

@@ -7,32 +7,47 @@ import clsx from 'clsx'
 import CertifiedBadge from './CertifiedBadge'
 import LikeButton from './LikeButton'
 import Link from 'next/link'
+import ReviewWithCommentWrapper from '@/app/profile/[id]/comments/ReviewWithCommentWrapper'
+import { ReviewWithComment } from '@/types/api/user'
 
 export default function ReviewItem({
   review,
   withMovie = true,
+  withComment = false,
   isDetail = false,
+  isUserReviewsPage = false,
 }: {
-  review: Review
+  review: Review | ReviewWithComment
   withMovie?: boolean
+  withComment?: boolean
   isDetail?: boolean
+  isUserReviewsPage?: boolean
 }) {
   const profile = (
     <div className='flex items-center gap-2'>
-      <Image
-        src={`${review.profileImageUrl}`}
-        alt='프로필 사진'
-        width={33}
-        height={33}
-        className='aspect-square rounded-full'
-      />
-      <div>
-        <div className='flex items-center gap-1'>
-          <p className='text-sm'>{review.nickname}</p>
+      {isUserReviewsPage ? (
+        <>
+          <p className='text-gray-500'>{getRelativeTime(review.createdAt)}</p>
           {review.certified && <CertifiedBadge />}
-        </div>
-        <p className='text-xs text-gray-500'>{getRelativeTime(review.createdAt)}</p>
-      </div>
+        </>
+      ) : (
+        <>
+          <Image
+            src={`${review.profileImageUrl}`}
+            alt='프로필 사진'
+            width={33}
+            height={33}
+            className='aspect-square rounded-full'
+          />
+          <div>
+            <div className='flex items-center gap-1'>
+              <p className='text-sm'>{review.nickname}</p>
+              {review.certified && <CertifiedBadge />}
+            </div>
+            <p className='text-xs text-gray-500'>{getRelativeTime(review.createdAt)}</p>
+          </div>
+        </>
+      )}
     </div>
   )
   const content = (
@@ -91,26 +106,37 @@ export default function ReviewItem({
           </p>
         </div>
       </div>
-      <hr className='text-gray-600' />
       {/* 하단 영화 제목 & 좋아요, 댓글 */}
-      <div className={clsx('flex', withMovie && 'justify-between gap-3')}>
-        <div className={clsx('flex flex-2 gap-3', withMovie ? 'justify-start' : 'justify-start')}>
-          <LikeButton
-            likedByUser={review.likedByUser}
-            likeCount={review.likeCount}
-            reviewId={review.reviewId.toString()}
-            readOnly={!isDetail}
-          />
-          <div className='flex gap-1'>
-            <MessageCircle />
-            <p>{review.commentCount}</p>
+      {!withComment && (
+        <>
+          <hr className='text-gray-600' />
+          <div className={clsx('flex', withMovie && 'justify-between gap-3')}>
+            <div
+              className={clsx('flex flex-2 gap-3', withMovie ? 'justify-start' : 'justify-start')}
+            >
+              <LikeButton
+                likedByUser={review.likedByUser}
+                likeCount={review.likeCount}
+                reviewId={review.reviewId.toString()}
+                readOnly={!isDetail}
+              />
+              <div className='flex gap-1'>
+                <MessageCircle />
+                <p>{review.commentCount}</p>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   )
 
-  return (
-    <>{isDetail ? <>{content}</> : <Link href={`/reviews/${review.reviewId}`}>{content}</Link>}</>
-  )
+  // 특정 사용자가 작성한 댓글 페이지
+  if (withComment && 'comment' in review)
+    return <ReviewWithCommentWrapper comment={review.comment}>{content}</ReviewWithCommentWrapper>
+
+  // 리뷰 상세 페이지
+  if (isDetail) return <>{content}</>
+
+  return <Link href={`/reviews/${review.reviewId}`}>{content}</Link>
 }
