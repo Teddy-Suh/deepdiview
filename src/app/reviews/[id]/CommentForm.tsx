@@ -88,6 +88,7 @@ export default function CommentForm({
         createdAt: '작성 중',
         updatedAt: new Date().toISOString(),
         optimisticStatus: 'creating',
+        review: null,
       })
     }
   }, [

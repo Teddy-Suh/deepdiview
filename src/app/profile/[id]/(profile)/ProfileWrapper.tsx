@@ -70,18 +70,12 @@ export default function ProfileWrapper({
             />
           </div>
           <div className='flex'>
-            <Link
-              className='flex-1 space-y-0.5 text-center'
-              href={`/profile/${id}/activity/reviews`}
-            >
+            <Link className='flex-1 space-y-0.5 text-center' href={`/profile/${id}/reviews`}>
               <p className='text-xl font-bold'>{profile.reviewCount}</p>
               <p className='text-sm'>리뷰</p>
             </Link>
             <div className='divider divider-horizontal' />
-            <Link
-              className='flex-1 space-y-0.5 text-center'
-              href={`/profile/${id}/activity/comments`}
-            >
+            <Link className='flex-1 space-y-0.5 text-center' href={`/profile/${id}/comments`}>
               <p className='text-xl font-bold'>{profile.commentCount}</p>
               <p className='text-sm'>댓글</p>
             </Link>
