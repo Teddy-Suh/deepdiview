@@ -2,7 +2,7 @@ import { getVoteOptions } from '@/lib/api/vote'
 import { getMovie } from '@/lib/api/movie'
 import { Session } from 'next-auth'
 import CreateVoteButton from './CreateVoteButton'
-import VoteCard from '../board/VoteCard'
+import VoteCard from '@/app/board/VoteCard'
 
 export default async function CreateVoteWrapper({ session }: { session: Session }) {
   const { tmdbIds } = await getVoteOptions(session.accessToken)

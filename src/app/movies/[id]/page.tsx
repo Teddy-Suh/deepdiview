@@ -7,7 +7,6 @@ import OverlaidMovieHero from '@/components/ui/OverlaidMovieHero'
 import { getCertification } from '@/lib/api/certification'
 import { getIsSunday, getThisWeekMovieId } from '@/lib/api/discussion'
 import { getMovie } from '@/lib/api/movie'
-
 import { notFound } from 'next/navigation'
 import MyReviewSection from './MyReviewSection'
 import { getReviews } from '@/lib/api/review'

@@ -10,17 +10,12 @@ import {
   UpdateCertificationStatusResponse,
 } from '@/types/api/certification'
 import { apiClient } from '../apiClient'
-import { toQueryString } from '../utils/query'
+import { toQueryString } from '../../app/utils/query'
 
-// 인증샷 수정
-export async function updateCertification(
-  token: string,
-  formData: UpdateCertificationRequest
-): Promise<UpdateCertificationResponse> {
-  return apiClient<UpdateCertificationResponse, UpdateCertificationRequest>(`/certifications`, {
-    method: 'PUT',
-    body: formData,
-    isFormData: true,
+// 유저
+// 인증샷 상태 확인
+export async function getCertification(token: string): Promise<GetCertificationResponse> {
+  return apiClient<GetCertificationResponse>(`/certifications/me`, {
     withAuth: true,
     token,
   })
@@ -40,10 +35,37 @@ export async function createCertification(
   })
 }
 
+// 인증샷 수정
+export async function updateCertification(
+  token: string,
+  formData: UpdateCertificationRequest
+): Promise<UpdateCertificationResponse> {
+  return apiClient<UpdateCertificationResponse, UpdateCertificationRequest>(`/certifications`, {
+    method: 'PUT',
+    body: formData,
+    isFormData: true,
+    withAuth: true,
+    token,
+  })
+}
+
 // 인증샷 삭제
 export async function deleteCertification(token: string) {
   return apiClient(`/certifications`, {
     method: 'DELETE',
+    withAuth: true,
+    token,
+  })
+}
+
+// 관리자
+// 인증 목록 조회
+export async function getCertifications(
+  token: string,
+  params?: GetCertificationsParams
+): Promise<GetCertificationsResponse> {
+  const query = params ? `?${toQueryString(params)}` : ''
+  return apiClient<GetCertificationsResponse>(`/certifications/admin${query}`, {
     withAuth: true,
     token,
   })
@@ -64,24 +86,4 @@ export async function updateCertificationStatus(
       token,
     }
   )
-}
-
-// 인증샷 상태 확인
-export async function getCertification(token: string): Promise<GetCertificationResponse> {
-  return apiClient<GetCertificationResponse>(`/certifications/me`, {
-    withAuth: true,
-    token,
-  })
-}
-
-// 인증 목록 조회
-export async function getCertifications(
-  token: string,
-  params?: GetCertificationsParams
-): Promise<GetCertificationsResponse> {
-  const query = params ? `?${toQueryString(params)}` : ''
-  return apiClient<GetCertificationsResponse>(`/certifications/admin${query}`, {
-    withAuth: true,
-    token,
-  })
 }

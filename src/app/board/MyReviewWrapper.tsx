@@ -30,7 +30,7 @@ export default async function MyReviewWrapper({
         // 인증 안 된 경우 - 인증 안내 및 일반 리뷰 작성 안내
         <>
           <div className='space-x-2 md:space-x-4'>
-            <Link className='btn btn-primary btn-sm md:btn-md' href='/profile/watch-verification'>
+            <Link className='btn btn-primary btn-sm md:btn-md' href='/profile/submit-certification'>
               인증하고 리뷰 작성하기
             </Link>
             <Link

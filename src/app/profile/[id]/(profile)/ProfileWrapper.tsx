@@ -8,6 +8,8 @@ import RatingBarChart from '@/components/ui/RatingBarChart'
 import { ProfileResponse } from '@/types/api/user'
 import { useState } from 'react'
 import { Settings, X } from 'lucide-react'
+import { CERTIFICATION_STATUS, getCertificationStatusLabel } from '@/constants/certification'
+import clsx from 'clsx'
 
 export default function ProfileWrapper({
   profile,
@@ -21,16 +23,6 @@ export default function ProfileWrapper({
   isSunday: boolean
 }) {
   const [isEdit, setIsEdit] = useState(false)
-
-  const certificationStatusMap = {
-    APPROVED: '🟢 인증됨',
-    PENDING: '🟡 심사 중',
-    REJECTED: '🔴 거절됨',
-    NONE: '인증 하기',
-  } as const
-
-  const statusKey = profile.certificationStatus ?? 'NONE'
-  const certificationStatusLabel = certificationStatusMap[statusKey]
 
   return (
     <>
@@ -79,24 +71,22 @@ export default function ProfileWrapper({
               <p className='text-xl font-bold'>{profile.commentCount}</p>
               <p className='text-sm'>댓글</p>
             </Link>
-            {isCurrentUser && !isSunday && (
+            {isCurrentUser && !isSunday && profile.certificationStatus && (
               <>
                 <div className='divider divider-horizontal' />
-                {profile.certificationStatus === 'APPROVED' ? (
-                  <Link className='flex-1 space-y-0.5 text-center' href='/board'>
-                    <p className='text-base leading-[30px] font-black'>
-                      {certificationStatusLabel}
-                    </p>
-                    <p className='text-sm'>시청 인증</p>
-                  </Link>
-                ) : (
-                  <Link className='flex-1 text-center' href='/profile/watch-verification'>
-                    <p className='text-base leading-[30px] font-black'>
-                      {certificationStatusLabel}
-                    </p>
-                    <p className='text-sm'>시청 인증</p>
-                  </Link>
-                )}
+                <Link
+                  className={clsx(
+                    'flex-1 text-center',
+                    profile.certificationStatus === CERTIFICATION_STATUS.APPROVED &&
+                      'pointer-events-none'
+                  )}
+                  href='/profile/submit-certification'
+                >
+                  <p className='text-base leading-[30px] font-black'>
+                    {getCertificationStatusLabel(profile.certificationStatus)}
+                  </p>
+                  <p className='text-sm'>시청 인증</p>
+                </Link>
               </>
             )}
           </div>

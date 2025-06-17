@@ -6,17 +6,25 @@ import {
   deleteCertification,
   updateCertification,
 } from '@/lib/api/certification'
-import { redirect } from 'next/navigation'
+import { UserCertification } from '@/types/api/certification'
 
 export const createCertificationAction = async (
-  state: { message: string } = { message: '' },
-  formData: FormData
+  croppedImage: Blob | null,
+  state: { message: string; certification: UserCertification | null }
 ) => {
   const session = await auth()
   if (!session?.user) throw new Error('UNAUTHORIZED')
 
+  if (croppedImage === null) throw new Error('NO_PHOTO')
+  const formData = new FormData()
+
+  // name 없는 Blob → File로 감싸기
+  const file = new File([croppedImage], 'profile.jpg', { type: croppedImage.type })
+  formData.append('file', file)
+
   try {
-    await createCertification(session.accessToken, formData)
+    const certification = await createCertification(session.accessToken, formData)
+    return { ...state, certification }
   } catch (error) {
     const errorCode = (error as Error).message
     switch (errorCode) {
@@ -41,18 +49,25 @@ export const createCertificationAction = async (
         throw new Error('UNHANDLED_ERROR')
     }
   }
-  redirect('/profile/watch-verification')
 }
 
 export const updateCertificationAction = async (
-  state: { message: string } = { message: '' },
-  formData: FormData
+  croppedImage: Blob | null,
+  state: { message: string; certification: UserCertification | null }
 ) => {
   const session = await auth()
   if (!session?.user) throw new Error('UNAUTHORIZED')
 
+  if (croppedImage === null) throw new Error('NO_PHOTO')
+  const formData = new FormData()
+
+  // name 없는 Blob → File로 감싸기
+  const file = new File([croppedImage], 'profile.jpg', { type: croppedImage.type })
+  formData.append('file', file)
+
   try {
-    await updateCertification(session.accessToken, formData)
+    const certification = await updateCertification(session.accessToken, formData)
+    return { ...state, certification }
   } catch (error) {
     const errorCode = (error as Error).message
     switch (errorCode) {
@@ -79,15 +94,24 @@ export const updateCertificationAction = async (
         throw new Error('UNHANDLED_ERROR')
     }
   }
-  redirect('/profile/watch-verification')
 }
 
-export const deleteCertificationAction = async (state: { message: string } = { message: '' }) => {
+export const deleteCertificationAction = async (state: {
+  message: string
+  certification: UserCertification | null
+}) => {
   const session = await auth()
   if (!session?.user) throw new Error('UNAUTHORIZED')
 
   try {
     await deleteCertification(session.accessToken)
+    return {
+      ...state,
+      certification: {
+        status: 'NONE',
+        certificationDetails: null,
+      } as UserCertification,
+    }
   } catch (error) {
     const errorCode = (error as Error).message
     switch (errorCode) {
@@ -106,5 +130,4 @@ export const deleteCertificationAction = async (state: { message: string } = { m
         throw new Error('UNHANDLED_ERROR')
     }
   }
-  redirect('/profile/watch-verification')
 }

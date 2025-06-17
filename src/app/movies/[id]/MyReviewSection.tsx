@@ -16,7 +16,7 @@ export default function MyReviewSection({
   myReview: Review | null
   isThisWeekMovie: boolean
   isSunday: boolean
-  certificationStatus: CertificationStatus
+  certificationStatus: CertificationStatus | null
   movieId: string
   movieTitle: string
 }) {
@@ -60,7 +60,7 @@ export default function MyReviewSection({
                       <div className='space-x-2 md:space-x-4'>
                         <Link
                           className='btn btn-primary btn-sm md:btn-md'
-                          href={`/profile/watch-verification`}
+                          href={`/profile/submit-certification`}
                         >
                           인증하고 리뷰 작성하기
                         </Link>

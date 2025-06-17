@@ -5,7 +5,7 @@ import { deleteCommentAction } from './actions'
 import { useActionState, useEffect } from 'react'
 import { ClientComment, Comment } from '@/types/api/common'
 import Link from 'next/link'
-import { getRelativeTime } from '@/lib/utils/date'
+import { getRelativeTime } from '@/app/utils/date'
 import clsx from 'clsx'
 
 export default function CommentItem({

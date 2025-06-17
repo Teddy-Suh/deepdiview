@@ -3,6 +3,7 @@ import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
 import { getIsSunday } from '@/lib/api/discussion'
 import CreateVoteSection from './CreateVoteSection'
+import { CERTIFICATION_STATUS } from '@/constants/certification'
 
 export default async function AdminPage() {
   const session = await auth()
@@ -21,7 +22,10 @@ export default async function AdminPage() {
           ) : (
             <>
               <p className='break-keep'>회원님들의 시청 인증을 관리해 주세요.</p>
-              <Link className='btn btn-primary' href='/admin/watch-approval'>
+              <Link
+                className='btn btn-primary'
+                href={`/admin/certifications?status=${CERTIFICATION_STATUS.PENDING}`}
+              >
                 시청 인증 관리
               </Link>
             </>

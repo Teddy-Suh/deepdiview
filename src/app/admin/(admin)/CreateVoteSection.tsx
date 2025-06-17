@@ -1,6 +1,6 @@
 import { Session } from 'next-auth'
-import CreateVoteWrapper from './CreateVoteWrapper'
 import { Suspense } from 'react'
+import CreateVoteWrapper from './CreateVoteWrapper'
 
 export default function CreateVoteSection({
   session,
