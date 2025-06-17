@@ -1,6 +1,6 @@
 import { GetNotificationsParams, GetNotificationsResponse } from '@/types/api/notification'
 import { apiClient } from '../apiClient'
-import { toQueryString } from '../utils/query'
+import { toQueryString } from '../../app/utils/query'
 
 // 특정 알림 읽음처리
 export async function readNotification(id: string, token: string): Promise<null> {

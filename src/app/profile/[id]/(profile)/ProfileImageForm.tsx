@@ -5,6 +5,7 @@ import { ChangeEvent, useActionState, useEffect, useRef, useState } from 'react'
 import { deleteProfileImgAction, updateProfileImgAction } from './actions'
 import { ArrowUpFromLine, Camera, Trash2, X } from 'lucide-react'
 import CropImageModal from './CropImageModal'
+import { BASE_PROFILE_IMAGES } from '@/constants/image'
 
 export default function ProfileImageForm({
   profileImageUrl,
@@ -19,7 +20,6 @@ export default function ProfileImageForm({
   const [, setImageFile] = useState<File | null>(null)
   const [isCropOpen, setIsCropOpen] = useState(false)
   const [croppedImage, setCroppedImage] = useState<Blob | null>(null)
-  const baseProfileImage = 'https://deepdiview.s3.ap-northeast-2.amazonaws.com/defaultprofile.png'
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const [deleteState, deleteAction, isDeletePending] = useActionState(deleteProfileImgAction, {
@@ -108,7 +108,7 @@ export default function ProfileImageForm({
             )}
 
             {/* 기존 사진 있으면 오른쪽 상단 삭제 버튼 */}
-            {!croppedImage && profileImageUrl !== baseProfileImage && (
+            {!croppedImage && profileImageUrl !== BASE_PROFILE_IMAGES && (
               <form action={deleteAction}>
                 <button
                   className='profile-btn bg-error top-0 right-0'

@@ -2,7 +2,7 @@
 
 import { useActionState, useEffect, useState } from 'react'
 import { createVoteAction } from './actions'
-import VoteCard from '../board/VoteCard'
+import VoteCard from '../../board/VoteCard'
 import { Movie } from '@/types/api/movie'
 
 export default function CreateVoteButton() {

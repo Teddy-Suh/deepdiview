@@ -8,12 +8,12 @@ export interface BaseUser {
   refreshToken: string
 }
 
-export type CertificationStatus = 'NONE' | 'PENDING' | 'APPROVED' | 'REJECTED' | null
+export type CertificationStatus = 'APPROVED' | 'PENDING' | 'REJECTED' | 'NONE'
 
 export type CertificationRejectionReason =
-  | 'OTHER_MOVIE_IMAGE'
-  | 'WRONG_IMAGE'
   | 'UNIDENTIFIABLE_IMAGE'
+  | 'WRONG_IMAGE'
+  | 'OTHER_MOVIE_IMAGE'
 
 export interface BasePaginationParams {
   page?: number

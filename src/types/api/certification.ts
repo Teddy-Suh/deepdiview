@@ -1,64 +1,70 @@
 import {
+  BasePaginationParams,
   CertificationRejectionReason,
   CertificationStatus,
   ImgRequest,
-  PaginationParamsWithSort,
 } from './common'
 
 // API 타입
 
-// 인증샷 수정
-export type UpdateCertificationRequest = ImgRequest
-export type UpdateCertificationResponse = CertificationPendingResponse
+// 유저
+// 인증샷 상태 확인
+export type GetCertificationResponse = UserCertification
 
 // 인증샷 제출
 export type CreateCertificationRequest = ImgRequest
-export type CreateCertificationResponse = CertificationPendingResponse
+export type CreateCertificationResponse = UserCertification
+
+// 인증샷 수정
+export type UpdateCertificationRequest = ImgRequest
+export type UpdateCertificationResponse = UserCertification
 
 // 인증샷 삭제
+
+// 관리자
+// 인증 목록 조회
+export type GetCertificationsParams = BasePaginationParams & {
+  status?: CertificationStatus
+  createdAt?: string
+  certificationId?: number
+}
+export interface GetCertificationsResponse {
+  content: AdminCertification[]
+  hasNext: boolean
+  nextId: number
+  nextCreatedAt: string
+}
 
 // 인증 승인/거절
 export interface UpdateCertificationStatusRequest {
   approve: boolean
   rejectionReason?: CertificationRejectionReason
 }
-
-export type UpdateCertificationStatusResponse = Certification
-
-// 인증샷 상태 확인
-export type GetCertificationResponse = NullableCertification
-
-// 인증 목록 조회
-export type GetCertificationsParams = PaginationParamsWithSort<CertificationSortField> & {
-  status?: CertificationStatus
-  createdAt?: string
-  nextCertificationId?: number
-}
-export interface GetCertificationsResponse {
-  content: Certification[]
-  hasNext: boolean
-  nextCertificationId: number
-  nextCreatedAt: string
-}
+export type UpdateCertificationStatusResponse = AdminCertification
 
 // 보조 타입
-export type CertificationPendingResponse = {
-  id: number
-  userId: number
-  certificationUrl: string
-  status: 'PENDING'
-  createdAt: string
-  rejectionReason: null
-}
-export interface Certification {
-  id: number
-  userId: number
-  certificationUrl: string
+export interface UserCertification {
   status: CertificationStatus
+  certificationDetails: CertificationDetails | null
+  userInformation: null
+}
+
+export interface AdminCertification {
+  status: CertificationStatus
+  certificationDetails: CertificationDetails
+  userInformation: UserInformation
+}
+
+export interface CertificationDetails {
+  id: number
+  userId: number
+  certificationUrl: string
   createdAt: string
   rejectionReason: CertificationRejectionReason
 }
-export type NullableCertification = {
-  [K in keyof Certification]: Certification[K] | null
+
+export interface UserInformation {
+  userId: number
+  userNickname: string
+  profileImageUrl: string
 }
-export type CertificationSortField = 'createdAt' | 'status'
