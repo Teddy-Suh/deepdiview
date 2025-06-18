@@ -1,11 +1,32 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { EventSourcePolyfill } from 'event-source-polyfill'
 import { useSession } from '@/providers/providers'
+import { useNotificationStore } from '@/stores/useNotificationStore'
+import { getUnreadExists } from '@/lib/api/notification'
 
-export default function SSEClient() {
+export default function NotificationClient() {
   const session = useSession()
+  const setHasUnread = useNotificationStore((state) => state.setHasUnread)
+  const setSseNotification = useNotificationStore((state) => state.setSseNotification)
+
+  const timerRef = useRef<NodeJS.Timeout | null>(null)
+
+  useEffect(() => {
+    if (!session?.accessToken) return
+
+    const fetchHasUnread = async () => {
+      try {
+        const { hasUnread } = await getUnreadExists(session.accessToken)
+        setHasUnread(hasUnread)
+      } catch (error) {
+        console.warn('초기 알림 상태 확인 실패', error)
+      }
+    }
+
+    fetchHasUnread()
+  }, [session?.accessToken, setHasUnread])
 
   useEffect(() => {
     const userId = session?.user?.userId
@@ -45,20 +66,16 @@ export default function SSEClient() {
     eventSource.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data)
+        setHasUnread(true)
+        setSseNotification(data)
 
-        switch (data.type) {
-          case 'like':
-            console.log('좋아요 알림:', data.message)
-            break
-          case 'comment':
-            console.log('댓글 알림:', data.message)
-            break
-          case 'certification':
-            console.log('인증 상태 변경 알림:', data.message)
-            break
-          default:
-            console.warn('알 수 없는 타입의 알림:', data)
+        if (timerRef.current) {
+          clearTimeout(timerRef.current)
         }
+        timerRef.current = setTimeout(() => {
+          setSseNotification(null)
+          timerRef.current = null
+        }, 2000)
       } catch (error) {
         console.error('알림 파싱 실패:', error)
       }
@@ -72,9 +89,10 @@ export default function SSEClient() {
     // 언마운트 시 연결 종료
     return () => {
       console.log('SSE 구독 종료')
+      if (timerRef.current) clearTimeout(timerRef.current)
       eventSource.close()
     }
-  }, [session])
+  }, [session?.user?.userId, session?.accessToken, setHasUnread, setSseNotification])
 
   return null
 }

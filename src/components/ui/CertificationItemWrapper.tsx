@@ -3,7 +3,7 @@ import {
   getCertificationStatusLabel,
   getRejectionReasonLabel,
 } from '@/constants/certification'
-import { getRelativeTime } from '@/app/utils/date'
+import { getRelativeTime } from '@/utils/date'
 import { AdminCertification, UserCertification } from '@/types/api/certification'
 import clsx from 'clsx'
 import Image from 'next/image'

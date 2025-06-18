@@ -1,8 +1,6 @@
 import { z } from 'zod'
 import {
   BaseUser,
-  CertificationRejectionReason,
-  CertificationStatus,
   ImgRequest,
   PaginationParamsWithSort,
   PaginatedResponse,
@@ -16,6 +14,7 @@ import { updatePasswordSchema } from '@/schemas/auth/updatePasswordSchema'
 import { deleteAccountSchema } from '@/schemas/auth/deleteAccountSchema'
 import { registerSchema } from '@/schemas/auth/registerSchema'
 import { loginSchema } from '@/schemas/auth/loginSchema'
+import { CertificationRejectionReason, CertificationStatus } from '@/constants/certification'
 
 // API 타입
 

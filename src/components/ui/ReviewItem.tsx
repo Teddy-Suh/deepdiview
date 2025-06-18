@@ -1,4 +1,4 @@
-import { getRelativeTime } from '@/app/utils/date'
+import { getRelativeTime } from '@/utils/date'
 import { Review } from '@/types/api/common'
 import Image from 'next/image'
 import Rating from './Rating'

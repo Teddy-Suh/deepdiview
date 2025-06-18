@@ -5,8 +5,12 @@ import CertificationList from './CertificationList'
 import GoBackHeader from '@/components/layout/MobileHeader/GoBackHeader'
 import clsx from 'clsx'
 import Link from 'next/link'
-import { CERTIFICATION_STATUS, getCertificationStatusBtnLabel } from '@/constants/certification'
-import { CertificationStatus } from '@/types/api/common'
+import {
+  CERTIFICATION_STATUS,
+  CertificationStatus,
+  getCertificationStatusBtnLabel,
+} from '@/constants/certification'
+
 import { getIsSunday } from '@/lib/api/discussion'
 
 export default async function AdminCertificationsPage({

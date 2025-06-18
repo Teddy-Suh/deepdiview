@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import clsx from 'clsx'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
+import NotificationBadge from '../ui/NotificationBadge'
 
 export default function TopNav() {
   const session = useSession()
@@ -41,7 +42,7 @@ export default function TopNav() {
             <h1 className='text-2xl font-bold'>Deepdiview</h1>
           </Link>
         </div>
-        <div className='hidden md:flex md:gap-4'>
+        <div className='hidden md:flex md:gap-6'>
           <SearchForm />
           <Link
             href='/board'
@@ -56,7 +57,10 @@ export default function TopNav() {
                 href='/notifications'
                 className='btn btn-ghost hover:text-primary p-0 text-base hover:border-transparent hover:bg-transparent hover:shadow-none'
               >
-                알림
+                <div className='relative'>
+                  알림
+                  <NotificationBadge />
+                </div>
               </Link>
               <Link
                 className='btn btn-ghost hover:text-primary p-0 hover:border-transparent hover:bg-transparent hover:shadow-none'

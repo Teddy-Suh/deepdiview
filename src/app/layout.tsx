@@ -3,7 +3,7 @@ import './globals.css'
 import TopNav from '@/components/layout/TopNav'
 import BottomNav from '@/components/layout/BottomNav'
 import { SessionProvider } from '@/providers/providers'
-import SSEClient from '@/components/layout/SSEClient'
+import NotificationClient from '@/components/layout/NotificationClient'
 import { auth } from '@/auth'
 import Footer from '@/components/layout/Footer'
 
@@ -21,7 +21,7 @@ export default async function RootLayout({
     <html lang='ko'>
       <body className='flex min-h-screen flex-col'>
         <SessionProvider initialSession={session}>
-          <SSEClient />
+          <NotificationClient />
           <header>
             <TopNav />
           </header>

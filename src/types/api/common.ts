@@ -8,13 +8,6 @@ export interface BaseUser {
   refreshToken: string
 }
 
-export type CertificationStatus = 'APPROVED' | 'PENDING' | 'REJECTED' | 'NONE'
-
-export type CertificationRejectionReason =
-  | 'UNIDENTIFIABLE_IMAGE'
-  | 'WRONG_IMAGE'
-  | 'OTHER_MOVIE_IMAGE'
-
 export interface BasePaginationParams {
   page?: number
   size?: number
@@ -34,6 +27,13 @@ export interface PaginatedResponse<T> {
   first: boolean
   last: boolean
   empty: boolean
+}
+
+export interface CursorPaginatedResponse<T> {
+  content: T[]
+  hasNext: boolean
+  nextId: number
+  nextCreatedAt: string
 }
 
 export interface Review {

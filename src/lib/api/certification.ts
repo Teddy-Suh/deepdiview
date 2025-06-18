@@ -10,7 +10,7 @@ import {
   UpdateCertificationStatusResponse,
 } from '@/types/api/certification'
 import { apiClient } from '../apiClient'
-import { toQueryString } from '../../app/utils/query'
+import { toQueryString } from '../../utils/query'
 
 // 유저
 // 인증샷 상태 확인

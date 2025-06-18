@@ -1,4 +1,6 @@
 @import 'tailwindcss';
+@import 'tailwindcss-animated';
+
 @plugin "daisyui" {
   themes:
     light --default,
@@ -45,6 +47,19 @@
     }
     100% {
       background-color: transparent;
+    }
+  }
+}
+
+@theme {
+  --animate-get-new-notification: yellow-to-primary-fade-out 1s ease-in;
+
+  @keyframes yellow-to-primary-fade-out {
+    0% {
+      background-color: oklch(82% 0.189 84.429 / 0.2);
+    }
+    100% {
+      background-color: oklch(58% 0.233 277.117/0.2);
     }
   }
 }
