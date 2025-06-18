@@ -1,4 +1,4 @@
-import { getRelativeTime } from '@/app/utils/date'
+import { getRelativeTime } from '@/utils/date'
 import { CommentFields } from '@/types/api/common'
 import Link from 'next/link'
 import { ReactNode } from 'react'

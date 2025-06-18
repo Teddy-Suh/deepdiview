@@ -1,7 +1,6 @@
-// API 타입
-
 import { Movie } from './movie'
 
+// API 타입
 // 투표 생성
 export type CreateVoteResponse = VoteOptionsResponse
 

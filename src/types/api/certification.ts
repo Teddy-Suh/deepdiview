@@ -1,9 +1,5 @@
-import {
-  BasePaginationParams,
-  CertificationRejectionReason,
-  CertificationStatus,
-  ImgRequest,
-} from './common'
+import { CertificationRejectionReason, CertificationStatus } from '@/constants/certification'
+import { BasePaginationParams, CursorPaginatedResponse, ImgRequest } from './common'
 
 // API 타입
 
@@ -28,12 +24,7 @@ export type GetCertificationsParams = BasePaginationParams & {
   createdAt?: string
   certificationId?: number
 }
-export interface GetCertificationsResponse {
-  content: AdminCertification[]
-  hasNext: boolean
-  nextId: number
-  nextCreatedAt: string
-}
+export type GetCertificationsResponse = CursorPaginatedResponse<AdminCertification>
 
 // 인증 승인/거절
 export interface UpdateCertificationStatusRequest {

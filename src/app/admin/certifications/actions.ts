@@ -1,8 +1,8 @@
 'use server'
 
 import { auth } from '@/auth'
+import { CertificationRejectionReason } from '@/constants/certification'
 import { updateCertificationStatus } from '@/lib/api/certification'
-import { CertificationRejectionReason } from '@/types/api/common'
 import { AdminCertification } from '@/types/api/certification'
 
 export const updateCertificationStatusAction = async (

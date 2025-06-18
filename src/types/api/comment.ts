@@ -1,4 +1,4 @@
-import { Comment, PaginationParamsWithSort } from './common'
+import { Comment, CursorPaginatedResponse, PaginationParamsWithSort } from './common'
 
 // API 타입
 
@@ -14,12 +14,7 @@ export type GetCommentsParams = PaginationParamsWithSort<'CreatedAt'> & {
   commentId?: number
 }
 
-export interface GetCommentsResponse {
-  content: Comment[]
-  nextCreatedAt: string
-  nextId: number
-  hasNext: boolean
-}
+export type GetCommentsResponse = CursorPaginatedResponse<Comment>
 
 // 댓글 작성
 export type CreateCommentParams = GetCommentsParams

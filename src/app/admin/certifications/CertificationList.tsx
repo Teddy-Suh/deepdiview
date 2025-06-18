@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from 'react'
 import { Session } from 'next-auth'
 import { AdminCertification } from '@/types/api/certification'
 import { getCertifications } from '@/lib/api/certification'
-import { CertificationStatus } from '@/types/api/common'
 import CertificationForm from './CertificationForm'
+import { CertificationStatus } from '@/constants/certification'
 
 export default function CertificationList({
   session,

@@ -20,7 +20,7 @@ import {
   UpdateProfileImgResponse,
 } from '@/types/api/user'
 import { apiClient } from '../apiClient'
-import { toQueryString } from '../../app/utils/query'
+import { toQueryString } from '../../utils/query'
 
 // 프로필사진 등록/수정
 export async function updateProfileImg(

@@ -7,6 +7,7 @@ import clsx from 'clsx'
 import { useSession } from '@/providers/providers'
 import Image from 'next/image'
 import { useKeyboardVisible } from '@/hooks/useKeyboardVisible'
+import NotificationBadge from '../ui/NotificationBadge'
 
 export default function BottomNav() {
   const pathname = usePathname()
@@ -42,7 +43,10 @@ export default function BottomNav() {
                 'dock-active text-primary': pathname.startsWith('/notifications'),
               })}
             >
-              <Bell />
+              <div className='relative'>
+                <Bell />
+                <NotificationBadge />
+              </div>
             </Link>
             <Link
               href={`/profile/${session.user.userId}?from=nav`}

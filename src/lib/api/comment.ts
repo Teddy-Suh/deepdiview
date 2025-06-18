@@ -7,7 +7,7 @@ import {
   UpdateCommentResponse,
 } from '@/types/api/comment'
 import { apiClient } from '../apiClient'
-import { toQueryString } from '../../app/utils/query'
+import { toQueryString } from '../../utils/query'
 
 // 댓글 수정
 export async function updateComment(

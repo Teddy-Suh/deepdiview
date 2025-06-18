@@ -1,5 +1,6 @@
 import ReviewItem from '@/components/ui/ReviewItem'
-import { CertificationStatus, Review } from '@/types/api/common'
+import { CertificationStatus } from '@/constants/certification'
+import { Review } from '@/types/api/common'
 import { Session } from 'next-auth'
 import Link from 'next/link'
 

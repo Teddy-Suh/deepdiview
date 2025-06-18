@@ -9,7 +9,7 @@ import {
   UpdateReviewResponse,
 } from '@/types/api/review'
 import { apiClient } from '../apiClient'
-import { toQueryString } from '../../app/utils/query'
+import { toQueryString } from '../../utils/query'
 
 // 특정 리뷰 조회
 export async function getReview(
