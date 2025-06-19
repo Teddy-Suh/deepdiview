@@ -49,7 +49,6 @@ export default function UpdatePasswordForm() {
   // 성공시 클라이언트에서 할 것 없음
   // 서버 액션에서 리디렉션 처리
   useEffect(() => {
-    if (isPending) return
     if (state.message === '') return
 
     // 실패 시 폼 돌려 놓기
@@ -61,7 +60,7 @@ export default function UpdatePasswordForm() {
         message: state.message,
       })
     }
-  }, [reset, setError, state.message, watch, isPending])
+  }, [reset, setError, state, watch, isPending])
 
   return (
     <form action={formAction} className='auth-form'>

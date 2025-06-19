@@ -19,7 +19,8 @@ export default function DeleteReviewButton({ reviewId }: { reviewId: string }) {
     // 게시판, 영화 상세 정보 페이지, 내가 쓴 리뷰 목록 등 여러 곳에서 리뷰에 접근 할 수 있기 때문에
     // searchParams에 from을 넣는 것도 고려
     if (state.success) router.replace('/')
-  })
+  }, [router, state])
+
   return (
     <>
       <form action={formAction}>

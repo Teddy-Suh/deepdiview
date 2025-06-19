@@ -32,7 +32,7 @@ export default function CertificationForm({
 
   useEffect(() => {
     setCertifications(state.certification)
-  }, [state.certification])
+  }, [state])
 
   // '인증요청이 존재하지 않습니다.'와 같은 오류는 전체 에러 페이지로 처리하지 않음
   // 서버 액션 결과로 certification이 null이면, 해당 항목만 UI에서 제거

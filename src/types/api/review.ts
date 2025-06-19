@@ -4,6 +4,7 @@ import {
   PaginationParamsWithSort,
   Review,
   ReviewSortField,
+  WriteReviewResponse,
 } from './common'
 
 // API 타입
@@ -17,7 +18,7 @@ export interface UpdateReviewRequest {
   content: string
   rating: number
 }
-export type UpdateReviewResponse = Review
+export type UpdateReviewResponse = WriteReviewResponse
 
 // 리뷰글 삭제
 
@@ -29,7 +30,7 @@ export interface CreateReviewRequest {
   rating: number
 }
 
-export type CreateReviewResponse = Review
+export type CreateReviewResponse = WriteReviewResponse
 
 // 좋아요
 

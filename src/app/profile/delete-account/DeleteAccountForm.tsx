@@ -31,7 +31,6 @@ export default function DeleteAccountForm() {
 
   // 서버 액션 이후
   useEffect(() => {
-    if (isPending) return
     if (state.message === '') return
 
     // 성공시 로그아웃 시키고 홈으로
@@ -49,7 +48,7 @@ export default function DeleteAccountForm() {
         message: state.message,
       })
     }
-  }, [isPending, reset, setError, state.message, watch])
+  }, [reset, setError, state, watch])
 
   return (
     <form action={formAction} className='auth-form'>

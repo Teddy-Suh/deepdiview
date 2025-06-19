@@ -28,6 +28,7 @@ export default function NotificationItem({
 
   const isNewNotification = Date.now() - new Date(notification.createdAt).getTime() < 1500
   const link = getNotificationLink(notification.notificationType, notification.relatedId)
+
   useEffect(() => {
     if (state.hasUnread !== null && !calledRef.current) {
       calledRef.current = true
@@ -35,7 +36,7 @@ export default function NotificationItem({
       onRead(notification.notificationId, state.hasUnread)
       router.push(link)
     }
-  }, [link, notification.notificationId, onRead, router, state.hasUnread])
+  }, [link, notification.notificationId, onRead, router, state])
 
   const content = (
     <div

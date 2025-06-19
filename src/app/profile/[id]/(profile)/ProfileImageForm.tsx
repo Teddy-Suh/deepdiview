@@ -29,18 +29,17 @@ export default function ProfileImageForm({
   const [updateState, updateAction, isUpdatePending] = useActionState(
     updateProfileImgAction.bind(null, croppedImage),
     {
-      success: null,
+      profileImageUrl,
       message: '',
     }
   )
 
   // 업로드 성공
   useEffect(() => {
-    if (updateState.success) {
+    if (updateState.profileImageUrl) {
       setCroppedImage(null)
     }
-    updateState.success = null
-  }, [updateState, updateState.success])
+  }, [updateState])
 
   // 밖에서 isEdit으로 편집 모드 종료
   useEffect(() => {

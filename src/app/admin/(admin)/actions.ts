@@ -4,6 +4,7 @@ import { auth } from '@/auth'
 import { getMovie } from '@/lib/api/movie'
 import { createVote } from '@/lib/api/vote'
 import { Movie } from '@/types/api/movie'
+import { revalidatePath } from 'next/cache'
 
 export const createVoteAction = async (state: { voteOptions: Movie[]; message: string }) => {
   const session = await auth()
@@ -13,6 +14,7 @@ export const createVoteAction = async (state: { voteOptions: Movie[]; message: s
     const { tmdbIds } = await createVote(session.accessToken)
     const voteOptions = await Promise.all(tmdbIds.map((id) => getMovie(id.toString())))
 
+    revalidatePath('/admin')
     return { ...state, voteOptions, message: 'success' }
   } catch (error) {
     const errorCode = (error as Error).message

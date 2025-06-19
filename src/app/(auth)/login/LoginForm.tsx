@@ -31,10 +31,8 @@ export default function LoginForm() {
   const passwordError = '비밀번호가 일치하지 않습니다.'
 
   // 서버 액션 이후
-  // 성공시 클라이언트에서 할 것 없음
-  // 서버 액션에서 리디렉션 처리
+  // 성공시 클라이언트에서 할 것 없음 (서버 액션에서 리디렉션 처리)
   useEffect(() => {
-    if (isPending) return
     if (state.message === '') return
 
     // 실패 시 폼 돌려 놓기
@@ -51,14 +49,7 @@ export default function LoginForm() {
         message: state.message,
       })
     }
-  }, [isPending, reset, setError, state.message, watch])
-  // isPending 넣은 이유
-  // 서버 액션 실패 후 state.message에 에러 메시지가 남아 있는 상태에서
-  // 같은 에러가 다시 발생하면 state.message 값이 변하지 않아 reset(watch())가 실행되지 않음
-  // 따라서 서버 액션 실행 시마다 값이 바뀌는 상태를 의존성으로 넣어야 함
-  // useState로 count 등을 만들어 트리거할 수도 있지만
-  // isPending은 매번 액션 실행 시 변경되므로 이를 활용해 문제 해결
-  // 회원가입, 비밀번호 변경, 회원 탈퇴 등에서도 동일한 방식으로 사용 중
+  }, [reset, setError, state, watch])
 
   return (
     <form action={formAction} className='auth-form'>

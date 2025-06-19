@@ -13,9 +13,9 @@ export default function ReviewForm({
   certified,
 }: {
   action: (
-    state: { message: string; responseReviewId: string },
+    state: { message: string; resReviewId: string },
     formData: FormData
-  ) => Promise<{ message: string; responseReviewId: string }>
+  ) => Promise<{ message: string; resReviewId: string }>
   movieTitle: string
   initialValue?: { title: string; content: string; rating: number }
   certified: boolean
@@ -23,13 +23,13 @@ export default function ReviewForm({
   const isEdit = !!initialValue
   const [state, formAction, isPending] = useActionState(action, {
     message: '',
-    responseReviewId: '',
+    resReviewId: '',
   })
   const router = useRouter()
 
   useEffect(() => {
     if (state.message === 'success') {
-      router.push(`/reviews/${state.responseReviewId}`)
+      router.replace(`/reviews/${state.resReviewId}`)
     }
   }, [router, state])
 
