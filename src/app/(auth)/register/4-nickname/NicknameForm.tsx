@@ -65,7 +65,6 @@ export default function NicknameForm() {
 
   // 서버 액션 이후
   useEffect(() => {
-    if (isPending) return
     if (state.message === '') return
 
     // 성공시
@@ -94,7 +93,7 @@ export default function NicknameForm() {
       })
       return
     }
-  }, [isPending, reset, router, setError, state.message, watch])
+  }, [reset, router, setError, state, watch])
 
   return (
     <>

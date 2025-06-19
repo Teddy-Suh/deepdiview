@@ -4,6 +4,7 @@ import { auth } from '@/auth'
 import { getMovie } from '@/lib/api/movie'
 import { participateVote } from '@/lib/api/vote'
 import { VoteResultWithMovie } from '@/types/api/vote'
+import { revalidatePath } from 'next/cache'
 
 export const participateVoteAction = async (
   state: { voteResults: VoteResultWithMovie[]; message: string },
@@ -28,6 +29,7 @@ export const participateVoteAction = async (
         ...result,
       }
     })
+    revalidatePath('/board')
     return { ...state, voteResults, message: 'success' }
   } catch (error) {
     // TODO: 에러 처리 구현 (우선 분기 처리만 해둠)

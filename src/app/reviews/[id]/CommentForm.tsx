@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useTransition } from 'react'
 import { createCommentAction, updateCommentAction } from './actions'
 import Link from 'next/link'
 import { useSession } from '@/providers/providers'
@@ -32,25 +32,67 @@ export default function CommentForm({
   const session = useSession()
   const isEdit = !!editComment
   const [content, setContent] = useState('')
-  // const [isKeyboardVisible, setIsKeyboardVisible] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
+  const { isKeyboardVisible } = useMobileKeyboard()
+  const [isPending, startTransition] = useTransition()
 
-  const action = isEdit
-    ? updateCommentAction.bind(null, reviewId, editComment.id.toString())
-    : createCommentAction.bind(null, reviewId)
+  const createFormAction = async (content: string) => {
+    // 낙관적 렌더링
+    addOptimisticComment({
+      id: -1,
+      reviewId: Number(reviewId),
+      userId: Number(session?.user?.userId),
+      userNickname: session?.user?.nickname || '',
+      profileImageUrl: session?.user?.profileImageUrl || '',
+      content,
+      createdAt: '작성 중',
+      updatedAt: new Date().toISOString(),
+      optimisticStatus: 'creating',
+      review: null,
+    })
 
-  const [state, formAction, isPending] = useActionState<
-    {
-      success: boolean | null
-      message: string
-      comment: Comment | null
-    },
-    FormData
-  >(action, {
-    success: null,
-    message: '',
-    comment: null,
-  })
+    const result = await createCommentAction(reviewId, content)
+
+    if (result.message === 'success' && result.comment) {
+      onCreateSuccess(result.comment)
+    } else {
+      onFail()
+    }
+  }
+
+  const updateFormAction = async (content: string) => {
+    if (!editComment) return
+
+    addOptimisticComment({
+      ...editComment,
+      content,
+      optimisticStatus: 'updating',
+      updatedAt: new Date().toISOString(),
+      createdAt: '수정 중',
+    })
+
+    const result = await updateCommentAction(reviewId, editComment.id.toString(), content)
+
+    if (result.message === 'success' && result.comment) {
+      onEditSuccess(result.comment)
+    } else {
+      onFail()
+    }
+
+    setEditComment(null)
+  }
+
+  const formAction = async (formData: FormData) => {
+    const content = formData.get('content')?.toString() ?? ''
+    startTransition(async () => {
+      if (isEdit) {
+        await updateFormAction(content)
+      } else {
+        await createFormAction(content)
+      }
+    })
+    setContent('')
+  }
 
   // 수정 시 기존 댓글 폼에 넣기
   useEffect(() => {
@@ -62,87 +104,13 @@ export default function CommentForm({
     }
   }, [editComment])
 
-  // 낙관적 렌더링
   useEffect(() => {
-    if (!isPending) return
-    setIsCommentPending(true)
-
-    // 서버 응답을 기다리는 isPending일때 낙관적 렌더링
-    if (isEdit) {
-      // 수정 시
-      addOptimisticComment({
-        ...editComment,
-        content,
-        createdAt: '수정 중',
-        updatedAt: new Date().toISOString(),
-        optimisticStatus: 'updating',
-      })
+    if (isPending) {
+      setIsCommentPending(true)
     } else {
-      // 작성 시
-      addOptimisticComment({
-        id: -1,
-        reviewId: Number(reviewId),
-        userId: Number(session?.user?.userId),
-        userNickname: session?.user?.nickname || '',
-        profileImageUrl: session?.user?.profileImageUrl || '',
-        content,
-        createdAt: '작성 중',
-        updatedAt: new Date().toISOString(),
-        optimisticStatus: 'creating',
-        review: null,
-      })
+      setIsCommentPending(false)
     }
-  }, [
-    addOptimisticComment,
-    content,
-    editComment,
-    isEdit,
-    isPending,
-    reviewId,
-    session?.user?.nickname,
-    session?.user?.profileImageUrl,
-    session?.user?.userId,
-    setIsCommentPending,
-  ])
-
-  // 서버 응답 받은 후
-  useEffect(() => {
-    if (state.success === null) return
-    setIsCommentPending(false)
-
-    // 성공 또는 실패
-    // 성공 시
-    if (state.success && state.comment) {
-      setContent('')
-      // 수정 성공시
-      if (isEdit) {
-        setEditComment(null)
-        console.log('수정 댓글 응답', state.comment)
-        onEditSuccess(state.comment)
-      }
-      // 작성 성공시
-      else {
-        onCreateSuccess(state.comment)
-      }
-    }
-    // 실패 시
-    else {
-      onFail()
-    }
-
-    // 상태 초기화 (useActionState 재사용을 위해 필요)
-    state.success = null
-  }, [
-    isEdit,
-    onCreateSuccess,
-    onEditSuccess,
-    onFail,
-    setEditComment,
-    setIsCommentPending,
-    state,
-    state.message,
-  ])
-  const { isKeyboardVisible } = useMobileKeyboard()
+  }, [isPending, setIsCommentPending])
 
   return (
     <>
@@ -162,7 +130,7 @@ export default function CommentForm({
               ref={inputRef}
               type='text'
               name='content'
-              value={isPending ? '' : content}
+              value={content}
               onChange={(e) => setContent(e.target.value)}
               disabled={!session || isPending || isCommentPending}
               placeholder={session ? '댓글을 입력하세요' : '로그인 후 작성할 수 있어요'}
@@ -201,8 +169,6 @@ export default function CommentForm({
               )}
             </div>
           </div>
-          {/* TODO: 에러 토스트 메세지로 띄우기 */}
-          {state.message !== '' && <p>{state.message}</p>}
         </form>
       </div>
       <div className='h-14 md:h-0' />

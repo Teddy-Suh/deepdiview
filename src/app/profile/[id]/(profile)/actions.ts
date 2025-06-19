@@ -12,7 +12,7 @@ import { redirect } from 'next/navigation'
 
 export const updateProfileImgAction = async (
   croppedImage: Blob | null,
-  state: { success: boolean | null; message: string }
+  state: { profileImageUrl: string; message: string }
 ) => {
   const session = await auth()
   if (!session?.user) throw new Error('UNAUTHORIZED')
@@ -30,7 +30,7 @@ export const updateProfileImgAction = async (
         profileImageUrl,
       },
     })
-    return { ...state, success: true }
+    return { ...state, profileImageUrl }
   } catch (error) {
     const errorCode = (error as Error).message
     switch (errorCode) {

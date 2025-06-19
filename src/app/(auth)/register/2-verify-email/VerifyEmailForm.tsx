@@ -63,7 +63,6 @@ export default function VerifyEmailForm() {
 
   // 서버 액션 이후
   useEffect(() => {
-    if (isPending) return
     if (state.message === '') return
 
     // 성공시
@@ -92,7 +91,7 @@ export default function VerifyEmailForm() {
         message: state.message,
       })
     }
-  }, [codeError, isPending, reset, router, setError, setVerified, state.message, watch])
+  }, [codeError, reset, router, setError, setVerified, state, watch])
 
   // 5분 타이머
   const [timeLeft, setTimeLeft] = useState(300)
@@ -116,14 +115,14 @@ export default function VerifyEmailForm() {
   // 재전송 시
   useEffect(() => {
     // 타이머 초기화
-    if (!isSendPending && sendState.message === 'success') {
+    if (sendState.message === 'success') {
       setTimeLeft(300)
       // 새 코드 받을테니 코드 input 비우기
       reset({
         code: '',
       })
     }
-  }, [email, isSendPending, reset, sendState.message, watch])
+  }, [email, reset, sendState, watch])
 
   return (
     <>

@@ -34,7 +34,6 @@ export default function SendEmailForm() {
 
   // 서버 액션 이후
   useEffect(() => {
-    if (isPending) return
     if (state.message === '') return
 
     // 성공시
@@ -53,7 +52,7 @@ export default function SendEmailForm() {
         message: state.message,
       })
     }
-  }, [email, isPending, reset, router, setEmail, setError, state.message, watch])
+  }, [email, reset, router, setEmail, setError, state, watch])
 
   return (
     <form action={formAction} className='auth-form'>

@@ -1,4 +1,4 @@
-import { Review } from './common'
+import { WriteReviewResponse } from './common'
 
 // API 타입
 
@@ -9,7 +9,7 @@ export interface CreateBoardReviewRequest {
   rating: number
 }
 
-export type CreateBoardReviewResponse = Review
+export type CreateBoardReviewResponse = WriteReviewResponse
 
 // 이번주 토론 영화(= 지난주 1위 영화) id 조회
 export interface GetThisWeekMovieIdResponse {

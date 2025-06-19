@@ -28,11 +28,9 @@ export default function CommentItem({
   onDeleteSuccess: (commentId: string) => void
 }) {
   const [state, formAction, isPending] = useActionState<{
-    success: boolean | null
     message: string
     commentId: string
   }>(deleteCommentAction.bind(null, reviewId, comment.id.toString()), {
-    success: null,
     message: '',
     commentId: '',
   })
@@ -50,22 +48,15 @@ export default function CommentItem({
 
   // 삭제 성공
   useEffect(() => {
-    if (state.success === null) return
+    if (state.message === '') return
     setIsCommentPending(false)
 
     // 성공 시
-    if (state.success) {
+    if (state.message === 'success') {
       onDeleteSuccess(state.commentId)
     }
+  }, [onDeleteSuccess, setIsCommentPending, state])
 
-    // 삭제 시
-    // isPending이 false가 되면서 다시 원래 댓글 처럼 보임
-
-    // 상태 초기화 (useActionState 재사용 목적)
-    state.success = null
-  }, [onDeleteSuccess, setIsCommentPending, state, state.commentId, state.message, state.success])
-
-  // 삭제 시 isPending으로 낙관적 렌더링 처리
   return (
     <div
       className={clsx(
@@ -75,7 +66,7 @@ export default function CommentItem({
         // 수정시 낙관적 렌더링 (배경색)
         isEditComment && 'bg-success/20 opacity-50',
         comment.optimisticStatus === 'updating' && 'opacity-100',
-        // 삭제 시 낙관적 렌더링 (배경색)
+        // 삭제 시 낙관적 렌더링 (배경색) (isPending으로 처리)
         isPending && 'bg-error/20 opacity-50',
         // 작성 완료 직후 실제 댓글로 전환될 때 부드러운 배경 애니메이션 처리
         isMyRecentCreatedComment && 'animate-create-comment-success'

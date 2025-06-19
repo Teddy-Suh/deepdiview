@@ -2,10 +2,11 @@
 
 import { auth } from '@/auth'
 import { createReview } from '@/lib/api/review'
+import { revalidatePath } from 'next/cache'
 
 export const createReviewAction = async (
   tmdbId: string,
-  state: { message: string; responseReviewId: string },
+  state: { message: string; resReviewId: string },
   formData: FormData
 ) => {
   const session = await auth()
@@ -17,13 +18,14 @@ export const createReviewAction = async (
   const rating = formData.get('rating') as string // form에서 온거라 string임
 
   try {
-    const { reviewId: responseReviewId } = await createReview(session.accessToken, {
+    const { reviewId: resReviewId } = await createReview(session.accessToken, {
       tmdbId: Number(tmdbId),
       title,
       content,
       rating: Number(rating),
     })
-    return { ...state, message: 'success', responseReviewId: responseReviewId.toString() }
+    revalidatePath(`/movies/${tmdbId}`)
+    return { ...state, message: 'success', resReviewId: resReviewId.toString() }
   } catch (error) {
     // TODO: 에러 처리 구현 (우선 분기 처리만 해둠)
     const errorCode = (error as Error).message

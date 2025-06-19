@@ -52,7 +52,7 @@ export default function LikeButton({
           <p>{state.likeCount}</p>
         </div>
       </form>
-      {state.message && <p>좋아요 실패</p>}
+      {state.message && <>{state.message}</>}
     </>
   )
 }

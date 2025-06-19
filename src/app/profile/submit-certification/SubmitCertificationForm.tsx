@@ -47,7 +47,7 @@ export default function SubmitCertificationForm({
       setCertification(updateState.certification)
       setCroppedImage(null)
     }
-  }, [updateState.certification])
+  }, [updateState])
 
   // 등록
   useEffect(() => {
@@ -55,7 +55,7 @@ export default function SubmitCertificationForm({
       setCertification(createState.certification)
       setCroppedImage(null)
     }
-  }, [createState.certification])
+  }, [createState])
 
   // 삭제
   useEffect(() => {
@@ -63,7 +63,7 @@ export default function SubmitCertificationForm({
       setCertification(deleteState.certification)
       setCroppedImage(null)
     }
-  }, [deleteState.certification])
+  }, [deleteState])
 
   // 자를 사진 추가
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {

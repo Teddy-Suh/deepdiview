@@ -55,6 +55,10 @@ export interface Review {
   certified: boolean
 }
 
+export interface WriteReviewResponse {
+  reviewId: number
+}
+
 export interface CommentFields {
   id: number
   reviewId: number

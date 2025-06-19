@@ -35,9 +35,9 @@ export default function IntroForm({
       setIntro(state.intro)
       setIsEditing(false)
       setPrevIntro(intro)
-      state.message = ''
     }
-  }, [intro, state])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state])
 
   // 편집 모드 시작
   useEffect(() => {
