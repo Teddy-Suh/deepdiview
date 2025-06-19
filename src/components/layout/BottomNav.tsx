@@ -6,15 +6,15 @@ import { usePathname, useSearchParams } from 'next/navigation'
 import clsx from 'clsx'
 import { useSession } from '@/providers/providers'
 import Image from 'next/image'
-import { useKeyboardVisible } from '@/hooks/useKeyboardVisible'
 import NotificationBadge from '../ui/NotificationBadge'
+import { useMobileKeyboard } from '@/hooks/useMobileKeyboard'
 
 export default function BottomNav() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const isFromNav = searchParams.get('from') === 'nav'
   const session = useSession()
-  const isKeyboardVisible = useKeyboardVisible()
+  const { isKeyboardVisible } = useMobileKeyboard()
 
   return (
     <>

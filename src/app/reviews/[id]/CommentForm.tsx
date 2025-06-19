@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useSession } from '@/providers/providers'
 import clsx from 'clsx'
 import { ClientComment, Comment } from '@/types/api/common'
+import { useMobileKeyboard } from '@/hooks/useMobileKeyboard'
 
 export default function CommentForm({
   reviewId,
@@ -31,7 +32,7 @@ export default function CommentForm({
   const session = useSession()
   const isEdit = !!editComment
   const [content, setContent] = useState('')
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false)
+  // const [isKeyboardVisible, setIsKeyboardVisible] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const action = isEdit
@@ -141,29 +142,14 @@ export default function CommentForm({
     state,
     state.message,
   ])
-
-  // 모바일 키보드 감지
-  useEffect(() => {
-    const threshold = 150
-    const initialHeight = window.innerHeight
-
-    const handleResize = () => {
-      const heightDiff = initialHeight - window.innerHeight
-      setIsKeyboardVisible(heightDiff > threshold)
-    }
-
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+  const { isKeyboardVisible } = useMobileKeyboard()
 
   return (
     <>
       <div
         className={clsx(
           'bg-base-100 container-wrapper fixed right-0 left-0 z-10 py-2 md:sticky md:px-0',
-          isKeyboardVisible
-            ? 'bottom-0' // 키보드 올라올 시 키보드 위에 붙이기
-            : 'bottom-16 md:bottom-0' // 키보드 내려갔을땐 BottomNav 위에 붙이기
+          isKeyboardVisible ? 'bottom-0' : 'bottom-16 md:bottom-0'
         )}
       >
         <form action={formAction}>
