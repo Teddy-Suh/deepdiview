@@ -153,23 +153,21 @@ export default function CommentForm({
     <>
       <div
         className={clsx(
-          'bg-base-100 container-wrapper fixed right-0 left-0 z-10 py-2 md:sticky md:px-0',
+          'container-wrapper bg-base-100 fixed right-0 left-0 z-10 w-full py-2 md:sticky md:px-0',
           isKeyboardVisible ? 'bottom-0' : 'bottom-16 md:bottom-0'
         )}
       >
         <form action={formAction}>
-          <div className='flex items-center gap-2'>
-            <input
-              {...register('content')}
-              className={clsx(
-                'bg-base-300 flex-1 rounded-full border-0 px-4 py-2 outline-0',
-                isCommentPending && 'text-gray-500'
-              )}
-              type='text'
-              disabled={!session || isPending || isCommentPending}
-              placeholder={session ? '댓글을 입력하세요' : '로그인 후 작성할 수 있어요'}
-            />
-
+          <div className='flex gap-2'>
+            <label className='bg-base-300 flex-1 rounded-full px-4 py-2'>
+              <input
+                {...register('content')}
+                className={clsx('w-full border-0 outline-0', isCommentPending && 'text-gray-500')}
+                type='text'
+                disabled={!session || isPending || isCommentPending}
+                placeholder={session ? '댓글을 입력하세요' : '로그인 후 작성할 수 있어요'}
+              />
+            </label>
             <div className='flex gap-2'>
               {session ? (
                 <>
