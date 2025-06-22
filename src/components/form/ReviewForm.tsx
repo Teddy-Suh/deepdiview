@@ -48,11 +48,9 @@ export default function ReviewForm({
     },
   })
 
-  const title = watch('title') ?? ''
-  const titleLength = title.length
   const content = watch('content') ?? ''
   const contentLength = content.length
-  watch('rating')
+  watch(['rating', 'title'])
 
   useEffect(() => {
     if (state.code === '') return
@@ -105,7 +103,6 @@ export default function ReviewForm({
             type='text'
             maxLength={60}
           />
-          <span className='tracking-tighter text-gray-400'>{titleLength} / 60</span>
         </label>
         <textarea
           {...register('content')}
