@@ -9,7 +9,7 @@ import { getRelativeTime } from '@/utils/date'
 import clsx from 'clsx'
 import { COMMON_CODES, COMMON_MESSAGES } from '@/constants/messages/common'
 import toast from 'react-hot-toast'
-import { REVIEW_CODES, REVIEW_MESSAGES } from '@/constants/messages/reviews'
+import { REVIEW_CODES, REVIEW_MESSAGES } from '@/constants/messages/review'
 import { useRouter } from 'next/navigation'
 
 export default function CommentItem({

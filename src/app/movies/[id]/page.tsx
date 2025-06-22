@@ -10,7 +10,7 @@ import { getMovie } from '@/lib/api/movie'
 import { notFound } from 'next/navigation'
 import MyReviewSection from './MyReviewSection'
 import { getReviews } from '@/lib/api/review'
-import { MOVIES_CODES } from '@/constants/messages/movies'
+import { MOVIES_CODES } from '@/constants/messages/movie'
 
 export default async function MoviesPage({ params }: { params: Promise<{ id: string }> }) {
   const [{ id }, session, { tmdbId }, { isSunday }] = await Promise.all([
@@ -31,7 +31,7 @@ export default async function MoviesPage({ params }: { params: Promise<{ id: str
     movie = await getMovie(id, !!session, session?.accessToken)
   } catch (error) {
     const errorCode = (error as Error).message
-    if (errorCode === MOVIES_CODES.MOVIES_NOT_FOUND) return notFound()
+    if (errorCode === MOVIES_CODES.MOVIE_NOT_FOUND) return notFound()
     throw error
   }
 

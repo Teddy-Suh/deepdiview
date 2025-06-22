@@ -2,7 +2,7 @@
 
 import { auth } from '@/auth'
 import { COMMON_CODES } from '@/constants/messages/common'
-import { REVIEW_CODES } from '@/constants/messages/reviews'
+import { REVIEW_CODES } from '@/constants/messages/review'
 import { createBoardReview } from '@/lib/api/discussion'
 import { createBoardReviewServerSchema } from '@/schemas/review/createBoardReviewSchema'
 import { revalidatePath } from 'next/cache'

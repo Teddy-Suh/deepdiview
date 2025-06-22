@@ -3,7 +3,7 @@ export const dynamic = 'force-dynamic'
 import { auth } from '@/auth'
 import GoBackHeader from '@/components/layout/MobileHeader/GoBackHeader'
 import ReviewList from '@/components/ui/ReviewList'
-import { MOVIES_CODES } from '@/constants/messages/movies'
+import { MOVIES_CODES } from '@/constants/messages/movie'
 import { getReviews } from '@/lib/api/review'
 import { ReviewSortField } from '@/types/api/common'
 import clsx from 'clsx'
@@ -32,7 +32,7 @@ export default async function MoviesReviewsPage({
     })
   } catch (error) {
     const errorCode = (error as Error).message
-    if (errorCode === MOVIES_CODES.MOVIES_NOT_FOUND) return notFound()
+    if (errorCode === MOVIES_CODES.MOVIE_NOT_FOUND) return notFound()
     throw error
   }
 
