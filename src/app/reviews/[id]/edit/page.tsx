@@ -4,29 +4,35 @@ import ReviewForm from '@/components/form/ReviewForm'
 import { updateReviewAction } from './actions'
 import { getReview } from '@/lib/api/review'
 import { auth } from '@/auth'
-import { redirect } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import ReviewFormSection from '@/components/layout/ReviewFormSection'
+import { REVIEW_CODES } from '@/constants/messages/reviews'
+import { COMMON_CODES } from '@/constants/messages/common'
 
-export default async function ReviewsEditPage({
-  params,
-  searchParams,
-}: {
-  params: Promise<{ id: string }>
-  searchParams: Promise<{ title: string }>
-}) {
+export default async function ReviewsEditPage({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth()
-  if (!session) redirect('/login')
+  if (!session?.user) redirect('/login')
 
-  const [{ id: reviewId }, { title: movieTitle }] = await Promise.all([params, searchParams])
+  const { id: reviewId } = await params
 
-  const review = await getReview(reviewId)
+  let review
+  try {
+    review = await getReview(reviewId)
+    // 내 리뷰 아님
+    if (review.userId !== session.user.userId) throw new Error(COMMON_CODES.UNHANDLED_ERROR)
+  } catch (error) {
+    const errorCode = (error as Error).message
+    if (errorCode === REVIEW_CODES.REVIEW_NOT_FOUND) return notFound()
+    throw error
+  }
+
   const action = updateReviewAction.bind(null, reviewId)
 
   return (
     <ReviewFormSection>
       <ReviewForm
         action={action}
-        movieTitle={movieTitle}
+        movieTitle={review.movieTitle}
         initialValue={{
           title: review.reviewTitle,
           content: review.reviewContent,

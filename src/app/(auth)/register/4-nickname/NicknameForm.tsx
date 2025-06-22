@@ -11,6 +11,9 @@ import { useRouter } from 'next/navigation'
 import AuthSubmitButton from '@/components/form/AuthSubmitButton'
 import AuthFormInput from '@/components/form/AuthFormInput'
 import { useHydrated } from '@/hooks/useHydrated'
+import { USER_CODES, USER_MESSAGES } from '@/constants/messages/users'
+import toast from 'react-hot-toast'
+import { COMMON_CODES, COMMON_MESSAGES } from '@/constants/messages/common'
 
 export default function NicknameForm() {
   const router = useRouter()
@@ -30,18 +33,8 @@ export default function NicknameForm() {
   })
   const nickname = watch('nickname')
   const [state, formAction, isPending] = useActionState(registerAction, {
-    message: '',
+    code: '',
   })
-
-  // 폼에 표시해야 하는 서버 액션 에러 메세지
-  const nicknameError = '중복된 닉네임입니다.'
-
-  // 첫 스텝으로 보내야 하는  서버 액션 에러 메세지
-  // 이메일 인증 만료
-  const expiredError = '이메일 인증이 만료되었습니다.'
-
-  // 나머지는 에러 페이지로
-
   // 회원가입 성공 시 store를 비우고 로그인 페이지로 이동시키는데,
   // store가 비워진 직후 재렌더되면서 아래 조건문이 다시 실행되고
   // 이전 스텝 값(email, password 등)이 사라져 처음 스텝으로 보냄
@@ -65,10 +58,10 @@ export default function NicknameForm() {
 
   // 서버 액션 이후
   useEffect(() => {
-    if (state.message === '') return
+    if (state.code === '') return
 
     // 성공시
-    if (state.message === 'success') {
+    if (state.code === COMMON_CODES.SUCCESS) {
       setIsRegistered(true)
       useRegisterStore.getState().reset()
       useRegisterStore.persist.clearStorage?.()
@@ -78,18 +71,23 @@ export default function NicknameForm() {
 
     // 실패시
     // 이메일 인증 만효 에러면 첫 단계로 보내기
-    // TODO: 토스트 메세지 띄우기
-    if (state.message === expiredError) {
+    if (state.code === USER_CODES.EMAIL_NOT_VERIFIED) {
+      toast.error(USER_MESSAGES.EMAIL_NOT_VERIFIED)
       router.replace('/register/1-send-email')
     }
 
     // 실패 시 폼 돌려 놓기
     reset(watch())
 
+    // 토스트 메세지로 띄워야 하는 에러
+    if (state.code === COMMON_CODES.NETWORK_ERROR) {
+      toast.error(COMMON_MESSAGES.NETWORK_ERROR!)
+    }
+
     // 폼에 표시해야 하는 서버 액션 에러 메세지는 각 폼에 setError
-    if (state.message === nicknameError) {
+    if (state.code === USER_CODES.ALREADY_EXIST_NICKNAME) {
       setError('nickname', {
-        message: state.message,
+        message: USER_MESSAGES.ALREADY_EXIST_NICKNAME,
       })
       return
     }

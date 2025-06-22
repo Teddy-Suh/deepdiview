@@ -10,6 +10,9 @@ import { useRegisterStore } from '@/stores/useRegisterStore'
 import { useRouter } from 'next/navigation'
 import AuthFormInput from '@/components/form/AuthFormInput'
 import AuthSubmitButton from '@/components/form/AuthSubmitButton'
+import toast from 'react-hot-toast'
+import { EMAIL_CODES, EMAIL_MESSAGES } from '@/constants/messages/email'
+import { COMMON_CODES, COMMON_MESSAGES } from '@/constants/messages/common'
 
 export default function SendEmailForm() {
   const router = useRouter()
@@ -26,18 +29,15 @@ export default function SendEmailForm() {
   })
   const email = watch('email')
   const [state, formAction, isPending] = useActionState(sendEmailAction, {
-    message: '',
+    code: '',
   })
-
-  // 폼에 표시해야 하는 서버 액션 에러 메세지
-  const emailError = '중복된 이메일입니다.'
 
   // 서버 액션 이후
   useEffect(() => {
-    if (state.message === '') return
+    if (state.code === '') return
 
     // 성공시
-    if (state.message === 'success') {
+    if (state.code === COMMON_CODES.SUCCESS) {
       setEmail(email)
       router.push('/register/2-verify-email')
       return
@@ -47,10 +47,16 @@ export default function SendEmailForm() {
     reset(watch())
 
     // 폼에 표시해야 하는 서버 액션 에러 메세지는 각 폼에 setError
-    if (state.message === emailError) {
+    if (state.code === EMAIL_CODES.ALREADY_EXIST_MEMBER) {
       setError('email', {
-        message: state.message,
+        message: EMAIL_MESSAGES.ALREADY_EXIST_MEMBER,
       })
+      return
+    }
+
+    // 토스트 메세지로 띄워야 하는 에러
+    if (state.code === COMMON_CODES.NETWORK_ERROR) {
+      toast.error(COMMON_MESSAGES.NETWORK_ERROR!)
     }
   }, [email, reset, router, setEmail, setError, state, watch])
 

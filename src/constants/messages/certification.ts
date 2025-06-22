@@ -1,0 +1,11 @@
+export const CERTIFICATION_CODES = {
+  ALREADY_APPROVED: 'ALREADY_APPROVED',
+  CERTIFICATION_NOT_FOUND: 'CERTIFICATION_NOT_FOUND',
+} as const
+
+export type CertificationCode = (typeof CERTIFICATION_CODES)[keyof typeof CERTIFICATION_CODES]
+
+export const CERTIFICATION_MESSAGES: Record<CertificationCode, string> = {
+  [CERTIFICATION_CODES.ALREADY_APPROVED]: '이미 승인되었습니다.',
+  [CERTIFICATION_CODES.CERTIFICATION_NOT_FOUND]: '인증요청이 존재하지 않습니다.',
+}

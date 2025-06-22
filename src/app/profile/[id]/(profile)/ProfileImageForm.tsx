@@ -6,6 +6,8 @@ import { deleteProfileImgAction, updateProfileImgAction } from './actions'
 import { ArrowUpFromLine, Camera, Trash2, X } from 'lucide-react'
 import CropImageModal from './CropImageModal'
 import { BASE_PROFILE_IMAGES } from '@/constants/image'
+import { COMMON_CODES, COMMON_MESSAGES } from '@/constants/messages/common'
+import toast from 'react-hot-toast'
 
 export default function ProfileImageForm({
   profileImageUrl,
@@ -22,24 +24,43 @@ export default function ProfileImageForm({
   const [croppedImage, setCroppedImage] = useState<Blob | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const [deleteState, deleteAction, isDeletePending] = useActionState(deleteProfileImgAction, {
-    message: '',
-  })
-
   const [updateState, updateAction, isUpdatePending] = useActionState(
     updateProfileImgAction.bind(null, croppedImage),
     {
       profileImageUrl,
-      message: '',
+      code: '',
     }
   )
 
-  // 업로드 성공
+  const [deleteState, deleteAction, isDeletePending] = useActionState(deleteProfileImgAction, {
+    code: '',
+  })
+
+  // 업로드 서버액션 이후
   useEffect(() => {
-    if (updateState.profileImageUrl) {
+    if (updateState.code === '') return
+
+    if (updateState.code === COMMON_CODES.SUCCESS) {
       setCroppedImage(null)
+      return
+    }
+
+    if (updateState.code === COMMON_CODES.NETWORK_ERROR) {
+      toast.error(COMMON_MESSAGES.NETWORK_ERROR!)
+      return
     }
   }, [updateState])
+
+  // 삭제 서버액션 이후
+  // 성공시 클라이언트에서 할 것 없음 (서버 액션에서 세션 업데이트)
+  useEffect(() => {
+    if (deleteState.code === '') return
+
+    if (deleteState.code === COMMON_CODES.NETWORK_ERROR) {
+      toast.error(COMMON_MESSAGES.NETWORK_ERROR!)
+      return
+    }
+  }, [deleteState])
 
   // 밖에서 isEdit으로 편집 모드 종료
   useEffect(() => {
@@ -169,9 +190,6 @@ export default function ProfileImageForm({
           onCropDone={handleCropDone}
         />
       )}
-
-      {deleteState.message !== '' && <>{deleteState.message}</>}
-      {updateState.message !== '' && <>{updateState.message}</>}
     </>
   )
 }

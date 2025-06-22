@@ -2,13 +2,16 @@
 
 import { auth } from '@/auth'
 import { toggleLike } from '../api/review'
+import { COMMON_CODES } from '@/constants/messages/common'
+import { REVIEW_CODES } from '@/constants/messages/reviews'
+import { redirect } from 'next/navigation'
 
 export async function toggleLikeAction(
   reviewId: string,
-  state: { likedByUser: boolean | null; likeCount: number; message: string }
+  state: { likedByUser: boolean | null; likeCount: number; code: string }
 ) {
   const session = await auth()
-  if (!session) throw new Error('UNAUTHORIZED')
+  if (!session) redirect('/login')
   try {
     await toggleLike(reviewId, session.accessToken)
     return {
@@ -19,13 +22,12 @@ export async function toggleLikeAction(
   } catch (error) {
     const errorCode = (error as Error).message
     switch (errorCode) {
-      case 'UNEXPECTED_ERROR':
-        throw new Error('UNEXPECTED_ERROR')
-      // 코드 오류나 프레임워크 내부 예외 등 완전히 예상치 못한 예외 (ex. NEXT_REDIRECT, CallbackRouteError, ReferenceError 등)
+      case COMMON_CODES.NETWORK_ERROR:
+      case REVIEW_CODES.REVIEW_NOT_FOUND:
+        return { ...state, code: errorCode }
       default:
         console.error(error)
-        // TODO: error.tsx 제대로 구현 후 error도 넘겨주게 변경
-        throw new Error('UNHANDLED_ERROR')
+        throw new Error(COMMON_CODES.UNHANDLED_ERROR)
     }
   }
 }

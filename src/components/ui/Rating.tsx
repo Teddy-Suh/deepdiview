@@ -2,13 +2,16 @@
 
 import clsx from 'clsx'
 import { useState } from 'react'
+import { UseFormRegisterReturn } from 'react-hook-form'
 
 export default function Rating({
   rating,
   readOnly = false,
+  register,
 }: {
   rating?: number
   readOnly?: boolean
+  register?: UseFormRegisterReturn
 }) {
   const [selected, setSelected] = useState(rating)
 
@@ -34,6 +37,7 @@ export default function Rating({
             <div key={number} {...commonProps} aria-current={rating === number} />
           ) : (
             <input
+              {...register}
               key={number}
               {...commonProps}
               type='radio'

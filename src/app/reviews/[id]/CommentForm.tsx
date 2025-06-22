@@ -1,12 +1,20 @@
 'use client'
 
-import { useEffect, useRef, useState, useTransition } from 'react'
+import { useEffect, useTransition } from 'react'
 import { createCommentAction, updateCommentAction } from './actions'
 import Link from 'next/link'
 import { useSession } from '@/providers/providers'
 import clsx from 'clsx'
 import { ClientComment, Comment } from '@/types/api/common'
 import { useMobileKeyboard } from '@/hooks/useMobileKeyboard'
+import { COMMON_CODES, COMMON_MESSAGES } from '@/constants/messages/common'
+import toast from 'react-hot-toast'
+import { REVIEW_CODES, REVIEW_MESSAGES } from '@/constants/messages/reviews'
+import { useRouter } from 'next/navigation'
+import { useForm } from 'react-hook-form'
+import { CommentsRequest } from '@/types/api/comment'
+import { commentSchema } from '@/schemas/review/commentSchema'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 export default function CommentForm({
   reviewId,
@@ -29,12 +37,28 @@ export default function CommentForm({
   onFail: () => void
   addOptimisticComment: (comment: ClientComment) => void
 }) {
+  const router = useRouter()
   const session = useSession()
   const isEdit = !!editComment
-  const [content, setContent] = useState('')
-  const inputRef = useRef<HTMLInputElement>(null)
   const { isKeyboardVisible } = useMobileKeyboard()
   const [isPending, startTransition] = useTransition()
+
+  const {
+    register,
+    setValue,
+    setFocus,
+    reset,
+    formState: { errors, isValid },
+  } = useForm<CommentsRequest>({
+    resolver: zodResolver(commentSchema),
+    mode: 'onChange',
+  })
+
+  useEffect(() => {
+    if (errors.content?.message) {
+      toast.error(errors.content.message)
+    }
+  }, [errors.content?.message])
 
   const createFormAction = async (content: string) => {
     // 낙관적 렌더링
@@ -53,10 +77,18 @@ export default function CommentForm({
 
     const result = await createCommentAction(reviewId, content)
 
-    if (result.message === 'success' && result.comment) {
+    if (result.code === COMMON_CODES.SUCCESS && result.comment) {
       onCreateSuccess(result.comment)
     } else {
       onFail()
+      if (result.code === COMMON_CODES.NETWORK_ERROR) {
+        toast.error(COMMON_MESSAGES.NETWORK_ERROR!)
+        reset({ content })
+      }
+      if (result.code === REVIEW_CODES.REVIEW_NOT_FOUND) {
+        toast.error(REVIEW_MESSAGES.REVIEW_NOT_FOUND)
+        router.back()
+      }
     }
   }
 
@@ -73,12 +105,18 @@ export default function CommentForm({
 
     const result = await updateCommentAction(reviewId, editComment.id.toString(), content)
 
-    if (result.message === 'success' && result.comment) {
+    if (result.code === COMMON_CODES.SUCCESS && result.comment) {
       onEditSuccess(result.comment)
     } else {
       onFail()
+      if (result.code === COMMON_CODES.NETWORK_ERROR) {
+        toast.error(COMMON_MESSAGES.NETWORK_ERROR!)
+      }
+      if (result.code === REVIEW_CODES.REVIEW_NOT_FOUND) {
+        toast.error(REVIEW_MESSAGES.REVIEW_NOT_FOUND)
+        router.back()
+      }
     }
-
     setEditComment(null)
   }
 
@@ -91,18 +129,17 @@ export default function CommentForm({
         await createFormAction(content)
       }
     })
-    setContent('')
   }
 
   // 수정 시 기존 댓글 폼에 넣기
   useEffect(() => {
     if (editComment) {
-      setContent(editComment.content)
-      inputRef.current?.focus()
+      setValue('content', editComment.content)
+      setFocus('content')
     } else {
-      setContent('')
+      setValue('content', '')
     }
-  }, [editComment])
+  }, [editComment, setFocus, setValue])
 
   useEffect(() => {
     if (isPending) {
@@ -123,18 +160,14 @@ export default function CommentForm({
         <form action={formAction}>
           <div className='flex items-center gap-2'>
             <input
+              {...register('content')}
               className={clsx(
                 'bg-base-300 flex-1 rounded-2xl border-0 px-4 py-2 outline-0',
                 isCommentPending && 'text-gray-500'
               )}
-              ref={inputRef}
               type='text'
-              name='content'
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
               disabled={!session || isPending || isCommentPending}
               placeholder={session ? '댓글을 입력하세요' : '로그인 후 작성할 수 있어요'}
-              required
             />
 
             <div className='flex gap-2'>
@@ -143,7 +176,7 @@ export default function CommentForm({
                   <button
                     className='btn btn-primary rounded-2xl'
                     type='submit'
-                    disabled={isPending || isCommentPending}
+                    disabled={isPending || isCommentPending || !isValid}
                   >
                     {isPending ? (
                       <span className='loading loading-ring' />

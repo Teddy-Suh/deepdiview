@@ -8,6 +8,8 @@ import { Movie } from '@/types/api/movie'
 import { ChevronRight } from 'lucide-react'
 import VoteResultCard from './VoteResultCard'
 import { VoteResultWithMovie } from '@/types/api/vote'
+import { COMMON_CODES, COMMON_MESSAGES } from '@/constants/messages/common'
+import toast from 'react-hot-toast'
 
 export default function VoteCard({
   voteOptions,
@@ -20,16 +22,22 @@ export default function VoteCard({
   const [voteResults, setVoteResults] = useState<VoteResultWithMovie[]>([])
   const [state, formAction, isPending] = useActionState(participateVoteAction, {
     voteResults: [],
-    message: '',
+    code: '',
   })
   const [selected, setSelected] = useState<number>()
 
   useEffect(() => {
-    if (state.message === 'success') {
+    if (state.code === '') return
+
+    if (state.code === COMMON_CODES.SUCCESS) {
       setIsVoted(true)
       setVoteResults(state.voteResults)
     }
-  }, [state.voteResults, state.message])
+
+    if (state.code === COMMON_CODES.NETWORK_ERROR) {
+      toast.error(COMMON_MESSAGES.NETWORK_ERROR!)
+    }
+  }, [state])
 
   return (
     <>

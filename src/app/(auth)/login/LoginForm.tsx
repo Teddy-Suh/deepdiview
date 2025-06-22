@@ -9,9 +9,10 @@ import { loginSchema } from '@/schemas/auth/loginSchema'
 import Link from 'next/link'
 import AuthFormInput from '@/components/form/AuthFormInput'
 import AuthSubmitButton from '@/components/form/AuthSubmitButton'
+import { USER_CODES, USER_MESSAGES } from '@/constants/messages/users'
 
 export default function LoginForm() {
-  const [state, formAction, isPending] = useActionState(signInWithCredentials, { message: '' })
+  const [state, formAction, isPending] = useActionState(signInWithCredentials, { code: '' })
 
   const {
     register,
@@ -26,27 +27,23 @@ export default function LoginForm() {
 
   const [email, password] = watch(['email', 'password'])
 
-  // 폼에 표시해야 하는 서버 액션 에러 메세지
-  const emailError = '가입되지 않은 이메일입니다.'
-  const passwordError = '비밀번호가 일치하지 않습니다.'
-
   // 서버 액션 이후
   // 성공시 클라이언트에서 할 것 없음 (서버 액션에서 리디렉션 처리)
   useEffect(() => {
-    if (state.message === '') return
+    if (state.code === '') return
 
     // 실패 시 폼 돌려 놓기
     reset(watch())
 
     // 폼에 표시해야 하는 서버 액션 에러 메세지는 각 폼에 setError
-    if (state.message === emailError) {
+    if (state.code === USER_CODES.USER_NOT_FOUND) {
       setError('email', {
-        message: state.message,
+        message: USER_MESSAGES.USER_NOT_FOUND,
       })
     }
-    if (state.message === passwordError) {
+    if (state.code === USER_CODES.NOT_VALID_PASSWORD) {
       setError('password', {
-        message: state.message,
+        message: USER_MESSAGES.NOT_VALID_PASSWORD,
       })
     }
   }, [reset, setError, state, watch])

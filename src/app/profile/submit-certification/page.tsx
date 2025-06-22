@@ -19,5 +19,5 @@ export default async function SubmitCertificationPage() {
   if (certification.status === CERTIFICATION_STATUS.APPROVED) redirect('/board')
 
   // 버튼이 제출 버튼이 헤더에 있기때문에 Form안에 넣음
-  return <SubmitCertificationForm initialCertification={certification} />
+  return <SubmitCertificationForm session={session} initialCertification={certification} />
 }

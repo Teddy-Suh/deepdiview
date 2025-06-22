@@ -7,6 +7,10 @@ import { ClientComment, Comment } from '@/types/api/common'
 import Link from 'next/link'
 import { getRelativeTime } from '@/utils/date'
 import clsx from 'clsx'
+import { COMMON_CODES, COMMON_MESSAGES } from '@/constants/messages/common'
+import toast from 'react-hot-toast'
+import { REVIEW_CODES, REVIEW_MESSAGES } from '@/constants/messages/reviews'
+import { useRouter } from 'next/navigation'
 
 export default function CommentItem({
   comment,
@@ -27,13 +31,14 @@ export default function CommentItem({
   onEditClick: (comment: Comment) => void
   onDeleteSuccess: (commentId: string) => void
 }) {
-  const [state, formAction, isPending] = useActionState<{
-    message: string
-    commentId: string
-  }>(deleteCommentAction.bind(null, reviewId, comment.id.toString()), {
-    message: '',
-    commentId: '',
-  })
+  const router = useRouter()
+  const [state, formAction, isPending] = useActionState(
+    deleteCommentAction.bind(null, reviewId, comment.id.toString()),
+    {
+      code: '',
+      commentId: '',
+    }
+  )
   const isMyComment = currentUserId === comment.userId.toString()
   const isMyRecentCreatedComment =
     isMyComment &&
@@ -48,14 +53,26 @@ export default function CommentItem({
 
   // 삭제 성공
   useEffect(() => {
-    if (state.message === '') return
+    if (state.code === '') return
     setIsCommentPending(false)
 
     // 성공 시
-    if (state.message === 'success') {
+    if (state.code === COMMON_CODES.SUCCESS) {
       onDeleteSuccess(state.commentId)
+      return
     }
-  }, [onDeleteSuccess, setIsCommentPending, state])
+
+    if (state.code === COMMON_CODES.NETWORK_ERROR) {
+      toast.error(COMMON_MESSAGES.NETWORK_ERROR!)
+      return
+    }
+
+    if (state.code === REVIEW_CODES.REVIEW_NOT_FOUND) {
+      toast.error(REVIEW_MESSAGES.REVIEW_NOT_FOUND)
+      router.back()
+      return
+    }
+  }, [onDeleteSuccess, router, setIsCommentPending, state])
 
   return (
     <div
@@ -140,9 +157,6 @@ export default function CommentItem({
 
       {/* 구분선 */}
       <hr className='text-gray-700' />
-
-      {/* TODO: 실패시 토스트 메세지 띄우기 */}
-      {state.message !== '' && <p>{state.message}</p>}
     </div>
   )
 }
