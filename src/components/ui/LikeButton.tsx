@@ -1,7 +1,7 @@
 'use client'
 
 import { COMMON_CODES, COMMON_MESSAGES } from '@/constants/messages/common'
-import { REVIEW_CODES, REVIEW_MESSAGES } from '@/constants/messages/reviews'
+import { REVIEW_CODES, REVIEW_MESSAGES } from '@/constants/messages/review'
 import { toggleLikeAction } from '@/lib/actions/like'
 import clsx from 'clsx'
 import { Heart } from 'lucide-react'

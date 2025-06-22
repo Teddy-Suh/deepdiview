@@ -2,7 +2,7 @@
 
 import { auth } from '@/auth'
 import { COMMON_CODES } from '@/constants/messages/common'
-import { REVIEW_CODES } from '@/constants/messages/reviews'
+import { REVIEW_CODES } from '@/constants/messages/review'
 import { createComment, deleteComment, updateComment } from '@/lib/api/comment'
 import { deleteReview } from '@/lib/api/review'
 import { commentSchema } from '@/schemas/review/commentSchema'

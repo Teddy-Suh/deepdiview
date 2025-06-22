@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import ReviewItem from '@/components/ui/ReviewItem'
 import DeleteReviewButton from './DeleteReviewButton'
-import { REVIEW_CODES } from '@/constants/messages/reviews'
+import { REVIEW_CODES } from '@/constants/messages/review'
 
 export default async function ReviewSection({
   currentUserId,

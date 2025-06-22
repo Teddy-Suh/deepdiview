@@ -8,7 +8,7 @@ import { getCertification } from '@/lib/api/certification'
 import { getIsSunday, getThisWeekMovieId } from '@/lib/api/discussion'
 import ReviewFormSection from '@/components/layout/ReviewFormSection'
 import { getMovie } from '@/lib/api/movie'
-import { MOVIES_CODES } from '@/constants/messages/movies'
+import { MOVIES_CODES } from '@/constants/messages/movie'
 
 export default async function MoviesReviewsCreatePage({
   params,
@@ -37,7 +37,7 @@ export default async function MoviesReviewsCreatePage({
     movie = await getMovie(tmdbId, !!session, session?.accessToken)
   } catch (error) {
     const errorCode = (error as Error).message
-    if (errorCode === MOVIES_CODES.MOVIES_NOT_FOUND) return notFound()
+    if (errorCode === MOVIES_CODES.MOVIE_NOT_FOUND) return notFound()
     throw error
   }
 

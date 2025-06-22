@@ -6,7 +6,7 @@ import { getReview } from '@/lib/api/review'
 import { auth } from '@/auth'
 import { notFound, redirect } from 'next/navigation'
 import ReviewFormSection from '@/components/layout/ReviewFormSection'
-import { REVIEW_CODES } from '@/constants/messages/reviews'
+import { REVIEW_CODES } from '@/constants/messages/review'
 import { COMMON_CODES } from '@/constants/messages/common'
 
 export default async function ReviewsEditPage({ params }: { params: Promise<{ id: string }> }) {
