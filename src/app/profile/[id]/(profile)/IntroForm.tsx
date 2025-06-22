@@ -1,9 +1,15 @@
 'use client'
 
-import { useActionState, useEffect, useRef, useState } from 'react'
+import { useActionState, useEffect, useState } from 'react'
 import { updateIntroAction } from './actions'
 import { Check, Pencil, X } from 'lucide-react'
 import clsx from 'clsx'
+import { COMMON_CODES, COMMON_MESSAGES } from '@/constants/messages/common'
+import toast from 'react-hot-toast'
+import { useForm } from 'react-hook-form'
+import { UpdateIntroRequest } from '@/types/api/user'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { updateIntroSchema } from '@/schemas/user/updateIntroSchema'
 
 export default function IntroForm({
   isCurrentUser,
@@ -14,9 +20,7 @@ export default function IntroForm({
   oneLineIntro: string
   isEdit: boolean
 }) {
-  const inputRef = useRef<HTMLInputElement>(null)
   const [isEditing, setIsEditing] = useState(false)
-  const [intro, setIntro] = useState(oneLineIntro)
   const [prevIntro, setPrevIntro] = useState('')
   // 닉네임은 수정 성공시 세션을 갱신 하기 때문에 리렌더링되어 이전값 상태 관리 필요 없음
   // 한 줄 소개는 세션에 포함되지 않기 때문에 수동으로 상태를 관리 필요
@@ -25,17 +29,45 @@ export default function IntroForm({
   // 초기 oneLineIntro가 아니라 직전에 저장된 값을 복원해야 하므로 prevIntro로 따로 저장해둠.
 
   const [state, formAction, isPending] = useActionState(updateIntroAction, {
-    message: '',
+    code: '',
     intro: '',
   })
 
+  const {
+    register,
+    watch,
+    setValue,
+    setFocus,
+    reset,
+    formState: { errors, isValid },
+  } = useForm<UpdateIntroRequest>({
+    resolver: zodResolver(updateIntroSchema),
+    mode: 'onChange',
+    defaultValues: {
+      oneLineIntro,
+    },
+  })
+
+  const intro = watch('oneLineIntro')
+
   // 수정 성공
   useEffect(() => {
-    if (state.message === 'success') {
-      setIntro(state.intro)
+    if (state.code === '') return
+
+    if (state.code === COMMON_CODES.SUCCESS) {
+      setValue('oneLineIntro', state.intro)
       setIsEditing(false)
       setPrevIntro(intro)
     }
+
+    // 실패시
+    // 폼돌려 놓기
+    reset(watch())
+
+    if (state.code === COMMON_CODES.NETWORK_ERROR) {
+      toast.error(COMMON_MESSAGES.NETWORK_ERROR!)
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state])
 
@@ -43,7 +75,7 @@ export default function IntroForm({
   useEffect(() => {
     if (isEditing) {
       setPrevIntro(intro)
-      inputRef.current?.focus()
+      setFocus('oneLineIntro')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditing])
@@ -55,10 +87,10 @@ export default function IntroForm({
       // 초기 렌더링(isEdit === false) 시
       // prevIntro의 초기값인 빈문자열로 setIntro(prevIntro) 방지
       if (prevIntro !== '') {
-        setIntro(prevIntro)
+        setValue('oneLineIntro', state.intro)
       }
     }
-  }, [isEdit, prevIntro])
+  }, [isEdit, prevIntro, setValue, state.intro])
 
   if (!isCurrentUser)
     return (
@@ -75,20 +107,16 @@ export default function IntroForm({
         <form action={formAction}>
           <div className='bg-base-100 relative rounded-2xl p-4'>
             <input
+              {...register('oneLineIntro')}
               className='w-full border-none text-center outline-none'
-              ref={inputRef}
-              name='oneLineIntro'
               type='text'
-              value={intro}
-              onChange={(e) => setIntro(e.target.value)}
-              maxLength={50}
               disabled={isPending}
             />
             <div>
               <button
                 className='profile-btn -top-2.5 -right-2.5'
                 type='submit'
-                disabled={isPending}
+                disabled={isPending || !isValid}
               >
                 {isPending ? (
                   <span className='loading loading-spinner' />
@@ -101,13 +129,16 @@ export default function IntroForm({
                 type='button'
                 onClick={() => {
                   setIsEditing(false)
-                  setIntro(prevIntro)
+                  setValue('oneLineIntro', prevIntro)
                 }}
               >
                 <X className='stroke-3' />
               </button>
             </div>
           </div>
+          {errors.oneLineIntro?.message && (
+            <p className='text-error mt-2 text-center text-sm'>{errors.oneLineIntro.message}</p>
+          )}
         </form>
       ) : (
         <div className='bg-base-100 relative w-full rounded-2xl p-4'>
@@ -125,7 +156,6 @@ export default function IntroForm({
           )}
         </div>
       )}
-      {state.message !== 'success' && <>{state.message}</>}
     </div>
   )
 }

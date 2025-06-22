@@ -1,4 +1,4 @@
-// 알림 타입
+// 알림 타입 코드
 export const NOTIFICATION_TYPES = {
   NEW_LIKE: 'NEW_LIKE',
   NEW_COMMENT: 'NEW_COMMENT',
@@ -8,28 +8,26 @@ export const NOTIFICATION_TYPES = {
 
 export type NotificationType = (typeof NOTIFICATION_TYPES)[keyof typeof NOTIFICATION_TYPES]
 
-export const NOTIFICATION_TYPES_LABELS: Record<NotificationType, string> = {
-  NEW_LIKE: '❤️',
-  NEW_COMMENT: '💬',
-  CERTIFICATION_APPROVED: '✅',
-  CERTIFICATION_REJECTED: '❌',
+export const NOTIFICATION_LABELS: Record<NotificationType, string> = {
+  [NOTIFICATION_TYPES.NEW_LIKE]: '❤️',
+  [NOTIFICATION_TYPES.NEW_COMMENT]: '💬',
+  [NOTIFICATION_TYPES.CERTIFICATION_APPROVED]: '✅',
+  [NOTIFICATION_TYPES.CERTIFICATION_REJECTED]: '❌',
 }
 
 export function getNotificationTypesLabel(type: NotificationType): string {
-  return NOTIFICATION_TYPES_LABELS[type]
+  return NOTIFICATION_LABELS[type]
 }
 
-export const NOTIFICATION_LINK_MAP: Record<
-  NotificationType,
-  (id: number) => string | (() => string)
-> = {
-  NEW_LIKE: (id) => `/reviews/${id}`,
-  NEW_COMMENT: (id) => `/reviews/${id}`,
-  CERTIFICATION_APPROVED: () => '/board',
-  CERTIFICATION_REJECTED: () => '/profile/submit-certification',
-}
+export const NOTIFICATION_LINKS: Record<NotificationType, (id: number) => string | (() => string)> =
+  {
+    [NOTIFICATION_TYPES.NEW_LIKE]: (id) => `/reviews/${id}`,
+    [NOTIFICATION_TYPES.NEW_COMMENT]: (id) => `/reviews/${id}`,
+    [NOTIFICATION_TYPES.CERTIFICATION_APPROVED]: () => '/board',
+    [NOTIFICATION_TYPES.CERTIFICATION_REJECTED]: () => '/profile/submit-certification',
+  }
 
 export function getNotificationLink(type: NotificationType, relatedId: number | null): string {
-  const fn = NOTIFICATION_LINK_MAP[type]
+  const fn = NOTIFICATION_LINKS[type]
   return relatedId ? (fn as (id: number) => string)(relatedId) : (fn as () => string)()
 }

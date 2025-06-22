@@ -1,3 +1,4 @@
+import { createReviewServerSchema } from '@/schemas/review/createReviewSchema'
 import {
   BasePaginationParams,
   PaginatedResponse,
@@ -6,6 +7,8 @@ import {
   ReviewSortField,
   WriteReviewResponse,
 } from './common'
+import { z } from 'zod'
+import { updateReviewServerSchema } from '@/schemas/review/updateReviewSchema'
 
 // API 타입
 
@@ -13,23 +16,13 @@ import {
 export type GetReviewResponse = Review
 
 // 리뷰글 수정
-export interface UpdateReviewRequest {
-  title: string
-  content: string
-  rating: number
-}
+export type UpdateReviewRequest = z.infer<typeof updateReviewServerSchema>
 export type UpdateReviewResponse = WriteReviewResponse
 
 // 리뷰글 삭제
 
 // 리뷰글 작성
-export interface CreateReviewRequest {
-  tmdbId: number
-  title: string
-  content: string
-  rating: number
-}
-
+export type CreateReviewRequest = z.infer<typeof createReviewServerSchema>
 export type CreateReviewResponse = WriteReviewResponse
 
 // 좋아요

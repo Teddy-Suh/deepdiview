@@ -1,4 +1,6 @@
+import { z } from 'zod'
 import { Comment, CursorPaginatedResponse, PaginationParamsWithSort } from './common'
+import { commentSchema } from '@/schemas/review/commentSchema'
 
 // API 타입
 
@@ -22,6 +24,4 @@ export type CreateCommentRequest = CommentsRequest
 export type CreateCommentResponse = Comment
 
 // 보조 타입
-export interface CommentsRequest {
-  content: string
-}
+export type CommentsRequest = z.infer<typeof commentSchema>

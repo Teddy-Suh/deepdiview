@@ -1,0 +1,17 @@
+export const USER_CODES = {
+  ALREADY_EXIST_NICKNAME: 'ALREADY_EXIST_NICKNAME',
+  EMAIL_NOT_VERIFIED: 'EMAIL_NOT_VERIFIED',
+  USER_NOT_FOUND: 'USER_NOT_FOUND',
+  NOT_VALID_PASSWORD: 'NOT_VALID_PASSWORD',
+  INVALID_REFRESH_TOKEN: 'INVALID_REFRESH_TOKEN',
+} as const
+
+export type UserCode = (typeof USER_CODES)[keyof typeof USER_CODES]
+
+export const USER_MESSAGES: Record<UserCode, string> = {
+  [USER_CODES.ALREADY_EXIST_NICKNAME]: '중복된 닉네임입니다.',
+  [USER_CODES.EMAIL_NOT_VERIFIED]: '이메일 인증이 만료되었습니다.',
+  [USER_CODES.USER_NOT_FOUND]: '가입되지 않은 이메일입니다.',
+  [USER_CODES.NOT_VALID_PASSWORD]: '비밀번호가 일치하지 않습니다.',
+  [USER_CODES.INVALID_REFRESH_TOKEN]: '유효하지 않은 토큰입니다.',
+}

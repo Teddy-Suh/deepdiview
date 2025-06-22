@@ -1,43 +1,46 @@
 'use server'
 
 import { auth } from '@/auth'
+import { COMMON_CODES } from '@/constants/messages/common'
 import { updateReview } from '@/lib/api/review'
+import { updateReviewServerSchema } from '@/schemas/review/updateReviewSchema'
+import { redirect } from 'next/navigation'
 
 export const updateReviewAction = async (
   reviewId: string,
-  state: { message: string; resReviewId: string },
+  state: { code: string; resReviewId: string },
   formData: FormData
 ) => {
   const session = await auth()
-  if (!session) throw new Error('UNAUTHORIZED')
+  if (!session) redirect('/login')
 
-  // TODO: 유효성 검사 도입 (zod)
-  const title = formData.get('title') as string
-  const content = formData.get('content') as string
-  const rating = formData.get('rating') as string // form에서 온거라 string임
+  const validatedFields = updateReviewServerSchema.safeParse({
+    title: formData.get('title'),
+    content: formData.get('content'),
+    rating: formData.get('rating'),
+  })
+
+  if (!validatedFields.success) {
+    throw new Error(COMMON_CODES.INVALID)
+  }
+
+  const { title, content, rating } = validatedFields.data
 
   try {
     const { reviewId: resReviewId } = await updateReview(reviewId, session.accessToken, {
       title,
       content,
-      rating: Number(rating),
+      rating,
     })
-    return { ...state, message: 'success', resReviewId: resReviewId.toString() }
+    return { ...state, code: COMMON_CODES.SUCCESS, resReviewId: resReviewId.toString() }
   } catch (error) {
-    // TODO: 에러 처리 구현 (우선 분기 처리만 해둠)
     const errorCode = (error as Error).message
     switch (errorCode) {
-      case 'REVIEW_NOT_FOUND':
-        return { ...state, message: '존재하지 않는 리뷰입니다.' }
-      case 'INVALID_USER':
-        return { ...state, message: '작성자만 가능합니다.' }
-      case 'UNEXPECTED_ERROR':
-        throw new Error('UNEXPECTED_ERROR')
-      // 코드 오류나 프레임워크 내부 예외 등 완전히 예상치 못한 예외 (ex. NEXT_REDIRECT, CallbackRouteError, ReferenceError 등)
+      case COMMON_CODES.NETWORK_ERROR:
+        return { ...state, code: errorCode }
       default:
         console.error(error)
-        // TODO: error.tsx 제대로 구현 후 error도 넘겨주게 변경
-        throw new Error('UNHANDLED_ERROR')
+        throw new Error(COMMON_CODES.UNHANDLED_ERROR)
     }
   }
 }

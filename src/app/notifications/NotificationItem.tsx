@@ -8,6 +8,8 @@ import clsx from 'clsx'
 import { useRouter } from 'next/navigation'
 import { getNotificationLink, getNotificationTypesLabel } from '@/constants/notifications'
 import Link from 'next/link'
+import { COMMON_CODES, COMMON_MESSAGES } from '@/constants/messages/common'
+import toast from 'react-hot-toast'
 
 export default function NotificationItem({
   notification,
@@ -22,7 +24,7 @@ export default function NotificationItem({
     readNotificationAction.bind(null, notification.notificationId.toString()),
     {
       hasUnread: null,
-      message: '',
+      code: '',
     }
   )
 
@@ -30,11 +32,18 @@ export default function NotificationItem({
   const link = getNotificationLink(notification.notificationType, notification.relatedId)
 
   useEffect(() => {
-    if (state.hasUnread !== null && !calledRef.current) {
+    if (state.code === '' || state.hasUnread === null) return
+
+    if (state.code === COMMON_CODES.SUCCESS && !calledRef.current) {
       calledRef.current = true
-      if (state.hasUnread === null) return
       onRead(notification.notificationId, state.hasUnread)
       router.push(link)
+      return
+    }
+
+    if (state.code === COMMON_CODES.NETWORK_ERROR) {
+      toast.error(COMMON_MESSAGES.NETWORK_ERROR!)
+      return
     }
   }, [link, notification.notificationId, onRead, router, state])
 

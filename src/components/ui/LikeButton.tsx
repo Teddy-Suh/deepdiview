@@ -1,9 +1,13 @@
 'use client'
 
+import { COMMON_CODES, COMMON_MESSAGES } from '@/constants/messages/common'
+import { REVIEW_CODES, REVIEW_MESSAGES } from '@/constants/messages/reviews'
 import { toggleLikeAction } from '@/lib/actions/like'
 import clsx from 'clsx'
 import { Heart } from 'lucide-react'
-import { useActionState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useActionState, useEffect } from 'react'
+import toast from 'react-hot-toast'
 
 export default function LikeButton({
   likedByUser,
@@ -16,11 +20,25 @@ export default function LikeButton({
   reviewId: string
   readOnly: boolean
 }) {
+  const router = useRouter()
+
   const [state, formAction] = useActionState(toggleLikeAction.bind(null, reviewId), {
     likedByUser,
     likeCount,
-    message: '',
+    code: '',
   })
+
+  useEffect(() => {
+    if (state.code === '') return
+
+    if (state.code === COMMON_CODES.NETWORK_ERROR) {
+      toast.error(COMMON_MESSAGES.NETWORK_ERROR!)
+    }
+    if (state.code === REVIEW_CODES.REVIEW_NOT_FOUND) {
+      toast.error(REVIEW_MESSAGES.REVIEW_NOT_FOUND)
+      router.back()
+    }
+  }, [router, state])
 
   if (readOnly || likedByUser === null)
     return (
@@ -52,7 +70,6 @@ export default function LikeButton({
           <p>{state.likeCount}</p>
         </div>
       </form>
-      {state.message && <>{state.message}</>}
     </>
   )
 }

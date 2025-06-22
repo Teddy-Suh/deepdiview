@@ -12,6 +12,9 @@ import { useRouter } from 'next/navigation'
 import AuthSubmitButton from '@/components/form/AuthSubmitButton'
 import AuthFormInput from '@/components/form/AuthFormInput'
 import { useHydrated } from '@/hooks/useHydrated'
+import { COMMON_CODES, COMMON_MESSAGES } from '@/constants/messages/common'
+import toast from 'react-hot-toast'
+import { EMAIL_CODES, EMAIL_MESSAGES } from '@/constants/messages/email'
 
 export default function VerifyEmailForm() {
   const router = useRouter()
@@ -32,16 +35,12 @@ export default function VerifyEmailForm() {
     },
   })
   const code = watch('code')
-  const [state, formAction, isPending] = useActionState(verifyEmailAction, {
-    message: '',
+  const [verifyState, formAction, isPending] = useActionState(verifyEmailAction, {
+    code: '',
   })
   const [sendState, sendFormAction, isSendPending] = useActionState(sendEmailAction, {
-    message: '',
+    code: '',
   })
-
-  // 폼에 표시해야 하는 서버 액션 에러 메세지
-  const codeError = '코드가 일치하지 않습니다.'
-  const codeExpiredError = '코드가 만료되었습니다.'
 
   // 클라이언트 하이드레이션 이전에는 zustand 값이 비어있을 수 있으므로, 하이드레이션 완료 후 처리
   // (해당 처리 없으면 새로고침시 email없다고 판단 후 이전 스텝으로 돌아감)
@@ -63,10 +62,10 @@ export default function VerifyEmailForm() {
 
   // 서버 액션 이후
   useEffect(() => {
-    if (state.message === '') return
+    if (verifyState.code === '') return
 
     // 성공시
-    if (state.message === 'success') {
+    if (verifyState.code === COMMON_CODES.SUCCESS) {
       setVerified(true)
       // 이메일 인증은 성공시 뒤로가기로 다시 접근 못함
       // 다음 스텝에서 뒤로가기시 이메일 입력으로 돌아감
@@ -77,21 +76,26 @@ export default function VerifyEmailForm() {
     // 실패 시 폼 돌려 놓기
     reset(watch())
 
+    // 토스트 메세지로 띄워야 하는 에러
+    if (verifyState.code === COMMON_CODES.NETWORK_ERROR) {
+      toast.error(COMMON_MESSAGES.NETWORK_ERROR!)
+    }
+
     // 폼에 표시해야 하는 서버 액션 에러 메세지는 각 폼에 setError
     // 코드 만료되었을때
-    if (state.message === codeExpiredError) {
+    if (verifyState.code === EMAIL_CODES.EXPIRED_CODE) {
       setTimeLeft(0)
       setError('code', {
-        message: state.message,
+        message: EMAIL_MESSAGES.EXPIRED_CODE,
       })
     }
     // 코드 틀렸을때
-    if (state.message === codeError) {
+    if (verifyState.code === EMAIL_CODES.INVALID_CODE) {
       setError('code', {
-        message: state.message,
+        message: EMAIL_MESSAGES.INVALID_CODE,
       })
     }
-  }, [codeError, reset, router, setError, setVerified, state, watch])
+  }, [reset, router, setError, setVerified, verifyState, watch])
 
   // 5분 타이머
   const [timeLeft, setTimeLeft] = useState(300)
@@ -115,7 +119,7 @@ export default function VerifyEmailForm() {
   // 재전송 시
   useEffect(() => {
     // 타이머 초기화
-    if (sendState.message === 'success') {
+    if (sendState.code === COMMON_CODES.SUCCESS) {
       setTimeLeft(300)
       // 새 코드 받을테니 코드 input 비우기
       reset({

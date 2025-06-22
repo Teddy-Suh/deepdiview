@@ -6,6 +6,7 @@ import { SessionProvider } from '@/providers/providers'
 import NotificationClient from '@/components/layout/NotificationClient'
 import { auth } from '@/auth'
 import Footer from '@/components/layout/Footer'
+import { Toaster } from 'react-hot-toast'
 
 export const metadata: Metadata = {
   title: 'Deepdiview',
@@ -22,6 +23,7 @@ export default async function RootLayout({
       <body className='flex min-h-screen flex-col'>
         <SessionProvider initialSession={session}>
           <NotificationClient />
+          <Toaster position='top-center' />
           <header>
             <TopNav />
           </header>

@@ -1,46 +1,49 @@
 'use server'
 
 import { auth } from '@/auth'
+import { COMMON_CODES } from '@/constants/messages/common'
+import { REVIEW_CODES } from '@/constants/messages/reviews'
 import { createBoardReview } from '@/lib/api/discussion'
+import { createBoardReviewServerSchema } from '@/schemas/review/createBoardReviewSchema'
 import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 
 export const createBoardReviewAction = async (
-  state: { message: string; resReviewId: string },
+  state: { code: string; resReviewId: string },
   formData: FormData
 ) => {
   const session = await auth()
-  if (!session) throw new Error('UNAUTHORIZED')
+  if (!session) redirect('/')
 
-  // TODO: 유효성 검사 도입 (zod)
-  const title = formData.get('title') as string
-  const content = formData.get('content') as string
-  const rating = formData.get('rating') as string // form에서 온거라 string임
+  const validatedFields = createBoardReviewServerSchema.safeParse({
+    title: formData.get('title'),
+    content: formData.get('content'),
+    rating: formData.get('rating'),
+  })
+
+  if (!validatedFields.success) {
+    throw new Error(COMMON_CODES.INVALID)
+  }
+
+  const { title, content, rating } = validatedFields.data
 
   try {
     const { reviewId: resReviewId } = await createBoardReview(session.accessToken, {
       title,
       content,
-      rating: Number(rating),
+      rating,
     })
     revalidatePath('/board')
-    return { ...state, message: 'success', resReviewId: resReviewId.toString() }
+    return { ...state, code: COMMON_CODES.SUCCESS, resReviewId: resReviewId.toString() }
   } catch (error) {
-    // TODO: 에러 처리 구현 (우선 분기 처리만 해둠)
     const errorCode = (error as Error).message
     switch (errorCode) {
-      case 'NOT_CERTIFIED_YET':
-        return { ...state, message: '토론 작성 권한이 없습니다. 인증을 먼저 완료해주세요' }
-      case 'MOVIE_NOT_FOUND':
-        return { ...state, message: '존재하지 않는 영화입니다.' }
-      case 'INVALID_REVIEW_PERIOD':
-        return { ...state, message: '토론 작성 기간이 아닙니다. 다음 주에 새로운 영화로 만나요' }
-      case 'UNEXPECTED_ERROR':
-        throw new Error('UNEXPECTED_ERROR')
-      // 코드 오류나 프레임워크 내부 예외 등 완전히 예상치 못한 예외 (ex. NEXT_REDIRECT, CallbackRouteError, ReferenceError 등)
+      case COMMON_CODES.NETWORK_ERROR:
+      case REVIEW_CODES.ALREADY_COMMITTED_REVIEW:
+        return { ...state, code: errorCode }
       default:
         console.error(error)
-        // TODO: error.tsx 제대로 구현 후 error도 넘겨주게 변경
-        throw new Error('UNHANDLED_ERROR')
+        throw new Error(COMMON_CODES.UNHANDLED_ERROR)
     }
   }
 }

@@ -15,6 +15,8 @@ import { deleteAccountSchema } from '@/schemas/auth/deleteAccountSchema'
 import { registerSchema } from '@/schemas/auth/registerSchema'
 import { loginSchema } from '@/schemas/auth/loginSchema'
 import { CertificationRejectionReason, CertificationStatus } from '@/constants/certification'
+import { updateNicknameSchema } from '@/schemas/user/updateNicknameSchema'
+import { updateIntroSchema } from '@/schemas/user/updateIntroSchema'
 
 // API 타입
 
@@ -29,9 +31,7 @@ export type DeleteProfileImgResponse = ProfileImgResponse
 export type UpdatePasswordRequest = z.infer<typeof updatePasswordSchema>
 
 // 닉네임 수정
-export interface UpdateNicknameRequest {
-  newNickname: string
-}
+export type UpdateNicknameRequest = z.infer<typeof updateNicknameSchema>
 
 export interface UpdateNicknameResponse {
   updatedNickname: string
@@ -44,9 +44,8 @@ export type GetMyProfileResponse = ProfileResponse
 export type DeleteMyProfileRequest = z.infer<typeof deleteAccountSchema>
 
 // 한줄소개 설정/수정
-export interface UpdateIntroRequest {
-  oneLineIntro: string
-}
+export type UpdateIntroRequest = z.infer<typeof updateIntroSchema>
+
 export interface UpdateIntroResponse {
   updatedOneLineIntro: string | null
 }

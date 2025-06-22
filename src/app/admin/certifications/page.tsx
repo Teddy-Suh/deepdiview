@@ -21,7 +21,6 @@ export default async function AdminCertificationsPage({
   const session = await auth()
   if (!session) redirect('/login')
 
-  // TODO: 토스트 메세지 또는 에러 던져서 에러 페이지에서 안내
   const { isSunday } = await getIsSunday()
   if (isSunday) redirect(`/admin`)
 

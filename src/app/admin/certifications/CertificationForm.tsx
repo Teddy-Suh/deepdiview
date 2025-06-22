@@ -10,6 +10,9 @@ import {
   getCertificationStatusBtnLabel,
   getRejectionReasonLabel,
 } from '@/constants/certification'
+import { COMMON_CODES, COMMON_MESSAGES } from '@/constants/messages/common'
+import toast from 'react-hot-toast'
+import { CERTIFICATION_CODES, CERTIFICATION_MESSAGES } from '@/constants/messages/certification'
 
 export default function CertificationForm({
   initialCertification,
@@ -26,17 +29,30 @@ export default function CertificationForm({
     ),
     {
       certification,
-      message: '',
+      code: '',
     }
   )
 
   useEffect(() => {
-    setCertifications(state.certification)
+    if (state.code === '') return
+
+    if (state.code === COMMON_CODES.SUCCESS) {
+      setCertifications(state.certification)
+      return
+    }
+
+    if (state.code === COMMON_CODES.NETWORK_ERROR) {
+      toast.error(COMMON_MESSAGES.NETWORK_ERROR!)
+      return
+    }
+
+    if (state.code === CERTIFICATION_CODES.CERTIFICATION_NOT_FOUND) {
+      toast.error(CERTIFICATION_MESSAGES.CERTIFICATION_NOT_FOUND)
+      setCertifications(state.certification)
+      return
+    }
   }, [state])
 
-  // '인증요청이 존재하지 않습니다.'와 같은 오류는 전체 에러 페이지로 처리하지 않음
-  // 서버 액션 결과로 certification이 null이면, 해당 항목만 UI에서 제거
-  // TODO: 토스트 메세지로 에러 메세지 띄우기
   if (certification === null) return <></>
 
   return (
@@ -91,8 +107,6 @@ export default function CertificationForm({
           </form>
         )}
       </CertificationItemWrapper>
-      {/* TODO: 토스트 메세지로 에러 메세지 띄우기 */}
-      {state.message && <>{state.message}</>}
     </>
   )
 }

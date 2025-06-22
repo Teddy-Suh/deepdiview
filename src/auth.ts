@@ -14,24 +14,11 @@ export const {
     Credentials({
       authorize: async (credentials) => {
         const { email, password } = credentials as unknown as LoginRequest
-        try {
-          if (!email || !password) {
-            throw new Error('❌ [authorize] 이메일, 비밀번호 누락')
-          }
-
-          const user = await login({
-            email,
-            password,
-          })
-
-          console.log('✅ [authorize] 로그인 성공')
-          return user
-        } catch (error) {
-          console.error('❌ [authorize] 로그인 실패:', error)
-
-          const e = error as Error
-          throw new Error(e.message)
-        }
+        const user = await login({
+          email,
+          password,
+        })
+        return user
       },
     }),
   ],

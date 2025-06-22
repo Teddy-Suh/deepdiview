@@ -1,6 +1,8 @@
 'use server'
 
 import { auth, signOut, update } from '@/auth'
+import { COMMON_CODES } from '@/constants/messages/common'
+import { USER_CODES } from '@/constants/messages/users'
 import {
   deleteProfileImg,
   logout,
@@ -8,15 +10,17 @@ import {
   updateNickname,
   updateProfileImg,
 } from '@/lib/api/user'
+import { updateIntroSchema } from '@/schemas/user/updateIntroSchema'
+import { updateNicknameSchema } from '@/schemas/user/updateNicknameSchema'
 import { redirect } from 'next/navigation'
 
 export const updateProfileImgAction = async (
   croppedImage: Blob | null,
-  state: { profileImageUrl: string; message: string }
+  state: { profileImageUrl: string; code: string }
 ) => {
   const session = await auth()
-  if (!session?.user) throw new Error('UNAUTHORIZED')
-  if (croppedImage === null) throw new Error('NO_PHOTO')
+  if (!session?.user) redirect('/login')
+  if (croppedImage === null) throw new Error(COMMON_CODES.INVALID)
   const formData = new FormData()
 
   // name 없는 Blob → File로 감싸기
@@ -30,32 +34,22 @@ export const updateProfileImgAction = async (
         profileImageUrl,
       },
     })
-    return { ...state, profileImageUrl }
+    return { ...state, code: COMMON_CODES.SUCCESS, profileImageUrl }
   } catch (error) {
     const errorCode = (error as Error).message
     switch (errorCode) {
-      case 'IMAGE_FILE_ONLY':
-        return { ...state, message: '이미지 파일만 업로드 가능합니다.' }
-      case 'FILE_SIZE_EXCEEDED':
-        return { ...state, message: '파일 크기는 5MB를 초과할 수 없습니다' }
-      case 'FILE_NOT_FOUND':
-        return { ...state, message: '파일을 업로드 해주세요.' }
-      case 'FILE_UPLOAD_FAILED':
-        return { ...state, message: '파일 업로드 중 문제가 발생했습니다' }
-      case 'UNEXPECTED_ERROR':
-        throw new Error('UNEXPECTED_ERROR')
-      // 코드 오류나 프레임워크 내부 예외 등 완전히 예상치 못한 예외 (ex. NEXT_REDIRECT, CallbackRouteError, ReferenceError 등)
+      case COMMON_CODES.NETWORK_ERROR:
+        return { ...state, code: errorCode }
       default:
         console.error(error)
-        // TODO: error.tsx 제대로 구현 후 error도 넘겨주게 변경
-        throw new Error('UNHANDLED_ERROR')
+        throw new Error(COMMON_CODES.UNHANDLED_ERROR)
     }
   }
 }
 
-export const deleteProfileImgAction = async (state: { message: string }) => {
+export const deleteProfileImgAction = async (state: { code: string }) => {
   const session = await auth()
-  if (!session?.user) throw new Error('UNAUTHORIZED')
+  if (!session?.user) redirect('/login')
 
   try {
     const { profileImageUrl } = await deleteProfileImg(session.accessToken)
@@ -68,26 +62,27 @@ export const deleteProfileImgAction = async (state: { message: string }) => {
   } catch (error) {
     const errorCode = (error as Error).message
     switch (errorCode) {
-      case 'FILE_DELETE_FAILED':
-        return { ...state, message: '파일 삭제 중 문제가 발생했습니다' }
-      case 'UNEXPECTED_ERROR':
-        throw new Error('UNEXPECTED_ERROR')
-      // 코드 오류나 프레임워크 내부 예외 등 완전히 예상치 못한 예외 (ex. NEXT_REDIRECT, CallbackRouteError, ReferenceError 등)
+      case COMMON_CODES.NETWORK_ERROR:
+        return { ...state, code: errorCode }
       default:
         console.error(error)
-        // TODO: error.tsx 제대로 구현 후 error도 넘겨주게 변경
-        throw new Error('UNHANDLED_ERROR')
+        throw new Error(COMMON_CODES.UNHANDLED_ERROR)
     }
   }
 }
 
-export const updateNicknameAction = async (
-  state: { message: string; nickname: string },
-  formData: FormData
-) => {
+export const updateNicknameAction = async (state: { code: string }, formData: FormData) => {
   const session = await auth()
-  if (!session?.user) throw new Error('UNAUTHORIZED')
-  const newNickname = formData.get('newNickname') as string
+  if (!session?.user) redirect('/login')
+
+  const validatedFields = updateNicknameSchema.safeParse({
+    newNickname: formData.get('newNickname'),
+  })
+
+  if (!validatedFields.success) {
+    throw new Error(COMMON_CODES.INVALID)
+  }
+  const { newNickname } = validatedFields.data
 
   try {
     const { updatedNickname } = await updateNickname(session.accessToken, {
@@ -99,30 +94,36 @@ export const updateNicknameAction = async (
         nickname: updatedNickname,
       },
     })
-    return { ...state, message: 'success', nickname: updatedNickname }
+    return { ...state, code: COMMON_CODES.SUCCESS }
   } catch (error) {
     const errorCode = (error as Error).message
     switch (errorCode) {
-      case 'ALREADY_EXIST_NICKNAME':
-        return { ...state, message: '중복 닉네임 입니다' }
-      case 'UNEXPECTED_ERROR':
-        throw new Error('UNEXPECTED_ERROR')
-      // 코드 오류나 프레임워크 내부 예외 등 완전히 예상치 못한 예외 (ex. NEXT_REDIRECT, CallbackRouteError, ReferenceError 등)
+      case COMMON_CODES.NETWORK_ERROR:
+      case USER_CODES.ALREADY_EXIST_NICKNAME:
+        return { ...state, code: errorCode }
       default:
         console.error(error)
-        // TODO: error.tsx 제대로 구현 후 error도 넘겨주게 변경
-        throw new Error('UNHANDLED_ERROR')
+        throw new Error(COMMON_CODES.UNHANDLED_ERROR)
     }
   }
 }
 
 export const updateIntroAction = async (
-  state: { message: string; intro: string },
+  state: { code: string; intro: string },
   formData: FormData
 ) => {
   const session = await auth()
-  if (!session?.user) throw new Error('UNAUTHORIZED')
-  const oneLineIntro = formData.get('oneLineIntro') as string
+  if (!session?.user) redirect('/login')
+
+  const validatedFields = updateIntroSchema.safeParse({
+    oneLineIntro: formData.get('oneLineIntro'),
+  })
+
+  if (!validatedFields.success) {
+    throw new Error(COMMON_CODES.INVALID)
+  }
+
+  const { oneLineIntro } = validatedFields.data
 
   try {
     const updatedOneLineIntro = (
@@ -130,17 +131,15 @@ export const updateIntroAction = async (
         oneLineIntro,
       })
     ).updatedOneLineIntro
-    return { ...state, message: 'success', intro: updatedOneLineIntro ?? '' }
+    return { ...state, code: COMMON_CODES.SUCCESS, intro: updatedOneLineIntro ?? '' }
   } catch (error) {
     const errorCode = (error as Error).message
     switch (errorCode) {
-      case 'UNEXPECTED_ERROR':
-        throw new Error('UNEXPECTED_ERROR')
-      // 코드 오류나 프레임워크 내부 예외 등 완전히 예상치 못한 예외 (ex. NEXT_REDIRECT, CallbackRouteError, ReferenceError 등)
+      case COMMON_CODES.NETWORK_ERROR:
+        return { ...state, code: errorCode }
       default:
         console.error(error)
-        // TODO: error.tsx 제대로 구현 후 error도 넘겨주게 변경
-        throw new Error('UNHANDLED_ERROR')
+        throw new Error(COMMON_CODES.UNHANDLED_ERROR)
     }
   }
 }
@@ -148,15 +147,14 @@ export const updateIntroAction = async (
 export const signOutAction = async () => {
   try {
     const session = await auth()
-    if (!session) throw new Error('UNAUTHORIZED')
+    if (!session) redirect('/login')
     await logout(session.accessToken)
   } catch (error) {
     console.error(error)
-    throw new Error('UNHANDLED_ERROR')
+    throw new Error(COMMON_CODES.UNHANDLED_ERROR)
   } finally {
     // access token이 만료되면 try 블록 내의 signOut이 실행되지 않음
     // 로그아웃 버튼 클릭 시 클라이언트 세션은 항상 삭제되도록 처리함
-    // TODO: access token 만료(401) 시 처리 로직 추가 필요
     await signOut({ redirect: false })
     redirect('/')
   }

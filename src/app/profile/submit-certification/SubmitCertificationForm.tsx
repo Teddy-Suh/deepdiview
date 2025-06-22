@@ -12,12 +12,20 @@ import CropImageModal from './CropImageModal'
 import { CERTIFICATION_STATUS } from '@/constants/certification'
 import CertificationItemWrapper from '@/components/ui/CertificationItemWrapper'
 import GuideModal from './GuideModal'
+import { COMMON_CODES, COMMON_MESSAGES } from '@/constants/messages/common'
+import toast from 'react-hot-toast'
+import { CERTIFICATION_CODES, CERTIFICATION_MESSAGES } from '@/constants/messages/certification'
+import { useRouter } from 'next/navigation'
+import { Session } from 'next-auth'
 
 export default function SubmitCertificationForm({
+  session,
   initialCertification,
 }: {
+  session: Session
   initialCertification: UserCertification
 }) {
+  const router = useRouter()
   const [certification, setCertification] = useState(initialCertification)
   const [selectedImageUrl, setSelectedImageUrl] = useState('')
   const [, setImageFile] = useState<File | null>(null)
@@ -28,42 +36,78 @@ export default function SubmitCertificationForm({
 
   const [createState, createAction, isCreatePending] = useActionState(
     createCertificationAction.bind(null, croppedImage),
-    { message: '', certification: null }
+    { code: '', certification: null }
   )
 
   const [updateState, updateAction, isUpdatePending] = useActionState(
     updateCertificationAction.bind(null, croppedImage),
-    { message: '', certification: null }
+    { code: '', certification: null }
   )
 
   const [deleteState, deleteAction, isDeletePending] = useActionState(deleteCertificationAction, {
-    message: '',
+    code: '',
     certification: null,
   })
 
-  // 수정
-  useEffect(() => {
-    if (updateState.certification) {
-      setCertification(updateState.certification)
-      setCroppedImage(null)
-    }
-  }, [updateState])
-
   // 등록
   useEffect(() => {
-    if (createState.certification) {
+    if (createState.code === '') return
+
+    if (createState.code === COMMON_CODES.SUCCESS && createState.certification) {
       setCertification(createState.certification)
       setCroppedImage(null)
+      return
+    }
+
+    if (createState.code === COMMON_CODES.NETWORK_ERROR) {
+      toast.error(COMMON_MESSAGES.NETWORK_ERROR!)
+      return
     }
   }, [createState])
 
+  // 수정
+  useEffect(() => {
+    if (updateState.code === '') return
+
+    if (updateState.code === COMMON_CODES.SUCCESS && updateState.certification) {
+      setCertification(updateState.certification)
+      setCroppedImage(null)
+      return
+    }
+
+    if (updateState.code === COMMON_CODES.NETWORK_ERROR) {
+      toast.error(COMMON_MESSAGES.NETWORK_ERROR!)
+      return
+    }
+
+    if (updateState.code === CERTIFICATION_CODES.ALREADY_APPROVED) {
+      toast.error(CERTIFICATION_MESSAGES.ALREADY_APPROVED)
+      router.replace(`/profile/${session.user?.userId}`)
+      return
+    }
+  }, [router, session.user?.userId, updateState])
+
   // 삭제
   useEffect(() => {
-    if (deleteState.certification) {
+    if (deleteState.code === '') return
+
+    if (deleteState.code === COMMON_CODES.SUCCESS && deleteState.certification) {
       setCertification(deleteState.certification)
       setCroppedImage(null)
+      return
     }
-  }, [deleteState])
+
+    if (deleteState.code === COMMON_CODES.NETWORK_ERROR) {
+      toast.error(COMMON_MESSAGES.NETWORK_ERROR!)
+      return
+    }
+
+    if (deleteState.code === CERTIFICATION_CODES.ALREADY_APPROVED) {
+      toast.error(CERTIFICATION_MESSAGES.ALREADY_APPROVED)
+      router.replace(`/profile/${session.user?.userId}`)
+      return
+    }
+  }, [deleteState, router, session.user?.userId])
 
   // 자를 사진 추가
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -194,12 +238,6 @@ export default function SubmitCertificationForm({
           onCropDone={handleCropDone}
         />
       )}
-
-      {/* 에러 메시지 */}
-      {/* TODO: 토스트 메세지 처리 */}
-      {createState.message !== '' && <>{createState.message}</>}
-      {updateState.message !== '' && <>{updateState.message}</>}
-      {deleteState.message !== '' && <>{deleteState.message}</>}
     </div>
   )
 }

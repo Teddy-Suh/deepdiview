@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import ReviewItem from '@/components/ui/ReviewItem'
 import DeleteReviewButton from './DeleteReviewButton'
+import { REVIEW_CODES } from '@/constants/messages/reviews'
 
 export default async function ReviewSection({
   currentUserId,
@@ -19,9 +20,8 @@ export default async function ReviewSection({
   try {
     review = await getReview(reviewId, !!session, session?.accessToken)
   } catch (error) {
-    if (error instanceof Error && error.message === 'REVIEW_NOT_FOUND') {
-      return notFound()
-    }
+    const errorCode = (error as Error).message
+    if (errorCode === REVIEW_CODES.REVIEW_NOT_FOUND) return notFound()
     throw error
   }
 
