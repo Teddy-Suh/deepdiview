@@ -80,11 +80,7 @@ export default function ReviewForm({
           <h2 className='line-clamp-1 rounded-xl text-xl font-semibold'>{movieTitle}</h2>
           {certified && <CertifiedBadge />}
         </div>
-        <button
-          className='btn btn-primary rounded-xl'
-          type='submit'
-          disabled={isPending || !isValid}
-        >
+        <button className='btn btn-primary' type='submit' disabled={isPending || !isValid}>
           {isPending ? <span className='loading loading-ring' /> : <>{isEdit ? '수정' : '작성'}</>}
         </button>
       </GoBackHeader>
@@ -93,11 +89,7 @@ export default function ReviewForm({
           <h2 className='text-xl font-semibold'>{movieTitle}</h2>
           {certified && <CertifiedBadge />}
         </div>
-        <button
-          className='btn btn-primary rounded-xl'
-          type='submit'
-          disabled={isPending || !isValid}
-        >
+        <button className='btn btn-primary' type='submit' disabled={isPending || !isValid}>
           {isPending ? <span className='loading loading-ring' /> : <>{isEdit ? '수정' : '작성'}</>}
         </button>
       </div>

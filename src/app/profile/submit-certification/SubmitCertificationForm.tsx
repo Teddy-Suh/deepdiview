@@ -170,7 +170,7 @@ export default function SubmitCertificationForm({
                     }
                   >
                     <button
-                      className='btn btn-primary w-full rounded-xl'
+                      className='btn btn-primary w-full'
                       type='submit'
                       disabled={isCreatePending || isUpdatePending}
                     >
@@ -182,7 +182,7 @@ export default function SubmitCertificationForm({
                     </button>
                   </form>
                   <button
-                    className='btn btn-secondary w-full rounded-2xl'
+                    className='btn btn-secondary btn-soft w-full'
                     type='button'
                     onClick={handleCancelCrop}
                   >
@@ -193,7 +193,7 @@ export default function SubmitCertificationForm({
                 <>
                   {/* 자른 사진 없을 때: 선택, 삭제 */}
                   <button
-                    className='btn btn-primary w-full rounded-xl'
+                    className='btn btn-primary w-full'
                     type='button'
                     onClick={() => fileInputRef.current?.click()}
                   >
@@ -204,7 +204,7 @@ export default function SubmitCertificationForm({
                   {certification.certificationDetails?.certificationUrl && (
                     <form action={deleteAction}>
                       <button
-                        className='btn btn-secondary w-full rounded-2xl'
+                        className='btn btn-secondary btn-soft w-full'
                         type='submit'
                         disabled={isDeletePending}
                       >

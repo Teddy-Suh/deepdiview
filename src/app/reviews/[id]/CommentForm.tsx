@@ -162,7 +162,7 @@ export default function CommentForm({
             <input
               {...register('content')}
               className={clsx(
-                'bg-base-300 flex-1 rounded-2xl border-0 px-4 py-2 outline-0',
+                'bg-base-300 flex-1 rounded-full border-0 px-4 py-2 outline-0',
                 isCommentPending && 'text-gray-500'
               )}
               type='text'
@@ -174,7 +174,7 @@ export default function CommentForm({
               {session ? (
                 <>
                   <button
-                    className='btn btn-primary rounded-2xl'
+                    className='btn btn-primary'
                     type='submit'
                     disabled={isPending || isCommentPending || !isValid}
                   >
@@ -186,7 +186,7 @@ export default function CommentForm({
                   </button>
                   {isEdit && !isPending && (
                     <button
-                      className='btn btn-secondary rounded-2xl'
+                      className='btn btn-secondary'
                       type='button'
                       onClick={() => setEditComment(null)}
                       disabled={isCommentPending}
@@ -196,7 +196,7 @@ export default function CommentForm({
                   )}
                 </>
               ) : (
-                <Link className='btn btn-primary rounded-2xl' href='/login'>
+                <Link className='btn btn-primary' href='/login'>
                   로그인
                 </Link>
               )}

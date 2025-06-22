@@ -150,13 +150,13 @@ export default function CommentItem({
         </div>
 
         {/* 댓글 내용 */}
-        <div className={clsx('bg-base-300 rounded-2xl px-4 py-2')}>
+        <div className={clsx('bg-base-300 rounded-full px-4 py-2')}>
           <p className='break-words break-keep'>{comment.content}</p>
         </div>
       </div>
 
       {/* 구분선 */}
-      <hr className='text-gray-700' />
+      <hr className='text-gray-300 dark:text-gray-700' />
     </div>
   )
 }

@@ -62,7 +62,7 @@ export default function CertificationForm({
           <form action={formAction}>
             <div className='space-y-2'>
               <button
-                className='btn btn-success w-full rounded-2xl'
+                className='btn btn-success w-full'
                 name='approve'
                 value='true'
                 type='submit'
@@ -75,7 +75,7 @@ export default function CertificationForm({
                 )}
               </button>
               <select
-                className='select select-error w-full rounded-2xl text-center focus:outline-none'
+                className='select select-error w-full text-center focus:outline-none'
                 name='rejectionReason'
                 defaultValue={CERTIFICATION_REJECTION_REASONS.UNIDENTIFIABLE_IMAGE}
                 disabled={isPending}
@@ -91,7 +91,7 @@ export default function CertificationForm({
                 </option>
               </select>
               <button
-                className='btn btn-error w-full rounded-2xl'
+                className='btn btn-error w-full'
                 name='approve'
                 value='false'
                 type='submit'

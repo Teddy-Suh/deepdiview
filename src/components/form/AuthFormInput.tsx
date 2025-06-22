@@ -24,7 +24,7 @@ export default function AuthFormInput({
 }) {
   return (
     <div className='space-y-1'>
-      <label className={clsx('user-input', error && 'bg-error/10')}>
+      <label className={clsx('user-input')}>
         <input
           {...register}
           type={type}

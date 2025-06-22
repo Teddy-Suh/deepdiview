@@ -26,12 +26,12 @@ export default function BaseHeader() {
       <div
         className={clsx(
           'container-wrapper fixed right-0 left-0 z-50 flex items-center overflow-hidden transition-all duration-100 md:hidden',
-          scrolled ? 'h-0' : 'h-16'
+          scrolled ? 'h-0' : 'h-16 text-gray-100'
         )}
       >
         <div className='flex-1'>
           <Link href='/'>
-            <h1 className='text-2xl font-bold'>Deepdiview</h1>
+            <h1 className='text-primary text-2xl font-bold'>Deepdiview</h1>
           </Link>
         </div>
       </div>

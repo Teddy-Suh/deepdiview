@@ -7,6 +7,13 @@ import NotificationClient from '@/components/layout/NotificationClient'
 import { auth } from '@/auth'
 import Footer from '@/components/layout/Footer'
 import { Toaster } from 'react-hot-toast'
+import localFont from 'next/font/local'
+
+const pretendard = localFont({
+  src: '../../public/fonts/PretendardVariable.woff2',
+  display: 'swap',
+  variable: '--font-pretendard',
+})
 
 export const metadata: Metadata = {
   title: 'Deepdiview',
@@ -19,7 +26,7 @@ export default async function RootLayout({
 }>) {
   const session = await auth()
   return (
-    <html lang='ko'>
+    <html lang='ko' className={pretendard.className}>
       <body className='flex min-h-screen flex-col'>
         <SessionProvider initialSession={session}>
           <NotificationClient />

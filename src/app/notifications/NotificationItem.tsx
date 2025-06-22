@@ -50,7 +50,7 @@ export default function NotificationItem({
   const content = (
     <div
       className={clsx(
-        'flex items-center gap-2 rounded-2xl p-2',
+        'flex items-center gap-2 rounded-full p-2',
         notification.read ? 'bg-base-300' : 'bg-primary/20',
         isNewNotification && 'animate-get-new-notification'
       )}

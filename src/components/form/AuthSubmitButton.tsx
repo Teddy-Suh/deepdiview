@@ -27,7 +27,7 @@ export default function AuthSubmitButton({
       )}
       style={isKeyboardVisible ? { transform: `translateY(-${keyboardHeight}px)` } : undefined}
     >
-      <button className='btn btn-primary w-full rounded-xl' type='submit' disabled={buttonDisabled}>
+      <button className='btn btn-primary w-full' type='submit' disabled={buttonDisabled}>
         {isPending ? <span className='loading loading-ring' /> : buttonLabel}
       </button>
       {children}

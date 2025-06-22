@@ -29,7 +29,7 @@ export default function DeleteReviewButton({ reviewId }: { reviewId: string }) {
   return (
     <>
       <form action={formAction}>
-        <button className='btn btn-secondary rounded-xl' type='submit' disabled={isPending}>
+        <button className='btn btn-secondary' type='submit' disabled={isPending}>
           {isPending ? <span className='loading loading-ring' /> : '삭제'}
         </button>
       </form>

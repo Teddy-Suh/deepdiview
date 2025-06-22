@@ -33,7 +33,7 @@ export default async function ReviewSection({
         {currentUserId === review.userId.toString() && (
           <div className='flex gap-2'>
             <Link
-              className='btn btn-primary rounded-xl'
+              className='btn btn-primary'
               href={`/reviews/${reviewId}/edit?title=${review.movieTitle}`}
             >
               수정
@@ -51,7 +51,7 @@ export default async function ReviewSection({
           {currentUserId === review.userId.toString() && (
             <div className='flex gap-2'>
               <Link
-                className='btn btn-primary rounded-xl'
+                className='btn btn-primary'
                 href={`/reviews/${reviewId}/edit?title=${review.movieTitle}`}
               >
                 수정

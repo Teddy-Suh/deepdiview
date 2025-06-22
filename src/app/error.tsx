@@ -9,7 +9,7 @@ export default function Error() {
     <>
       <BaseHeader />
       <div className='container-wrapper flex flex-1 flex-col items-center justify-center gap-6'>
-        <CircleAlert size={100} />
+        <CircleAlert className='stroke-primary' size={100} />
         <p className='text-lg font-semibold'>예상치 못한 에러가 발생했습니다.</p>
         <Link className='btn btn-primary rounded-2xl' href='/'>
           홈으로 이동

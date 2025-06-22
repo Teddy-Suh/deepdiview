@@ -79,7 +79,7 @@ export default function MovieCarousel({ movies }: { movies: Movie[] }) {
         <button
           type='button'
           onClick={() => scroll('left')}
-          className='btn btn-circle absolute top-1/2 -left-5 hidden !-translate-y-1/2 md:flex'
+          className='btn btn-circle bg-base-300 absolute top-1/2 -left-5 hidden !-translate-y-1/2 md:flex'
         >
           <ChevronLeft />
         </button>
@@ -90,7 +90,7 @@ export default function MovieCarousel({ movies }: { movies: Movie[] }) {
         <button
           type='button'
           onClick={() => scroll('right')}
-          className='btn btn-circle absolute top-1/2 -right-5 hidden !-translate-y-1/2 md:flex'
+          className='btn btn-circle bg-base-300 absolute top-1/2 -right-5 hidden !-translate-y-1/2 md:flex'
         >
           <ChevronRight />
         </button>

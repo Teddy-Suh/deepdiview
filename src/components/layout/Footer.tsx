@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 export default function Footer() {
   return (
-    <footer className='bg-base-200 hidden border-t border-t-gray-700 p-4 text-center text-sm text-gray-500 md:block'>
+    <footer className='dark:bg-base-300 hidden border-t-1 border-t-gray-300 bg-black/5 p-4 text-center text-sm text-gray-500 md:block dark:border-t-gray-800'>
       <p>© 2025 Deepdiview. All Rights Reserved.</p>
       <div className='mt-2 space-x-4'>
         <Link

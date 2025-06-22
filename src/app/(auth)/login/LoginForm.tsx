@@ -72,7 +72,7 @@ export default function LoginForm() {
       >
         <Link
           href='/register/1-send-email'
-          className='btn btn-secondary mt-3 hidden w-full rounded-xl md:flex'
+          className='btn btn-soft btn-primary mt-3 hidden w-full md:flex'
         >
           회원가입
         </Link>

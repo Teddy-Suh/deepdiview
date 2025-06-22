@@ -70,7 +70,7 @@ export default function VoteCard({
                         <p className='text-lg font-semibold break-keep md:text-xl'>
                           {voteOption.title}
                         </p>
-                        <p className='text-sm break-keep text-gray-300'>
+                        <p className='text-sm break-keep text-gray-400'>
                           {voteOption.release_date.slice(0, 4)} ·{' '}
                           {voteOption.genre_names.join(' / ')}
                           {!!voteOption.runtime && ` · ${voteOption.runtime}분`}

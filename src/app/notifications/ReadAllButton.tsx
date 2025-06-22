@@ -21,12 +21,7 @@ export default function ReadAllButton({ onReadAll }: { onReadAll: () => void }) 
   }
 
   return (
-    <button
-      className='btn btn-primary rounded-2xl'
-      type='button'
-      onClick={handleClick}
-      disabled={!hasUnread}
-    >
+    <button className='btn btn-primary' type='button' onClick={handleClick} disabled={!hasUnread}>
       전체 읽음
     </button>
   )
