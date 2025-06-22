@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic'
 
 import { auth } from '@/auth'
 import GoBackHeader from '@/components/layout/MobileHeader/GoBackHeader'
-import LatestReviewSection from '@/components/ui/LatestReviewSection'
+import LatestReviewSection from './LatestReviewSection'
 import OverlaidMovieHero from '@/components/ui/OverlaidMovieHero'
 import { getCertification } from '@/lib/api/certification'
 import { getIsSunday, getThisWeekMovieId } from '@/lib/api/discussion'

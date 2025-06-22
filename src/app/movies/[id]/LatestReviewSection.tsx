@@ -1,20 +1,17 @@
 import { ChevronRight } from 'lucide-react'
 import Link from 'next/link'
-import ReviewCarousel from './ReviewCarousel'
-import { getLatestReviews } from '@/lib/api/review'
-import { Session } from 'next-auth'
+import ReviewCarousel from '@/components/ui/ReviewCarousel'
+import { Review } from '@/types/api/common'
 
-export default async function LatestReviewSection({
-  session,
+export default function LatestReviewSection({
+  latestReviews,
   href,
   withMovie = true,
 }: {
-  session: Session | null
+  latestReviews: Review[]
   href: string
   withMovie?: boolean
 }) {
-  const { content: reviews } = await getLatestReviews(!!session, session?.accessToken)
-
   return (
     <section className='container-wrapper'>
       <div className='flex justify-between'>
@@ -24,7 +21,7 @@ export default async function LatestReviewSection({
           <ChevronRight />
         </Link>
       </div>
-      <ReviewCarousel reviews={reviews} withMovie={withMovie} />
+      <ReviewCarousel reviews={latestReviews} withMovie={withMovie} />
     </section>
   )
 }

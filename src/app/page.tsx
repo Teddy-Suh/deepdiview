@@ -3,37 +3,39 @@ export const dynamic = 'force-dynamic'
 import { auth } from '@/auth'
 import BaseHeader from '@/components/layout/MobileHeader/BaseHeader'
 import LatestReviewSection from '@/components/ui/LatestReviewSection'
-import MovieCarousel from '@/components/ui/MovieCarousel'
-import OverlaidMovieHero from '@/components/ui/OverlaidMovieHero'
+import MovieCarouselLoading from '@/components/ui/MovieCarouselLoading'
+import OverlaidMovieHeroLoading from '@/components/ui/OverlaidMovieHeroLoading'
+import OverlaidMovieHeroWrapper from '@/components/ui/OverlaidMovieHeroWrapper'
+import PopularMovieWrapper from '@/components/ui/PopularMovieWrapper'
+import ReviewCarouselLoading from '@/components/ui/ReviewCarouselLoading'
 import { getIsSunday, getThisWeekMovieId } from '@/lib/api/discussion'
-import { getMovie, getPopularMovies } from '@/lib/api/movie'
-import { getLatestReviews } from '@/lib/api/review'
+import { Suspense } from 'react'
 
 export default async function HomePage() {
-  const [session, popularMovies, { isSunday }, { tmdbId }] = await Promise.all([
+  const [session, { isSunday }, { tmdbId }] = await Promise.all([
     auth(),
-    getPopularMovies(),
     getIsSunday(),
     getThisWeekMovieId(),
-  ])
-
-  const [latestReviews, thisWeekMovie] = await Promise.all([
-    getLatestReviews(!!session, session?.accessToken),
-    getMovie(tmdbId.toString()),
   ])
 
   return (
     <>
       <BaseHeader />
-      <OverlaidMovieHero movie={thisWeekMovie} isSunday={isSunday} />
+      <Suspense fallback={<OverlaidMovieHeroLoading isSunday={isSunday} />}>
+        <OverlaidMovieHeroWrapper movieId={tmdbId.toString()} isSunday={isSunday} />
+      </Suspense>
 
       <div className='space-y-8'>
         <section className='container-wrapper'>
           <h3 className='mb-3 text-xl font-semibold'>인기 영화</h3>
-          <MovieCarousel movies={popularMovies} />
+          <Suspense fallback={<MovieCarouselLoading />}>
+            <PopularMovieWrapper />
+          </Suspense>
         </section>
 
-        <LatestReviewSection latestReviews={latestReviews.content} href='/reviews' />
+        <Suspense fallback={<ReviewCarouselLoading />}>
+          <LatestReviewSection session={session} href='/reviews' />
+        </Suspense>
       </div>
     </>
   )
