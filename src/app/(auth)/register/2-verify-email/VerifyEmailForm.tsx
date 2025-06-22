@@ -162,7 +162,7 @@ export default function VerifyEmailForm() {
         <input type='hidden' {...register('email')} />
         <button
           className={clsx(
-            'btn btn-secondary rounded-xl md:w-full',
+            'btn btn-secondary btn-soft md:w-full',
             //코드 만료되었을때 재전송 유도를 위한 애니메이션
             timeLeft <= 0 && 'animate-pulse'
           )}

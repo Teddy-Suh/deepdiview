@@ -43,9 +43,9 @@ export default function GoBackHeader({ children }: { children?: ReactNode }) {
     <>
       <div
         className={clsx(
-          'container-wrapper fixed right-0 left-0 z-50 flex items-center border-b-1 transition-all duration-200 md:hidden',
+          'container-wrapper fixed right-0 left-0 z-50 flex items-center transition-all duration-200 md:hidden',
           hideHeader ? 'h-0 overflow-hidden' : 'h-16',
-          scrolled ? 'bg-base-100 border-b-gray-700' : 'border-b-transparent bg-transparent'
+          scrolled ? 'bg-base-100' : 'bg-transparent'
         )}
       >
         <div className='flex flex-1 items-center gap-2'>
@@ -54,7 +54,7 @@ export default function GoBackHeader({ children }: { children?: ReactNode }) {
           </button>
           {children ?? (
             <Link href='/'>
-              <h1 className='text-2xl font-bold'>Deepdiview</h1>
+              <h1 className='text-primary text-2xl font-bold'>Deepdiview</h1>
             </Link>
           )}
         </div>

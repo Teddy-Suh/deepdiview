@@ -44,7 +44,7 @@ export default async function BoardReviewsPage({
         <div className='flex space-x-3'>
           <Link
             className={clsx(
-              'btn btn-primary rounded-xl',
+              'btn btn-primary',
               sort === 'createdAt' ? 'pointer-events-none' : 'btn-soft'
             )}
             href={`/board/reviews?sort=createdAt`}
@@ -53,7 +53,7 @@ export default async function BoardReviewsPage({
           </Link>
           <Link
             className={clsx(
-              'btn btn-primary rounded-xl',
+              'btn btn-primary',
               sort === 'likeCount' ? 'pointer-events-none' : 'btn-soft'
             )}
             href={`/board/reviews?sort=likeCount`}
@@ -70,7 +70,7 @@ export default async function BoardReviewsPage({
           <div className='hidden space-x-3 md:block'>
             <Link
               className={clsx(
-                'btn btn-primary rounded-xl',
+                'btn btn-primary',
                 sort === 'createdAt' ? 'pointer-events-none' : 'btn-soft'
               )}
               prefetch={false}
@@ -80,7 +80,7 @@ export default async function BoardReviewsPage({
             </Link>
             <Link
               className={clsx(
-                'btn btn-primary rounded-xl',
+                'btn btn-primary',
                 sort === 'likeCount' ? 'pointer-events-none' : 'btn-soft'
               )}
               href={`/board/reviews?sort=likeCount`}

@@ -26,9 +26,10 @@ export default function SearchForm() {
 
   return (
     <form onSubmit={handleSubmit} className='w-full'>
-      <label className='input focus-within:border-primary w-full bg-transparent focus-within:outline-none'>
+      <label className='input focus-within:border-primary w-full border-gray-400 bg-transparent focus-within:outline-none'>
         <Search className='h-[1em] opacity-50' />
         <input
+          className='placeholder-gray-400'
           type='search'
           required
           placeholder='영화 제목을 입력해주세요.'

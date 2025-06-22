@@ -39,7 +39,7 @@ export default async function AdminCertificationsPage({
       <GoBackHeader>
         <h2 className='line-clamp-1 flex-1 text-xl font-semibold'>시청 인증 관리</h2>
         <div className='dropdown dropdown-center'>
-          <div className='btn btn-primary rounded-xl' tabIndex={0} role='button'>
+          <div className='btn btn-primary' tabIndex={0} role='button'>
             {getCertificationStatusBtnLabel(status)}
           </div>
           <ul
@@ -49,7 +49,7 @@ export default async function AdminCertificationsPage({
             <li>
               <Link
                 className={clsx(
-                  'btn btn-primary w-[60px] rounded-xl',
+                  'btn btn-primary w-[60px]',
                   status === CERTIFICATION_STATUS.PENDING ? 'pointer-events-none' : 'btn-soft'
                 )}
                 href={`/admin/certifications?status=${CERTIFICATION_STATUS.PENDING}`}
@@ -60,7 +60,7 @@ export default async function AdminCertificationsPage({
             <li>
               <Link
                 className={clsx(
-                  'btn btn-primary rounded-xl',
+                  'btn btn-primary',
                   status === CERTIFICATION_STATUS.APPROVED ? 'pointer-events-none' : 'btn-soft'
                 )}
                 href={`/admin/certifications?status=${CERTIFICATION_STATUS.APPROVED}`}
@@ -71,7 +71,7 @@ export default async function AdminCertificationsPage({
             <li>
               <Link
                 className={clsx(
-                  'btn btn-primary rounded-xl',
+                  'btn btn-primary',
                   status === CERTIFICATION_STATUS.REJECTED ? 'pointer-events-none' : 'btn-soft'
                 )}
                 href={`/admin/certifications?status=${CERTIFICATION_STATUS.REJECTED}`}
@@ -82,7 +82,7 @@ export default async function AdminCertificationsPage({
             <li>
               <Link
                 className={clsx(
-                  'btn btn-primary rounded-xl',
+                  'btn btn-primary',
                   status === undefined ? 'pointer-events-none' : 'btn-soft'
                 )}
                 href='/admin/certifications'
@@ -101,7 +101,7 @@ export default async function AdminCertificationsPage({
           <div className='hidden space-x-3 md:block'>
             <Link
               className={clsx(
-                'btn btn-primary rounded-xl',
+                'btn btn-primary',
                 status === CERTIFICATION_STATUS.PENDING ? 'pointer-events-none' : 'btn-soft'
               )}
               href={`/admin/certifications?status=${CERTIFICATION_STATUS.PENDING}`}
@@ -110,7 +110,7 @@ export default async function AdminCertificationsPage({
             </Link>
             <Link
               className={clsx(
-                'btn btn-primary rounded-xl',
+                'btn btn-primary',
                 status === CERTIFICATION_STATUS.APPROVED ? 'pointer-events-none' : 'btn-soft'
               )}
               href={`/admin/certifications?status=${CERTIFICATION_STATUS.APPROVED}`}
@@ -119,7 +119,7 @@ export default async function AdminCertificationsPage({
             </Link>
             <Link
               className={clsx(
-                'btn btn-primary rounded-xl',
+                'btn btn-primary',
                 status === CERTIFICATION_STATUS.REJECTED ? 'pointer-events-none' : 'btn-soft'
               )}
               href={`/admin/certifications?status=${CERTIFICATION_STATUS.REJECTED}`}
@@ -128,7 +128,7 @@ export default async function AdminCertificationsPage({
             </Link>
             <Link
               className={clsx(
-                'btn btn-primary rounded-xl',
+                'btn btn-primary',
                 status === undefined ? 'pointer-events-none' : 'btn-soft'
               )}
               href='/admin/certifications'

@@ -8,7 +8,7 @@ export default function LoginPage() {
     <>
       <GoBackHeader>
         <h2 className='flex-1 text-xl font-semibold'>로그인</h2>
-        <Link href='/register/1-send-email' className='btn btn-secondary rounded-xl'>
+        <Link href='/register/1-send-email' className='btn btn-secondary btn-soft'>
           회원가입
         </Link>
       </GoBackHeader>

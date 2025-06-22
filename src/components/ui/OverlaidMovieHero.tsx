@@ -20,7 +20,7 @@ export default function OverlaidMovieHero({
 }) {
   return (
     <section
-      className='overlaid-bg container-wrapper pt-16 pb-8'
+      className='overlaid-bg container-wrapper pt-16 pb-8 text-gray-100'
       style={{
         backgroundImage: `url(https://image.tmdb.org/t/p/w1280${movie.backdrop_path})`,
       }}

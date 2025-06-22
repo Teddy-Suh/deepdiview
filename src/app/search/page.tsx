@@ -49,7 +49,7 @@ export default async function SearchPage({
               {movies.map((movie) => (
                 <li key={movie.id}>
                   <SearchMovieItem movie={movie} />
-                  <hr className='mt-4 text-gray-700' />
+                  <hr className='mt-4 text-gray-300 dark:text-gray-700' />
                 </li>
               ))}
             </ul>

@@ -53,7 +53,7 @@ export default function ReviewItem({
   const content = (
     <div
       className={clsx(
-        'bg-base-300 rounded-xl p-4',
+        'bg-base-300 rounded-2xl p-4',
         withMovie ? 'space-y-3' : 'flex flex-col gap-3',
         withMovie === false && isDetail === false && 'h-64'
       )}
@@ -109,7 +109,7 @@ export default function ReviewItem({
       {/* 하단 영화 제목 & 좋아요, 댓글 */}
       {!withComment && (
         <>
-          <hr className='text-gray-600' />
+          <hr className='text-gray-300 dark:text-gray-700' />
           <div className={clsx('flex', withMovie && 'justify-between gap-3')}>
             <div
               className={clsx('flex flex-2 gap-3', withMovie ? 'justify-start' : 'justify-start')}

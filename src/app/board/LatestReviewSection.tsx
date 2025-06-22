@@ -30,7 +30,7 @@ export default async function LatestReviewSection({
       </div>
       {reviews.length === 0 ? (
         <div className='bg-base-300 rounded-2xl px-4 py-6 text-center md:text-start'>
-          <p>인증된 리뷰가 없습니다.</p>
+          <p>아직 리뷰가 없습니다.</p>
         </div>
       ) : (
         <ReviewCarousel reviews={reviews} withMovie={false} />

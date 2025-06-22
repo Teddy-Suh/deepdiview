@@ -19,7 +19,12 @@ export default function BottomNav() {
   return (
     <>
       <div className={clsx('pt-16 md:hidden', isKeyboardVisible && 'hidden')} />
-      <nav className={clsx('dock z-40 md:hidden', isKeyboardVisible && 'hidden')}>
+      <nav
+        className={clsx(
+          'bg-base-300 dock z-40 border-t border-t-gray-200 md:hidden dark:border-t-gray-800',
+          isKeyboardVisible && 'hidden'
+        )}
+      >
         <Link href='/' className={clsx({ 'dock-active text-primary': pathname === '/' })}>
           <Home />
         </Link>
