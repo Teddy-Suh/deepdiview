@@ -26,7 +26,7 @@ export default function SearchForm() {
 
   return (
     <form onSubmit={handleSubmit} className='w-full'>
-      <label className='input focus-within:border-primary w-full border-gray-400 bg-transparent focus-within:outline-none'>
+      <label className='input focus-within:border-primary focus-within:bg-primary/10 w-full border-0 bg-gray-400/10 focus-within:outline-none'>
         <Search className='h-[1em] opacity-50' />
         <input
           className='placeholder-gray-400'
