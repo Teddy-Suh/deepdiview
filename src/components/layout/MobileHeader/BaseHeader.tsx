@@ -31,7 +31,7 @@ export default function BaseHeader() {
       >
         <div className='flex-1'>
           <Link href='/'>
-            <h1 className='text-primary text-2xl font-black'>Deepdiview</h1>
+            <h1 className='text-primary text-2xl font-black'>DEEPDIVIEW</h1>
           </Link>
         </div>
       </div>

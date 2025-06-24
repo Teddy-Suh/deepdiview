@@ -41,7 +41,7 @@ export default function TopNav() {
             className='btn btn-ghost hover:text-primary p-0 hover:border-transparent hover:bg-transparent hover:shadow-none'
             href='/'
           >
-            <h1 className='text-primary text-2xl font-black'>Deepdiview</h1>
+            <h1 className='text-primary text-2xl font-black'>DEEPDIVIEW</h1>
           </Link>
         </div>
         <div className='hidden md:flex md:gap-6'>
