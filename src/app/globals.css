@@ -7,8 +7,8 @@
   default: false;
   prefersdark: true;
   color-scheme: 'dark';
-  --color-base-100: oklch(16% 0 0);
-  --color-base-200: oklch(8% 0 0);
+  --color-base-100: oklch(20% 0 0);
+  --color-base-200: oklch(10% 0 0);
   --color-base-300: oklch(0% 0 0);
   --color-base-content: oklch(97.807% 0.029 256.847);
   --color-primary: oklch(0.5814 0.2349 27.99);
@@ -74,6 +74,10 @@
 
 @utility no-scrollbar {
   @apply [scrollbar-width:none] [&::-webkit-scrollbar]:hidden;
+}
+
+@utility btn {
+  @apply disabled:text-primary;
 }
 
 @layer components {

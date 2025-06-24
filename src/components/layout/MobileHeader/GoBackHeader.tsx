@@ -54,7 +54,7 @@ export default function GoBackHeader({ children }: { children?: ReactNode }) {
           </button>
           {children ?? (
             <Link href='/'>
-              <h1 className='text-primary text-2xl font-bold'>Deepdiview</h1>
+              <h1 className='text-primary text-2xl font-black'>Deepdiview</h1>
             </Link>
           )}
         </div>

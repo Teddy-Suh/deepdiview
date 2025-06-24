@@ -43,7 +43,7 @@ export default async function AdminCertificationsPage({
             {getCertificationStatusBtnLabel(status)}
           </div>
           <ul
-            className='menu dropdown-content bg-base-300 rounded-box mt-2 space-y-2 shadow-sm'
+            className='menu dropdown-content bg-base-300 mt-2 space-y-2 rounded-3xl shadow-sm'
             tabIndex={0}
           >
             <li>
