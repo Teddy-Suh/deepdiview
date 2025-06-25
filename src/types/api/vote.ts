@@ -2,14 +2,11 @@ import { Movie } from './movie'
 
 // API 타입
 // 투표 생성
-export type CreateVoteResponse = VoteOptionsResponse
 
 // 현재 진행중인 투표에 참여하기
 export interface ParticipateVoteRequest {
   tmdbId: number
 }
-
-export type ParticipateVoteResponse = VoteResponse
 
 // 현재 진행중인 투표 결과 확인
 export type GetVoteResultResponse = VoteResponse

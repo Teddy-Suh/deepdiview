@@ -1,17 +1,15 @@
 import {
-  CreateVoteResponse,
   GetVoteLatestResultResponse,
   GetVoteOptionsResponse,
   GetVoteParticipationStatusResponse,
   GetVoteResultResponse,
   ParticipateVoteRequest,
-  ParticipateVoteResponse,
 } from '@/types/api/vote'
 import { apiClient } from '../apiClient'
 
 // 투표 생성
-export async function createVote(token: string): Promise<CreateVoteResponse> {
-  return apiClient<CreateVoteResponse>(`/votes`, {
+export async function createVote(token: string): Promise<null> {
+  return apiClient<null>(`/votes`, {
     method: 'POST',
     withAuth: true,
     token,
@@ -19,11 +17,8 @@ export async function createVote(token: string): Promise<CreateVoteResponse> {
 }
 
 // 현재 진행중인 투표에 참여하기
-export async function participateVote(
-  token: string,
-  body: ParticipateVoteRequest
-): Promise<ParticipateVoteResponse> {
-  return apiClient<ParticipateVoteResponse, ParticipateVoteRequest>('/votes/participate', {
+export async function participateVote(token: string, body: ParticipateVoteRequest): Promise<null> {
+  return apiClient<null, ParticipateVoteRequest>('/votes/participate', {
     method: 'POST',
     body,
     withAuth: true,
