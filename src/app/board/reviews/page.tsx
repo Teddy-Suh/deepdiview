@@ -1,12 +1,11 @@
 import { auth } from '@/auth'
 import GoBackHeader from '@/components/layout/MobileHeader/GoBackHeader'
 import ReviewList from '@/components/ui/ReviewList'
+import SortButton from '@/components/ui/SortButton'
 import { MOVIES_CODES } from '@/constants/messages/movie'
 import { getThisWeekMovieId } from '@/lib/api/discussion'
 import { getReviews } from '@/lib/api/review'
 import { ReviewSortField } from '@/types/api/common'
-import clsx from 'clsx'
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 export default async function BoardReviewsPage({
@@ -42,24 +41,18 @@ export default async function BoardReviewsPage({
           {reviews.content[0]?.movieTitle}
         </h2>
         <div className='flex space-x-3'>
-          <Link
-            className={clsx(
-              'btn btn-primary',
-              sort === 'createdAt' ? 'pointer-events-none' : 'btn-soft'
-            )}
-            href={`/board/reviews?sort=createdAt`}
-          >
-            최신
-          </Link>
-          <Link
-            className={clsx(
-              'btn btn-primary',
-              sort === 'likeCount' ? 'pointer-events-none' : 'btn-soft'
-            )}
-            href={`/board/reviews?sort=likeCount`}
-          >
-            인기
-          </Link>
+          <SortButton
+            pathPrefix='/board/reviews'
+            targetValue='createdAt'
+            currentValue={sort}
+            label='최신'
+          />
+          <SortButton
+            pathPrefix='/board/reviews'
+            targetValue='likeCount'
+            currentValue={sort}
+            label='인기'
+          />
         </div>
       </GoBackHeader>
       <div className='container-wrapper'>
@@ -68,26 +61,18 @@ export default async function BoardReviewsPage({
             {reviews.content[0]?.movieTitle}
           </h2>
           <div className='hidden space-x-3 md:block'>
-            <Link
-              className={clsx(
-                'btn btn-primary',
-                sort === 'createdAt' ? 'pointer-events-none' : 'btn-soft'
-              )}
-              prefetch={false}
-              href={`/board/reviews?sort=createdAt`}
-            >
-              최신
-            </Link>
-            <Link
-              className={clsx(
-                'btn btn-primary',
-                sort === 'likeCount' ? 'pointer-events-none' : 'btn-soft'
-              )}
-              href={`/board/reviews?sort=likeCount`}
-              prefetch={false}
-            >
-              인기
-            </Link>
+            <SortButton
+              pathPrefix='/board/reviews'
+              targetValue='createdAt'
+              currentValue={sort}
+              label='최신'
+            />
+            <SortButton
+              pathPrefix='/board/reviews'
+              targetValue='likeCount'
+              currentValue={sort}
+              label='인기'
+            />
           </div>
         </div>
 
