@@ -3,8 +3,6 @@ import { getCertifications } from '@/lib/api/certification'
 import { redirect } from 'next/navigation'
 import CertificationList from './CertificationList'
 import GoBackHeader from '@/components/layout/MobileHeader/GoBackHeader'
-import clsx from 'clsx'
-import Link from 'next/link'
 import {
   CERTIFICATION_STATUS,
   CertificationStatus,
@@ -12,6 +10,7 @@ import {
 } from '@/constants/certification'
 
 import { getIsSunday } from '@/lib/api/discussion'
+import SortButton from '@/components/ui/SortButton'
 
 export default async function AdminCertificationsPage({
   searchParams,
@@ -42,55 +41,39 @@ export default async function AdminCertificationsPage({
           <div className='btn btn-primary' tabIndex={0} role='button'>
             {getCertificationStatusBtnLabel(status)}
           </div>
-          <ul
+          <div
             className='menu dropdown-content bg-base-300 mt-2 space-y-2 rounded-3xl shadow-sm'
             tabIndex={0}
           >
-            <li>
-              <Link
-                className={clsx(
-                  'btn btn-primary w-[60px]',
-                  status === CERTIFICATION_STATUS.PENDING ? 'pointer-events-none' : 'btn-soft'
-                )}
-                href={`/admin/certifications?status=${CERTIFICATION_STATUS.PENDING}`}
-              >
-                {getCertificationStatusBtnLabel(CERTIFICATION_STATUS.PENDING)}
-              </Link>
-            </li>
-            <li>
-              <Link
-                className={clsx(
-                  'btn btn-primary',
-                  status === CERTIFICATION_STATUS.APPROVED ? 'pointer-events-none' : 'btn-soft'
-                )}
-                href={`/admin/certifications?status=${CERTIFICATION_STATUS.APPROVED}`}
-              >
-                {getCertificationStatusBtnLabel(CERTIFICATION_STATUS.APPROVED)}
-              </Link>
-            </li>
-            <li>
-              <Link
-                className={clsx(
-                  'btn btn-primary',
-                  status === CERTIFICATION_STATUS.REJECTED ? 'pointer-events-none' : 'btn-soft'
-                )}
-                href={`/admin/certifications?status=${CERTIFICATION_STATUS.REJECTED}`}
-              >
-                {getCertificationStatusBtnLabel(CERTIFICATION_STATUS.REJECTED)}
-              </Link>
-            </li>
-            <li>
-              <Link
-                className={clsx(
-                  'btn btn-primary',
-                  status === undefined ? 'pointer-events-none' : 'btn-soft'
-                )}
-                href='/admin/certifications'
-              >
-                {getCertificationStatusBtnLabel(undefined)}
-              </Link>
-            </li>
-          </ul>
+            <SortButton
+              pathPrefix='/admin/certifications'
+              queryKey='status'
+              targetValue={CERTIFICATION_STATUS.PENDING}
+              currentValue={status || ''}
+              label={getCertificationStatusBtnLabel(CERTIFICATION_STATUS.PENDING)}
+            />
+            <SortButton
+              pathPrefix='/admin/certifications'
+              queryKey='status'
+              targetValue={CERTIFICATION_STATUS.APPROVED}
+              currentValue={status || ''}
+              label={getCertificationStatusBtnLabel(CERTIFICATION_STATUS.APPROVED)}
+            />
+            <SortButton
+              pathPrefix='/admin/certifications'
+              queryKey='status'
+              targetValue={CERTIFICATION_STATUS.REJECTED}
+              currentValue={status || ''}
+              label={getCertificationStatusBtnLabel(CERTIFICATION_STATUS.REJECTED)}
+            />
+            <SortButton
+              pathPrefix='/admin/certifications'
+              queryKey='status'
+              targetValue={''}
+              currentValue={status || ''}
+              label={getCertificationStatusBtnLabel(undefined)}
+            />
+          </div>
         </div>
       </GoBackHeader>
       <div className='container-wrapper'>
@@ -99,42 +82,34 @@ export default async function AdminCertificationsPage({
             시청 인증 관리
           </h2>
           <div className='hidden space-x-3 md:block'>
-            <Link
-              className={clsx(
-                'btn btn-primary',
-                status === CERTIFICATION_STATUS.PENDING ? 'pointer-events-none' : 'btn-soft'
-              )}
-              href={`/admin/certifications?status=${CERTIFICATION_STATUS.PENDING}`}
-            >
-              {getCertificationStatusBtnLabel(CERTIFICATION_STATUS.PENDING)}
-            </Link>
-            <Link
-              className={clsx(
-                'btn btn-primary',
-                status === CERTIFICATION_STATUS.APPROVED ? 'pointer-events-none' : 'btn-soft'
-              )}
-              href={`/admin/certifications?status=${CERTIFICATION_STATUS.APPROVED}`}
-            >
-              {getCertificationStatusBtnLabel(CERTIFICATION_STATUS.APPROVED)}
-            </Link>
-            <Link
-              className={clsx(
-                'btn btn-primary',
-                status === CERTIFICATION_STATUS.REJECTED ? 'pointer-events-none' : 'btn-soft'
-              )}
-              href={`/admin/certifications?status=${CERTIFICATION_STATUS.REJECTED}`}
-            >
-              {getCertificationStatusBtnLabel(CERTIFICATION_STATUS.REJECTED)}
-            </Link>
-            <Link
-              className={clsx(
-                'btn btn-primary',
-                status === undefined ? 'pointer-events-none' : 'btn-soft'
-              )}
-              href='/admin/certifications'
-            >
-              {getCertificationStatusBtnLabel(undefined)}
-            </Link>
+            <SortButton
+              pathPrefix='/admin/certifications'
+              queryKey='status'
+              targetValue={CERTIFICATION_STATUS.PENDING}
+              currentValue={status || ''}
+              label={getCertificationStatusBtnLabel(CERTIFICATION_STATUS.PENDING)}
+            />
+            <SortButton
+              pathPrefix='/admin/certifications'
+              queryKey='status'
+              targetValue={CERTIFICATION_STATUS.APPROVED}
+              currentValue={status || ''}
+              label={getCertificationStatusBtnLabel(CERTIFICATION_STATUS.APPROVED)}
+            />
+            <SortButton
+              pathPrefix='/admin/certifications'
+              queryKey='status'
+              targetValue={CERTIFICATION_STATUS.REJECTED}
+              currentValue={status || ''}
+              label={getCertificationStatusBtnLabel(CERTIFICATION_STATUS.REJECTED)}
+            />
+            <SortButton
+              pathPrefix='/admin/certifications'
+              queryKey='status'
+              targetValue={''}
+              currentValue={status || ''}
+              label={getCertificationStatusBtnLabel(undefined)}
+            />
           </div>
         </div>
         {certifications.content.length === 0 ? (

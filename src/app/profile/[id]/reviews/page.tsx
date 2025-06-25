@@ -3,10 +3,9 @@ export const dynamic = 'force-dynamic'
 import { auth } from '@/auth'
 import GoBackHeader from '@/components/layout/MobileHeader/GoBackHeader'
 import ReviewList from '@/components/ui/ReviewList'
+import SortButton from '@/components/ui/SortButton'
 import { getUserReviews } from '@/lib/api/user'
 import { ReviewSortField } from '@/types/api/common'
-import clsx from 'clsx'
-import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
 export default async function UserReviewsPage({
@@ -31,72 +30,48 @@ export default async function UserReviewsPage({
       <GoBackHeader>
         <h2 className='flex-1 text-xl font-semibold'>리뷰</h2>
         <div className='flex space-x-3'>
-          <Link
-            className={clsx(
-              'btn btn-primary',
-              sort === 'createdAt' ? 'pointer-events-none' : 'btn-soft'
-            )}
-            prefetch={false}
-            href={`/profile/${id}/reviews?sort=createdAt`}
-          >
-            최신
-          </Link>
-          <Link
-            className={clsx(
-              'btn btn-primary',
-              sort === 'likeCount' ? 'pointer-events-none' : 'btn-soft'
-            )}
-            prefetch={false}
-            href={`/profile/${id}/reviews?sort=likeCount`}
-          >
-            인기
-          </Link>
-          <Link
-            className={clsx(
-              'btn btn-primary',
-              sort === 'rating' ? 'pointer-events-none' : 'btn-soft'
-            )}
-            prefetch={false}
-            href={`/profile/${id}/reviews?sort=rating`}
-          >
-            별점
-          </Link>
+          <SortButton
+            pathPrefix={`/profile/${id}/reviews`}
+            targetValue='createdAt'
+            currentValue={sort}
+            label='최신'
+          />
+          <SortButton
+            pathPrefix={`/profile/${id}/reviews`}
+            targetValue='likeCount'
+            currentValue={sort}
+            label='인기'
+          />
+          <SortButton
+            pathPrefix={`/profile/${id}/reviews`}
+            targetValue='rating'
+            currentValue={sort}
+            label='별점'
+          />
         </div>
       </GoBackHeader>
       <div className='container-wrapper'>
         <div className='flex items-center justify-between py-1'>
           <h2 className='mt-4 mb-3 line-clamp-1 hidden text-xl font-semibold md:block'>리뷰</h2>
           <div className='hidden space-x-3 md:block'>
-            <Link
-              className={clsx(
-                'btn btn-primary',
-                sort === 'createdAt' ? 'pointer-events-none' : 'btn-soft'
-              )}
-              prefetch={false}
-              href={`/profile/${id}/reviews?sort=createdAt`}
-            >
-              최신
-            </Link>
-            <Link
-              className={clsx(
-                'btn btn-primary',
-                sort === 'likeCount' ? 'pointer-events-none' : 'btn-soft'
-              )}
-              href={`/profile/${id}/reviews?sort=likeCount`}
-              prefetch={false}
-            >
-              인기
-            </Link>
-            <Link
-              className={clsx(
-                'btn btn-primary',
-                sort === 'rating' ? 'pointer-events-none' : 'btn-soft'
-              )}
-              href={`/profile/${id}/reviews?sort=rating`}
-              prefetch={false}
-            >
-              별점
-            </Link>
+            <SortButton
+              pathPrefix={`/profile/${id}/reviews`}
+              targetValue='createdAt'
+              currentValue={sort}
+              label='최신'
+            />
+            <SortButton
+              pathPrefix={`/profile/${id}/reviews`}
+              targetValue='likeCount'
+              currentValue={sort}
+              label='인기'
+            />
+            <SortButton
+              pathPrefix={`/profile/${id}/reviews`}
+              targetValue='rating'
+              currentValue={sort}
+              label='별점'
+            />
           </div>
         </div>
 
