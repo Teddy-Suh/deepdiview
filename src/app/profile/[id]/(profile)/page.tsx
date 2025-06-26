@@ -2,10 +2,40 @@ export const dynamic = 'force-dynamic'
 
 import { auth } from '@/auth'
 import { getMyProfile, getUserProfile } from '@/lib/api/user'
-import { redirect } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import { getIsSunday } from '@/lib/api/discussion'
 import SettingsSection from './SettingsSection'
 import ProfileWrapper from './ProfileWrapper'
+import { USER_CODES } from '@/constants/messages/users'
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const session = await auth()
+  if (!session || !session.user) redirect('/login')
+
+  const { id } = await params
+  const { userId } = session.user
+  const isCurrentUser = userId === Number(id)
+
+  let nickname
+  if (isCurrentUser) {
+    nickname = session.user.nickname
+    return {
+      title: `${nickname}`,
+    }
+  }
+
+  try {
+    const profile = await getUserProfile(session?.accessToken, id)
+    nickname = profile.nickname
+    return {
+      title: `${nickname}`,
+    }
+  } catch (error) {
+    const errorCode = (error as Error).message
+    if (errorCode === USER_CODES.USER_NOT_FOUND) return notFound()
+    throw error
+  }
+}
 
 export default async function ProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth()
@@ -16,10 +46,16 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
   const isCurrentUser = userId === Number(id)
 
   let profile
-  if (isCurrentUser) {
-    profile = await getMyProfile(session?.accessToken)
-  } else {
-    profile = await getUserProfile(session?.accessToken, id)
+  try {
+    if (isCurrentUser) {
+      profile = await getMyProfile(session.accessToken)
+    } else {
+      profile = await getUserProfile(session.accessToken, id)
+    }
+  } catch (error) {
+    const errorCode = (error as Error).message
+    if (errorCode === USER_CODES.USER_NOT_FOUND) return notFound()
+    throw error
   }
 
   return (

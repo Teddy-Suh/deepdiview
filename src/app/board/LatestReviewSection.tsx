@@ -22,7 +22,7 @@ export default async function LatestReviewSection({
       <div className='flex justify-between'>
         <h3 className='mb-3 text-xl font-semibold'>최신 리뷰</h3>
         {reviews.length !== 0 && (
-          <Link className='flex' href='/board/reviews'>
+          <Link className='flex' href={`/board/reviews?title=${reviews[0].movieTitle}`}>
             더보기
             <ChevronRight />
           </Link>

@@ -1,6 +1,10 @@
 import BaseHeader from '@/components/layout/MobileHeader/BaseHeader'
 import Link from 'next/link'
 
+export const metadata = {
+  title: '404',
+}
+
 export default function NotFound() {
   return (
     <>

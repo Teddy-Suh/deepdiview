@@ -12,6 +12,10 @@ import {
 import { getIsSunday } from '@/lib/api/discussion'
 import SortButton from '@/components/ui/SortButton'
 
+export const metadata = {
+  title: '시청 인증 관리',
+}
+
 export default async function AdminCertificationsPage({
   searchParams,
 }: {

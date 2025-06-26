@@ -12,6 +12,20 @@ import MyReviewSection from './MyReviewSection'
 import { getReviews } from '@/lib/api/review'
 import { MOVIES_CODES } from '@/constants/messages/movie'
 
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  try {
+    const movie = await getMovie(id)
+    return {
+      title: movie.title,
+    }
+  } catch (error) {
+    const errorCode = (error as Error).message
+    if (errorCode === MOVIES_CODES.MOVIE_NOT_FOUND) return notFound()
+    throw error
+  }
+}
+
 export default async function MoviesPage({ params }: { params: Promise<{ id: string }> }) {
   const [{ id }, session, { tmdbId }, { isSunday }] = await Promise.all([
     params,
@@ -53,7 +67,7 @@ export default async function MoviesPage({ params }: { params: Promise<{ id: str
         />
         <LatestReviewSection
           latestReviews={reviews}
-          href={`/movies/${id}/reviews`}
+          href={`/movies/${id}/reviews?title=${movie.title}`}
           withMovie={false}
         />
       </div>

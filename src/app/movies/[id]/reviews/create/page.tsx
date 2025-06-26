@@ -10,6 +10,10 @@ import ReviewFormSection from '@/components/layout/ReviewFormSection'
 import { getMovie } from '@/lib/api/movie'
 import { MOVIES_CODES } from '@/constants/messages/movie'
 
+export const metadata = {
+  title: '리뷰 작성',
+}
+
 export default async function MoviesReviewsCreatePage({
   params,
 }: {

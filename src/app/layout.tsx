@@ -1,4 +1,3 @@
-import type { Metadata } from 'next'
 import './globals.css'
 import TopNav from '@/components/layout/TopNav'
 import BottomNav from '@/components/layout/BottomNav'
@@ -15,8 +14,11 @@ const pretendard = localFont({
   variable: '--font-pretendard',
 })
 
-export const metadata: Metadata = {
-  title: 'Deepdiview',
+export const metadata = {
+  title: {
+    default: 'Deepdiview',
+    template: '%s | Deepdiview',
+  },
 }
 
 export default async function RootLayout({

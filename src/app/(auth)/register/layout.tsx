@@ -1,6 +1,10 @@
 import GoBackHeader from '@/components/layout/MobileHeader/GoBackHeader'
 import { ReactNode } from 'react'
 
+export const metadata = {
+  title: '회원가입',
+}
+
 export default function RegisterLayout({ children }: { children: ReactNode }) {
   return (
     <>
