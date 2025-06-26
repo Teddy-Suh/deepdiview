@@ -1,13 +1,11 @@
 export const dynamic = 'force-dynamic'
 
-import { auth } from '@/auth'
 import GoBackHeader from '@/components/layout/MobileHeader/GoBackHeader'
-import ReviewList from '@/components/ui/ReviewList'
 import SortButton from '@/components/ui/SortButton'
-import { MOVIES_CODES } from '@/constants/messages/movie'
-import { getReviews } from '@/lib/api/review'
 import { ReviewSortField } from '@/types/api/common'
-import { notFound } from 'next/navigation'
+import ReviewListWrapper from './ReviewListWrapper'
+import { Suspense } from 'react'
+import ReviewListLoading from '@/components/ui/ReviewListLoading'
 
 export async function generateMetadata({
   searchParams,
@@ -27,24 +25,7 @@ export default async function MoviesReviewsPage({
   params: Promise<{ id: string }>
   searchParams: Promise<{ sort?: ReviewSortField; title: string }>
 }) {
-  const [{ id }, { sort = 'createdAt', title }, session] = await Promise.all([
-    params,
-    searchParams,
-    auth(),
-  ])
-
-  let reviews
-  try {
-    reviews = await getReviews(id, !!session, session?.accessToken, {
-      page: 0,
-      size: 12,
-      sort: `${sort},desc`,
-    })
-  } catch (error) {
-    const errorCode = (error as Error).message
-    if (errorCode === MOVIES_CODES.MOVIE_NOT_FOUND) return notFound()
-    throw error
-  }
+  const [{ id }, { sort = 'createdAt', title }] = await Promise.all([params, searchParams])
 
   return (
     <>
@@ -83,15 +64,9 @@ export default async function MoviesReviewsPage({
             />
           </div>
         </div>
-
-        <ReviewList
-          session={session}
-          initialReviews={reviews.content}
-          initialLast={reviews.last}
-          withMovie={false}
-          movieId={id}
-          sort={sort}
-        />
+        <Suspense fallback={<ReviewListLoading withoutMovie />}>
+          <ReviewListWrapper id={id} sort={sort} />
+        </Suspense>
       </div>
     </>
   )

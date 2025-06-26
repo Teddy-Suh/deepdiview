@@ -2,11 +2,12 @@ export const dynamic = 'force-dynamic'
 
 import { auth } from '@/auth'
 import GoBackHeader from '@/components/layout/MobileHeader/GoBackHeader'
-import ReviewList from '@/components/ui/ReviewList'
 import SortButton from '@/components/ui/SortButton'
-import { getUserReviews } from '@/lib/api/user'
 import { ReviewSortField } from '@/types/api/common'
 import { redirect } from 'next/navigation'
+import ReviewListWrapper from './ReviewListWrapper'
+import { Suspense } from 'react'
+import ReviewListLoading from '@/components/ui/ReviewListLoading'
 
 export async function generateMetadata({
   searchParams,
@@ -30,11 +31,6 @@ export default async function UserReviewsPage({
   if (!session) redirect('/login')
 
   const [{ id }, { sort = 'createdAt', nickname }] = await Promise.all([params, searchParams])
-  const reviews = await getUserReviews(session.accessToken, id, {
-    page: 0,
-    size: 12,
-    sort: `${sort},desc`,
-  })
 
   return (
     <>
@@ -87,15 +83,9 @@ export default async function UserReviewsPage({
             />
           </div>
         </div>
-
-        <ReviewList
-          session={session}
-          initialReviews={reviews.content}
-          initialLast={reviews.last}
-          userId={id}
-          sort={sort}
-          isUserReviewsPage
-        />
+        <Suspense fallback={<ReviewListLoading withoutProfile />}>
+          <ReviewListWrapper id={id} sort={sort} session={session} />
+        </Suspense>
       </div>
     </>
   )
