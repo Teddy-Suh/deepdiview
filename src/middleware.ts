@@ -44,7 +44,7 @@ function isMatch(pathname: string, urls: string[]) {
 const authRoutes = ['/login', '/register']
 
 const privateRoutes = [
-  '/board/*path',
+  '/board/create',
   '/movies/:path/reviews/create',
   '/notifications',
   '/profile/*path',
