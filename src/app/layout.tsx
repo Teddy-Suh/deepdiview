@@ -16,8 +16,8 @@ const pretendard = localFont({
 
 export const metadata = {
   title: {
-    default: 'Deepdiview',
-    template: '%s | Deepdiview',
+    default: 'DeepDiview',
+    template: '%s | DeepDiview',
   },
 }
 
