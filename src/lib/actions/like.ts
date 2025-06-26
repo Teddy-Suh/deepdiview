@@ -7,7 +7,6 @@ import { REVIEW_CODES } from '@/constants/messages/review'
 import { redirect } from 'next/navigation'
 
 export async function toggleLikeAction(likedByUser: boolean | null, reviewId: string) {
-  await new Promise((resolve) => setTimeout(resolve, 3000))
   const session = await auth()
   if (!session) redirect('/login')
   try {
