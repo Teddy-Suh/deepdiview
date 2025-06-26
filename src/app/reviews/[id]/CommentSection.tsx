@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useOptimistic, useRef, useState } from 'react'
+import { startTransition, useEffect, useOptimistic, useRef, useState } from 'react'
 import CommentForm from './CommentForm'
 import CommentList from './CommentList'
 import { getComments } from '@/lib/api/comment'
@@ -51,15 +51,19 @@ export default function CommentSection({
   // 댓글 작성
   // Comments에 성공 응답으로 받은 댓글  추가
   const handleCreateSuccess = (createdComment: Comment) => {
-    setComments((prev) => [createdComment, ...prev])
+    startTransition(() => {
+      setComments((prev) => [createdComment, ...prev])
+    })
   }
 
   // 댓글 수정
   // Comments에 성공 응답으로 받은 댓글로 교체
   const handleEditSuccess = (updatedComment: Comment) => {
-    setComments((prev) =>
-      prev.map((comment) => (comment.id === updatedComment.id ? updatedComment : comment))
-    )
+    startTransition(() => {
+      setComments((prev) =>
+        prev.map((comment) => (comment.id === updatedComment.id ? updatedComment : comment))
+      )
+    })
   }
 
   // 댓글 삭제

@@ -43,7 +43,7 @@ export default function CommentItem({
   const isMyRecentCreatedComment =
     isMyComment &&
     comment.optimisticStatus === undefined &&
-    Date.now() - new Date(comment.createdAt).getTime() < 3000
+    Date.now() - new Date(comment.createdAt).getTime() < 2000
 
   // 삭제 중
   // CommentForm 작성, 내가 쓴 다른 댓글의 수정, 삭제 비활성화
