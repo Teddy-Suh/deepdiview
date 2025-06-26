@@ -80,7 +80,7 @@ export default function LikeButton({
         <div className='flex gap-1'>
           <button
             className={clsx(
-              'cursor-pointer active:animate-ping',
+              'active:animate-jump cursor-pointer',
               !optimisticState.likedByUser && 'animate-pulse'
             )}
             type='submit'

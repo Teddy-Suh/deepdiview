@@ -6,8 +6,8 @@ export default function loading() {
   return (
     <div className='container-wrapper flex flex-col md:flex-1 md:items-center md:justify-center'>
       <div className='w-full space-y-4 md:flex md:items-center md:justify-center md:gap-4 md:space-y-0'>
-        <div className='skeleton h-[380px] rounded-2xl md:flex-1 lg:flex-2' />
-        <div className='skeleton h-[250px] rounded-2xl md:h-[380px] md:flex-1' />
+        <div className='skeleton h-[380px] rounded-3xl md:flex-1 lg:flex-2' />
+        <div className='skeleton h-[250px] rounded-3xl md:h-[380px] md:flex-1' />
       </div>
     </div>
   )

@@ -32,13 +32,13 @@ export default function VoteSection({
               session ? (
                 // 로그인 O
                 // 투표 또는 진행중인 투표 결과 (접기 가능)
-                <Suspense fallback={<div className='skeleton h-18 rounded-2xl' />}>
+                <Suspense fallback={<div className='skeleton h-18 rounded-3xl' />}>
                   <VoteWrapper session={session} />
                 </Suspense>
               ) : (
                 // 로그인 X
                 // 로그인 안내
-                <div className='bg-base-300 flex flex-col items-center gap-4 rounded-2xl p-4 md:flex-row md:justify-between md:gap-0'>
+                <div className='bg-base-300 flex flex-col items-center gap-4 rounded-3xl p-4 md:flex-row md:justify-between md:gap-0'>
                   <p className='text-center break-keep'>
                     <span className='font-bold'>DeepDiview</span> 의 회원이 되셔서 다음주 영화에
                     투표해 주세요!

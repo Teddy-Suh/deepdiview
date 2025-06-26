@@ -7,7 +7,7 @@ export default function OverlaidMovieHeroLoading({ isSunday }: { isSunday: boole
         <div className='flex flex-col items-center gap-4 md:flex-row md:items-start md:gap-0 lg:px-6'>
           {/* 포스터 */}
           <div className='w-full flex-2 px-16 md:pr-6 md:pl-0 lg:pr-12 lg:pl-0'>
-            <div className='skeleton relative aspect-2/3 w-full' />
+            <div className='skeleton relative aspect-2/3 w-full rounded-lg' />
           </div>
 
           {/* 정보 */}

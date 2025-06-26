@@ -23,7 +23,7 @@ export default function CertificationItemWrapper({
   return (
     <div
       className={clsx(
-        'space-y-2 rounded-2xl p-4',
+        'space-y-2 rounded-3xl p-4',
         certification.status === CERTIFICATION_STATUS.NONE && 'bg-base-300',
         certification.status === CERTIFICATION_STATUS.APPROVED && 'bg-success/15',
         certification.status === CERTIFICATION_STATUS.PENDING && 'bg-warning/15',
@@ -75,7 +75,7 @@ export default function CertificationItemWrapper({
           </div>
         </>
       )}
-      <div className='bg-base-100 relative flex h-80 w-full items-center justify-center overflow-hidden rounded-2xl'>
+      <div className='bg-base-100 relative flex h-80 w-full items-center justify-center overflow-hidden rounded-3xl'>
         {certification.certificationDetails?.certificationUrl || croppedImage ? (
           <InnerImageZoom
             src={

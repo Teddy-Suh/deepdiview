@@ -15,11 +15,11 @@ export default function CreateVoteSection({
     <section>
       <h3 className='mb-3 text-xl font-semibold'>투표 생성</h3>
       {isSunday ? (
-        <Suspense fallback={<div className='skeleton h-[72px] rounded-2xl' />}>
+        <Suspense fallback={<div className='skeleton h-[72px] rounded-3xl' />}>
           <CreateVoteWrapper session={session} />
         </Suspense>
       ) : (
-        <div className='bg-base-300 flex flex-col items-center gap-4 rounded-2xl p-4 md:flex-row md:justify-between md:gap-0'>
+        <div className='bg-base-300 flex flex-col items-center gap-4 rounded-3xl p-4 md:flex-row md:justify-between md:gap-0'>
           <p className='my-2'>투표는 일요일에만 생성할 수 있습니다.</p>
         </div>
       )}

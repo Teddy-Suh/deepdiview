@@ -53,7 +53,7 @@ export default function ReviewItem({
   const content = (
     <div
       className={clsx(
-        'bg-base-300 rounded-2xl p-4',
+        'bg-base-300 rounded-3xl p-4',
         withMovie ? 'space-y-3' : 'flex flex-col gap-3',
         withMovie === false && isDetail === false && 'h-64'
       )}
@@ -83,7 +83,7 @@ export default function ReviewItem({
             <Link href={`/movies/${review.tmdbId}`}>
               <div className='flex flex-col items-center gap-3 py-2 md:float-left md:mr-6 md:py-0'>
                 <Image
-                  className='rounded-2xl'
+                  className='rounded-lg'
                   src={`https://image.tmdb.org/t/p/w500${review.posterPath}`}
                   alt={`${review.movieTitle} 포스터`}
                   width={200}

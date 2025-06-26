@@ -94,7 +94,7 @@ export default function IntroForm({
 
   if (!isCurrentUser)
     return (
-      <div className='bg-base-100 w-full rounded-2xl p-4'>
+      <div className='bg-base-100 w-full rounded-3xl p-4'>
         <p className={clsx('text-center', !intro && 'text-gray-500')}>
           {intro || '한 줄 소개가 없습니다.'}
         </p>
@@ -105,7 +105,7 @@ export default function IntroForm({
     <div className='w-full'>
       {isEditing ? (
         <form action={formAction}>
-          <div className='bg-base-100 relative rounded-2xl p-4'>
+          <div className='bg-base-100 relative rounded-3xl p-4'>
             <input
               {...register('oneLineIntro')}
               className='w-full border-none text-center outline-none'
@@ -141,7 +141,7 @@ export default function IntroForm({
           )}
         </form>
       ) : (
-        <div className='bg-base-100 relative w-full rounded-2xl p-4'>
+        <div className='bg-base-100 relative w-full rounded-3xl p-4'>
           <p className={clsx('text-center', !intro && 'text-gray-500')}>
             {intro || '한 줄 소개가 없습니다.'}
           </p>

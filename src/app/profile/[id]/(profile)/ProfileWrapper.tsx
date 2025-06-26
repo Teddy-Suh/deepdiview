@@ -29,7 +29,7 @@ export default function ProfileWrapper({
       {/* 프로필 정보 섹션, 별점 그래프 섹션 flex container */}
       <div className='w-full space-y-4 md:flex md:items-center md:justify-center md:gap-4 md:space-y-0'>
         {/* 프로필 정보 섹션 */}
-        <section className='bg-base-300 relative flex h-[380px] flex-col justify-between gap-4 rounded-2xl p-4 md:flex-1 lg:flex-2'>
+        <section className='bg-base-300 relative flex h-[380px] flex-col justify-between gap-4 rounded-3xl p-4 md:flex-1 lg:flex-2'>
           {isCurrentUser && (
             <button
               className='absolute top-4 right-4 text-gray-500'
@@ -99,7 +99,7 @@ export default function ProfileWrapper({
         </section>
 
         {/* 별점 분석 */}
-        <section className='bg-base-300 flex h-[250px] flex-col gap-4 rounded-2xl p-4 md:h-[380px] md:flex-1'>
+        <section className='bg-base-300 flex h-[250px] flex-col gap-4 rounded-3xl p-4 md:h-[380px] md:flex-1'>
           <RatingBarChart
             ratingDistribution={profile.ratingStats.ratingDistribution}
             ratingAverage={profile.ratingStats.ratingAverage}

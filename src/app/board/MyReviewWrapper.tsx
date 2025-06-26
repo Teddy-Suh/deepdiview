@@ -14,7 +14,7 @@ export default async function MyReviewWrapper({
   const { status: certificationStatus } = await getCertification(session?.accessToken)
 
   return (
-    <div className='bg-base-300 flex flex-col items-center gap-4 rounded-2xl p-4 md:flex-row md:justify-between md:gap-0'>
+    <div className='bg-base-300 flex flex-col items-center gap-4 rounded-3xl p-4 md:flex-row md:justify-between md:gap-0'>
       <p className='text-center break-keep'>
         이 주의 영화에 대한 <span className='font-bold'>{session.user?.nickname}</span> 님의 생각이
         궁금해요!
