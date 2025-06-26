@@ -1,19 +1,13 @@
-import { auth } from '@/auth'
 import GoBackHeader from '@/components/layout/MobileHeader/GoBackHeader'
-import { getLatestReviews } from '@/lib/api/review'
-import ReviewList from '../../components/ui/ReviewList'
+import ReviewListWrapper from './ReviewListWrapper'
+import { Suspense } from 'react'
+import ReviewListLoading from '@/components/ui/ReviewListLoading'
 
 export const metadata = {
   title: '최신 리뷰',
 }
 
 export default async function ReviewsPage() {
-  const session = await auth()
-  const reviews = await getLatestReviews(!!session, session?.accessToken, {
-    page: 0,
-    size: 12,
-  })
-
   return (
     <>
       <GoBackHeader>
@@ -21,7 +15,9 @@ export default async function ReviewsPage() {
       </GoBackHeader>
       <div className='container-wrapper'>
         <h2 className='mt-4 mb-3 hidden text-xl font-semibold md:block'>최신 리뷰</h2>
-        <ReviewList session={session} initialReviews={reviews.content} initialLast={reviews.last} />
+        <Suspense fallback={<ReviewListLoading withMovie />}>
+          <ReviewListWrapper />
+        </Suspense>
       </div>
     </>
   )

@@ -2,9 +2,10 @@ export const dynamic = 'force-dynamic'
 
 import { auth } from '@/auth'
 import GoBackHeader from '@/components/layout/MobileHeader/GoBackHeader'
-import ReviewList from '@/components/ui/ReviewList'
-import { getUserComments } from '@/lib/api/user'
 import { redirect } from 'next/navigation'
+import ReviewListWrapper from './ReviewListWrapper'
+import { Suspense } from 'react'
+import ReviewListLoading from '@/components/ui/ReviewListLoading'
 
 export async function generateMetadata({
   searchParams,
@@ -28,28 +29,6 @@ export default async function UserCommentsPage({
   if (!session) redirect('/login')
 
   const [{ id }, { nickname }] = await Promise.all([params, searchParams])
-  const userComments = await getUserComments(session.accessToken, id, {
-    page: 0,
-    size: 12,
-  })
-
-  // reviewList 재사용 하려고 재가공
-  // review필드에 감싸져 있던 리뷰를 풀고
-  // 댓글을 comment에 담음
-  const reviewWithCommentsList = userComments.content.map((item) => {
-    const { review, ...commentFields } = item
-
-    const comment = {
-      ...commentFields,
-    }
-
-    const reviewWithComment = {
-      ...review,
-      comment,
-    }
-
-    return reviewWithComment
-  })
 
   return (
     <>
@@ -62,13 +41,9 @@ export default async function UserCommentsPage({
             {nickname}의 댓글
           </h2>
         </div>
-        <ReviewList
-          session={session}
-          initialReviews={reviewWithCommentsList}
-          initialLast={userComments.last}
-          userId={id}
-          withComment
-        />
+        <Suspense fallback={<ReviewListLoading withComment />}>
+          <ReviewListWrapper session={session} id={id} />
+        </Suspense>
       </div>
     </>
   )
