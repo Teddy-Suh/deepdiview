@@ -6,7 +6,7 @@ import { toggleLikeAction } from '@/lib/actions/like'
 import clsx from 'clsx'
 import { Heart } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useActionState, useEffect } from 'react'
+import { useOptimistic, useState, startTransition } from 'react'
 import toast from 'react-hot-toast'
 
 export default function LikeButton({
@@ -18,36 +18,62 @@ export default function LikeButton({
   likedByUser: boolean | null
   likeCount: number
   reviewId: string
-  readOnly: boolean
+  readOnly?: boolean
 }) {
   const router = useRouter()
-
-  const [state, formAction] = useActionState(toggleLikeAction.bind(null, reviewId), {
+  const [localState, setLocalState] = useState({
     likedByUser,
     likeCount,
-    code: '',
   })
 
-  useEffect(() => {
-    if (state.code === '') return
+  const [optimisticState, setOptimisticState] = useOptimistic(
+    localState,
+    (state, newLikedByUser: boolean) => ({
+      ...state,
+      likedByUser: newLikedByUser,
+      likeCount: newLikedByUser ? state.likeCount + 1 : state.likeCount - 1,
+    })
+  )
 
-    if (state.code === COMMON_CODES.NETWORK_ERROR) {
-      toast.error(COMMON_MESSAGES.NETWORK_ERROR!)
-    }
-    if (state.code === REVIEW_CODES.REVIEW_NOT_FOUND) {
-      toast.error(REVIEW_MESSAGES.REVIEW_NOT_FOUND)
-      router.back()
-    }
-  }, [router, state])
+  const formAction = async () => {
+    setOptimisticState(!optimisticState.likedByUser)
 
-  if (readOnly || likedByUser === null)
+    startTransition(async () => {
+      const { code } = await toggleLikeAction(optimisticState.likedByUser, reviewId)
+
+      if (code === COMMON_CODES.SUCCESS) {
+        startTransition(() => {
+          setLocalState({
+            likedByUser: !optimisticState.likedByUser,
+            likeCount: !optimisticState.likedByUser
+              ? optimisticState.likeCount + 1
+              : optimisticState.likeCount - 1,
+          })
+        })
+        return
+      }
+
+      if (code === COMMON_CODES.NETWORK_ERROR) {
+        toast.error(COMMON_MESSAGES.NETWORK_ERROR!)
+        return
+      }
+
+      if (code === REVIEW_CODES.REVIEW_NOT_FOUND) {
+        toast.error(REVIEW_MESSAGES.REVIEW_NOT_FOUND)
+        router.back()
+        return
+      }
+    })
+  }
+
+  if (readOnly || likedByUser === null) {
     return (
       <div className='flex gap-1'>
         <Heart className={clsx(likedByUser && 'fill-primary stroke-primary')} />
         <p>{likeCount}</p>
       </div>
     )
-
+  }
   return (
     <>
       <form action={formAction}>
@@ -55,19 +81,19 @@ export default function LikeButton({
           <button
             className={clsx(
               'cursor-pointer active:animate-ping',
-              !state.likedByUser && 'animate-pulse'
+              !optimisticState.likedByUser && 'animate-pulse'
             )}
             type='submit'
           >
             <Heart
               className={clsx(
-                state.likedByUser
+                optimisticState.likedByUser
                   ? 'fill-primary stroke-primary'
                   : 'hover:fill-primary hover:stroke-primary'
               )}
             />
           </button>
-          <p>{state.likeCount}</p>
+          <p>{optimisticState.likeCount}</p>
         </div>
       </form>
     </>

@@ -6,25 +6,18 @@ import { COMMON_CODES } from '@/constants/messages/common'
 import { REVIEW_CODES } from '@/constants/messages/review'
 import { redirect } from 'next/navigation'
 
-export async function toggleLikeAction(
-  reviewId: string,
-  state: { likedByUser: boolean | null; likeCount: number; code: string }
-) {
+export async function toggleLikeAction(likedByUser: boolean | null, reviewId: string) {
   const session = await auth()
   if (!session) redirect('/login')
   try {
     await toggleLike(reviewId, session.accessToken)
-    return {
-      ...state,
-      likedByUser: !state.likedByUser,
-      likeCount: state.likedByUser ? state.likeCount - 1 : state.likeCount + 1,
-    }
+    return { code: COMMON_CODES.SUCCESS }
   } catch (error) {
     const errorCode = (error as Error).message
     switch (errorCode) {
       case COMMON_CODES.NETWORK_ERROR:
       case REVIEW_CODES.REVIEW_NOT_FOUND:
-        return { ...state, code: errorCode }
+        return { code: errorCode }
       default:
         console.error(error)
         throw new Error(COMMON_CODES.UNHANDLED_ERROR)
