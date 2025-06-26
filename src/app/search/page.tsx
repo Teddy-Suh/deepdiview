@@ -4,6 +4,17 @@ import SearchMovieItem from './SearchMovieItem'
 import Link from 'next/link'
 import clsx from 'clsx'
 
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ title?: string }>
+}) {
+  const { title } = await searchParams
+  return {
+    title: title ? `${title} - 검색` : '검색',
+  }
+}
+
 export default async function SearchPage({
   searchParams,
 }: {

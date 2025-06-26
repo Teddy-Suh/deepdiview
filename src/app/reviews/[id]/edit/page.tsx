@@ -9,6 +9,10 @@ import ReviewFormSection from '@/components/layout/ReviewFormSection'
 import { REVIEW_CODES } from '@/constants/messages/review'
 import { COMMON_CODES } from '@/constants/messages/common'
 
+export const metadata = {
+  title: '리뷰 수정',
+}
+
 export default async function ReviewsEditPage({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth()
   if (!session?.user) redirect('/login')

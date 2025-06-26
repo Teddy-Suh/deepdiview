@@ -11,6 +11,10 @@ import BaseHeader from '@/components/layout/MobileHeader/BaseHeader'
 import VoteSection from './VoteSection'
 import MyReviewSection from './MyReviewSection'
 
+export const metadata = {
+  title: '게시판',
+}
+
 export default async function BoardPage() {
   const [session, { isSunday }, { tmdbId }] = await Promise.all([
     auth(),

@@ -5,6 +5,10 @@ import { redirect } from 'next/navigation'
 import { CERTIFICATION_STATUS } from '@/constants/certification'
 import { getIsSunday } from '@/lib/api/discussion'
 
+export const metadata = {
+  title: '시청 인증',
+}
+
 export default async function SubmitCertificationPage() {
   const session = await auth()
   if (!session) redirect('/login')

@@ -1,6 +1,10 @@
 import GoBackHeader from '@/components/layout/MobileHeader/GoBackHeader'
 import { ReactNode } from 'react'
 
+export const metadata = {
+  title: '관리자',
+}
+
 export default function layout({ children }: { children: ReactNode }) {
   return (
     <>

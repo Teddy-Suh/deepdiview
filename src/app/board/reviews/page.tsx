@@ -8,12 +8,23 @@ import { getReviews } from '@/lib/api/review'
 import { ReviewSortField } from '@/types/api/common'
 import { notFound } from 'next/navigation'
 
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ title: string }>
+}) {
+  const { title } = await searchParams
+  return {
+    title: `${title} - 리뷰`,
+  }
+}
+
 export default async function BoardReviewsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ sort?: ReviewSortField }>
+  searchParams: Promise<{ title: string; sort?: ReviewSortField }>
 }) {
-  const [{ tmdbId }, { sort = 'createdAt' }, session] = await Promise.all([
+  const [{ tmdbId }, { title, sort = 'createdAt' }, session] = await Promise.all([
     getThisWeekMovieId(),
     searchParams,
     auth(),
@@ -42,13 +53,13 @@ export default async function BoardReviewsPage({
         </h2>
         <div className='flex space-x-3'>
           <SortButton
-            pathPrefix='/board/reviews'
+            pathPrefix={`/board/reviews?title=${title}`}
             targetValue='createdAt'
             currentValue={sort}
             label='최신'
           />
           <SortButton
-            pathPrefix='/board/reviews'
+            pathPrefix={`/board/reviews?title=${title}`}
             targetValue='likeCount'
             currentValue={sort}
             label='인기'
@@ -62,13 +73,13 @@ export default async function BoardReviewsPage({
           </h2>
           <div className='hidden space-x-3 md:block'>
             <SortButton
-              pathPrefix='/board/reviews'
+              pathPrefix={`/board/reviews?title=${title}`}
               targetValue='createdAt'
               currentValue={sort}
               label='최신'
             />
             <SortButton
-              pathPrefix='/board/reviews'
+              pathPrefix={`/board/reviews?title=${title}`}
               targetValue='likeCount'
               currentValue={sort}
               label='인기'

@@ -10,6 +10,10 @@ import { getIsSunday } from '@/lib/api/discussion'
 import { COMMON_CODES } from '@/constants/messages/common'
 import { CERTIFICATION_STATUS } from '@/constants/certification'
 
+export const metadata = {
+  title: '리뷰 작성',
+}
+
 export default async function BoardCreatePage({
   searchParams,
 }: {

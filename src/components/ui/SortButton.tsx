@@ -22,7 +22,8 @@ export default function SortButton({
 
   const handleClick = () => {
     startTransition(() => {
-      router.push(`${pathPrefix}?${queryKey}=${targetValue}`)
+      const separator = pathPrefix.includes('?') ? '&' : '?'
+      router.push(`${pathPrefix}${separator}${queryKey}=${targetValue}`)
     })
   }
 

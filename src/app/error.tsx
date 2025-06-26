@@ -4,6 +4,10 @@ import BaseHeader from '@/components/layout/MobileHeader/BaseHeader'
 import { CircleAlert } from 'lucide-react'
 import Link from 'next/link'
 
+export const metadata = {
+  title: '에러',
+}
+
 export default function Error() {
   return (
     <>

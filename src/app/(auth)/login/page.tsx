@@ -3,6 +3,10 @@ import LoginForm from './LoginForm'
 import GoBackHeader from '@/components/layout/MobileHeader/GoBackHeader'
 import AuthFormWrapper from '@/components/ui/AuthFormWrapper'
 
+export const metadata = {
+  title: '로그인',
+}
+
 export default function LoginPage() {
   return (
     <>

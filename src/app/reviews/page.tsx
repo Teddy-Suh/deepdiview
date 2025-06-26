@@ -3,14 +3,16 @@ import GoBackHeader from '@/components/layout/MobileHeader/GoBackHeader'
 import { getLatestReviews } from '@/lib/api/review'
 import ReviewList from '../../components/ui/ReviewList'
 
+export const metadata = {
+  title: '최신 리뷰',
+}
+
 export default async function ReviewsPage() {
   const session = await auth()
   const reviews = await getLatestReviews(!!session, session?.accessToken, {
     page: 0,
     size: 12,
   })
-
-  console.log(reviews)
 
   return (
     <>
