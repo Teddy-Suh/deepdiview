@@ -28,13 +28,13 @@ export default function MyReviewSection({
               {myReview ? (
                 <ReviewItem review={myReview} withMovie={false} />
               ) : (
-                <Suspense fallback={<div className='skeleton h-18 rounded-2xl' />}>
+                <Suspense fallback={<div className='skeleton h-18 rounded-3xl' />}>
                   <MyReviewWrapper session={session} movieId={movieId} movieTitle={movieTitle} />
                 </Suspense>
               )}
             </>
           ) : (
-            <div className='bg-base-300 flex flex-col items-center gap-4 rounded-2xl p-4 md:flex-row md:justify-between md:gap-0'>
+            <div className='bg-base-300 flex flex-col items-center gap-4 rounded-3xl p-4 md:flex-row md:justify-between md:gap-0'>
               <p className='text-center break-keep'>
                 <span className='font-bold'>DeepDiview</span> 회원이 되셔서 이 영화에 대한 생각을
                 공유해주세요!

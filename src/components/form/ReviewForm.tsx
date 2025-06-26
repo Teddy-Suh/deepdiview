@@ -75,7 +75,7 @@ export default function ReviewForm({
     <form action={formAction} className='flex flex-1 flex-col'>
       <GoBackHeader>
         <div className='flex flex-1 items-center gap-2'>
-          <h2 className='line-clamp-1 rounded-xl text-xl font-semibold'>{movieTitle}</h2>
+          <h2 className='line-clamp-1 text-xl font-semibold'>{movieTitle}</h2>
           {certified && <CertifiedBadge />}
         </div>
         <button className='btn btn-primary' type='submit' disabled={isPending || !isValid}>
@@ -91,7 +91,7 @@ export default function ReviewForm({
           {isPending ? <span className='loading loading-ring' /> : <>{isEdit ? '수정' : '작성'}</>}
         </button>
       </div>
-      <div className='bg-base-300 flex flex-1 flex-col rounded-2xl p-5 md:p-7'>
+      <div className='bg-base-300 flex flex-1 flex-col rounded-3xl p-5 md:p-7'>
         <div className='mb-5 md:mb-7'>
           <Rating rating={initialValue?.rating} register={register('rating')} />
         </div>

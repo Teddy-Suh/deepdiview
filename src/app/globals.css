@@ -7,8 +7,8 @@
   default: false;
   prefersdark: true;
   color-scheme: 'dark';
-  --color-base-100: oklch(20% 0 0);
-  --color-base-200: oklch(10% 0 0);
+  --color-base-100: oklch(21% 0 0);
+  --color-base-200: oklch(10.5% 0 0);
   --color-base-300: oklch(0% 0 0);
   --color-base-content: oklch(97.807% 0.029 256.847);
   --color-primary: oklch(0.5814 0.2349 27.99);
@@ -95,11 +95,11 @@
     }
   }
   .profile-btn {
-    @apply btn text-base-100 bg-base-content absolute flex h-7 w-7 items-center justify-center rounded-full border-0 p-1;
+    @apply btn text-base-100 bg-base-content disabled:text-base-content absolute flex h-7 w-7 items-center justify-center rounded-full border-0 p-1;
   }
 
   .user-input {
-    @apply input bg-base-300 md:bg-base-100 focus-within:bg-primary/10 w-full rounded-full border-none p-0 px-4 shadow-none outline-none focus-within:shadow-none focus-within:outline-none;
+    @apply input bg-base-300 md:bg-base-100 focus-within:bg-primary/15 w-full rounded-full border-none p-0 px-4 shadow-none outline-none focus-within:shadow-none focus-within:outline-none;
   }
 
   .auth-form {

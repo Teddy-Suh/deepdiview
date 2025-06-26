@@ -24,7 +24,7 @@ export default function LatestReviewSection({
         )}
       </div>
       {latestReviews.length === 0 ? (
-        <div className='bg-base-300 rounded-2xl px-4 py-6 text-center md:text-start'>
+        <div className='bg-base-300 rounded-3xl px-4 py-6 text-center md:text-start'>
           <p>아직 리뷰가 없습니다.</p>
         </div>
       ) : (

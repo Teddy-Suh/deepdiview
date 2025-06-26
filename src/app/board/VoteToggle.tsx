@@ -43,7 +43,7 @@ export default function VoteToggle({
   }, [isOpen])
 
   return (
-    <div className='bg-base-300 overflow-hidden rounded-2xl px-4 py-6'>
+    <div className='bg-base-300 overflow-hidden rounded-3xl px-4 py-6'>
       <button
         className='flex w-full justify-between'
         onClick={() => {

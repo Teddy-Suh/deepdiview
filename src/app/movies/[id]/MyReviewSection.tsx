@@ -33,7 +33,7 @@ export default function MyReviewSection({
             <ReviewItem review={myReview} withMovie={false} />
           ) : (
             // 작성한 리뷰가 없는 경우
-            <div className='bg-base-300 flex flex-col items-center gap-4 rounded-2xl p-4 md:flex-row md:justify-between md:gap-0'>
+            <div className='bg-base-300 flex flex-col items-center gap-4 rounded-3xl p-4 md:flex-row md:justify-between md:gap-0'>
               {isThisWeekMovie && !isSunday ? (
                 // 인증된 리뷰가 작성 가능한 경우 (이주의 영화이면서 일요일이 아닌 경우)
                 <>
@@ -97,7 +97,7 @@ export default function MyReviewSection({
       ) : (
         // 로그인 안한 경우
         // 로그인 안내
-        <div className='bg-base-300 flex flex-col items-center gap-4 rounded-2xl p-4 md:flex-row md:justify-between md:gap-0'>
+        <div className='bg-base-300 flex flex-col items-center gap-4 rounded-3xl p-4 md:flex-row md:justify-between md:gap-0'>
           <p className='text-center break-keep'>
             <span className='font-bold'>DeepDiview</span> 회원이 되셔서 이 영화에 대한 생각을
             공유해주세요!

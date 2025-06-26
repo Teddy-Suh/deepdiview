@@ -13,7 +13,7 @@ export default function SearchMovieItem({ movie }: { movie: Movie }) {
             src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
             alt='영화 포스터'
             fill
-            className={clsx('rounded-md', !movie.available && 'grayscale')}
+            className={clsx('rounded-lg', !movie.available && 'grayscale')}
           />
         </div>
         <div className='line-clamp-3 flex w-full flex-col justify-between'>

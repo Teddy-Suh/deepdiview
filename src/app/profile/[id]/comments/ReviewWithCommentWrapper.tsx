@@ -12,7 +12,7 @@ export default function ReviewWithCommentWrapper({
 }) {
   return (
     <Link href={`/reviews/${comment.reviewId}`}>
-      <div className='space-y-2 rounded-2xl bg-black/3.5 p-4 dark:bg-white/5'>
+      <div className='space-y-2 rounded-3xl bg-black/4 p-4 dark:bg-white/4'>
         <p className='text-gray-400'>{getRelativeTime(comment.createdAt)}</p>
         <p className='line-clamp-1 break-all'>{comment.content}</p>
         {children}

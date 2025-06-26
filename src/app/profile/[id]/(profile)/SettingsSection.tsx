@@ -5,7 +5,7 @@ import LogoutButton from './LogoutButton'
 export default function SettingsSection({ isAdmin }: { isAdmin: boolean }) {
   return (
     <section className='mt-4 w-full'>
-      <div className='bg-base-300 rounded-2xl p-4'>
+      <div className='bg-base-300 rounded-3xl p-4'>
         <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
           <Link className='btn btn-primary btn-soft w-full' href='/profile/update-password'>
             비밀번호 변경

@@ -43,7 +43,7 @@ export default function VoteCard({
                 onChange={() => setSelected(voteOption.id)}
                 disabled={readOnly}
               />
-              <div className='bg-base-100 peer-checked:ring-primary flex gap-4 rounded-lg p-4 peer-checked:ring-2'>
+              <div className='bg-base-100 peer-checked:ring-primary flex gap-4 rounded-3xl p-4 peer-checked:ring-2'>
                 <div className='relative aspect-2/3 flex-2 overflow-hidden rounded-lg'>
                   <Image
                     src={`https://image.tmdb.org/t/p/w500${voteOption.poster_path}`}

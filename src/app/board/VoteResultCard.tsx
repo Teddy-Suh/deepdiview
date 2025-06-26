@@ -13,7 +13,7 @@ export default function VoteResultCard({
 }) {
   const totalVotes = voteResults.reduce((sum: number, result) => sum + result.voteCount, 0)
   return (
-    <div className='bg-base-300 rounded-2xl p-4'>
+    <div className='bg-base-300 rounded-3xl p-4'>
       {withTitle && <p className='mb-4'>일요일엔 게시판이 쉽니다!</p>}
       <ul className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
         {voteResults.map((voteResult) => (
@@ -21,7 +21,7 @@ export default function VoteResultCard({
             <Link href={`/movies/${voteResult.id}`}>
               <div
                 className={clsx(
-                  'bg-base-100 flex gap-4 rounded-lg p-4',
+                  'bg-base-100 flex gap-4 rounded-3xl p-4',
                   voteResult.voted && 'ring-primary ring-2'
                 )}
               >
