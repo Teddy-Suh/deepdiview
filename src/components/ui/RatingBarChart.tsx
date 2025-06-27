@@ -74,7 +74,7 @@ function getRatingComment(
 ): [string, string] {
   const total = Object.values(ratingDistribution).reduce((a, b) => a + b, 0)
   if (total === 0 || ratingAverage === 0) return ['아직 평가가 없습니다.', '']
-  if (total <= 10) return ['아직 평가가 적습니다.', '']
+  if (total < 10) return ['아직 평가가 적습니다.', '']
 
   if (ratingAverage >= 4.0) return ['좋은 작품을 잘 골라내는 안목이 있는 ', "'긍정파'"]
   if (ratingAverage >= 3.0) return ['작품의 장단점을 균형 있게 바라보는 ', "'균형파'"]
