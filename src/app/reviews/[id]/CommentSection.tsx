@@ -6,11 +6,14 @@ import CommentList from './CommentList'
 import { getComments } from '@/lib/api/comment'
 import CommentLoading from './CommentLoading'
 import { ClientComment, Comment } from '@/types/api/common'
+import { Session } from 'next-auth'
 
 export default function CommentSection({
+  session,
   reviewId,
   currentUserId,
 }: {
+  session: Session | null
   reviewId: string
   currentUserId: string
 }) {
@@ -153,6 +156,7 @@ export default function CommentSection({
       )}
       {hasNext && <div ref={loaderRef} className='h-1 w-full opacity-0' />}
       <CommentForm
+        session={session}
         reviewId={reviewId}
         editComment={editComment}
         isCommentPending={isCommentPending}

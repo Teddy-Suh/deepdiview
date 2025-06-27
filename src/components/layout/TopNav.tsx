@@ -2,15 +2,16 @@
 
 import Link from 'next/link'
 import SearchForm from '@/components/form/SearchForm'
-import { useSession } from '@/providers/providers'
 import { useEffect, useState } from 'react'
 import clsx from 'clsx'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 import NotificationBadge from '../ui/NotificationBadge'
+import { Session } from 'next-auth'
+import { useUserStore } from '@/stores/useUserStore'
 
-export default function TopNav() {
-  const session = useSession()
+export default function TopNav({ session }: { session: Session | null }) {
+  const profileImageUrl = useUserStore((state) => state.profileImageUrl)
   const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
 
@@ -70,7 +71,7 @@ export default function TopNav() {
               >
                 <Image
                   className='rounded-full'
-                  src={session.user.profileImageUrl}
+                  src={profileImageUrl || session?.user.profileImageUrl}
                   width={35}
                   height={35}
                   alt='프로필 사진'

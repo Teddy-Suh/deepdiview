@@ -1,7 +1,6 @@
 import './globals.css'
 import TopNav from '@/components/layout/TopNav'
 import BottomNav from '@/components/layout/BottomNav'
-import { SessionProvider } from '@/providers/providers'
 import NotificationClient from '@/components/layout/NotificationClient'
 import { auth } from '@/auth'
 import Footer from '@/components/layout/Footer'
@@ -30,16 +29,14 @@ export default async function RootLayout({
   return (
     <html lang='ko' className={pretendard.className}>
       <body className='flex min-h-screen flex-col'>
-        <SessionProvider initialSession={session}>
-          <NotificationClient />
-          <Toaster position='top-center' />
-          <header>
-            <TopNav />
-          </header>
-          <main className='flex flex-1 flex-col pb-2 md:pb-4'>{children}</main>
-          <BottomNav />
-          <Footer />
-        </SessionProvider>
+        <NotificationClient session={session} />
+        <Toaster position='top-center' />
+        <header>
+          <TopNav session={session} />
+        </header>
+        <main className='flex flex-1 flex-col pb-2 md:pb-4'>{children}</main>
+        <BottomNav session={session} />
+        <Footer />
       </body>
     </html>
   )

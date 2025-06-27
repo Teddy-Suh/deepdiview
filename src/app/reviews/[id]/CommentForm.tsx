@@ -3,7 +3,6 @@
 import { useEffect, useTransition } from 'react'
 import { createCommentAction, updateCommentAction } from './actions'
 import Link from 'next/link'
-import { useSession } from '@/providers/providers'
 import clsx from 'clsx'
 import { ClientComment, Comment } from '@/types/api/common'
 import { useMobileKeyboard } from '@/hooks/useMobileKeyboard'
@@ -15,8 +14,10 @@ import { useForm } from 'react-hook-form'
 import { CommentsRequest } from '@/types/api/comment'
 import { commentSchema } from '@/schemas/review/commentSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Session } from 'next-auth'
 
 export default function CommentForm({
+  session,
   reviewId,
   editComment,
   isCommentPending,
@@ -27,6 +28,7 @@ export default function CommentForm({
   onFail,
   addOptimisticComment,
 }: {
+  session: Session | null
   reviewId: string
   editComment: Comment | null
   isCommentPending: boolean
@@ -38,7 +40,6 @@ export default function CommentForm({
   addOptimisticComment: (comment: ClientComment) => void
 }) {
   const router = useRouter()
-  const session = useSession()
   const isEdit = !!editComment
   const { isKeyboardVisible } = useMobileKeyboard()
   const [isPending, startTransition] = useTransition()
