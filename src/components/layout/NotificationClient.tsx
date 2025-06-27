@@ -2,12 +2,11 @@
 
 import { useEffect, useRef } from 'react'
 import { EventSourcePolyfill } from 'event-source-polyfill'
-import { useSession } from '@/providers/providers'
 import { useNotificationStore } from '@/stores/useNotificationStore'
 import { getUnreadExists } from '@/lib/api/notification'
+import { Session } from 'next-auth'
 
-export default function NotificationClient() {
-  const session = useSession()
+export default function NotificationClient({ session }: { session: Session | null }) {
   const setHasUnread = useNotificationStore((state) => state.setHasUnread)
   const setSseNotification = useNotificationStore((state) => state.setSseNotification)
 

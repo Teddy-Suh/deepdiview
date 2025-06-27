@@ -4,16 +4,17 @@ import { Bell, Home, KeyRound, NotebookPen, Search } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
 import clsx from 'clsx'
-import { useSession } from '@/providers/providers'
 import Image from 'next/image'
 import NotificationBadge from '../ui/NotificationBadge'
 import { useMobileKeyboard } from '@/hooks/useMobileKeyboard'
+import { Session } from 'next-auth'
+import { useUserStore } from '@/stores/useUserStore'
 
-export default function BottomNav() {
+export default function BottomNav({ session }: { session: Session | null }) {
+  const profileImageUrl = useUserStore((state) => state.profileImageUrl)
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const isFromNav = searchParams.get('from') === 'nav'
-  const session = useSession()
   const { isKeyboardVisible } = useMobileKeyboard()
 
   return (
@@ -61,7 +62,7 @@ export default function BottomNav() {
             >
               <Image
                 className='rounded-full'
-                src={session.user.profileImageUrl}
+                src={profileImageUrl || session?.user.profileImageUrl}
                 width={32}
                 height={32}
                 alt='프로필 사진'

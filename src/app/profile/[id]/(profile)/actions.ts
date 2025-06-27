@@ -47,7 +47,7 @@ export const updateProfileImgAction = async (
   }
 }
 
-export const deleteProfileImgAction = async (state: { code: string }) => {
+export const deleteProfileImgAction = async (state: { profileImageUrl: string; code: string }) => {
   const session = await auth()
   if (!session?.user) redirect('/login')
 
@@ -58,7 +58,7 @@ export const deleteProfileImgAction = async (state: { code: string }) => {
         profileImageUrl,
       },
     })
-    return { ...state }
+    return { ...state, code: COMMON_CODES.SUCCESS, profileImageUrl }
   } catch (error) {
     const errorCode = (error as Error).message
     switch (errorCode) {

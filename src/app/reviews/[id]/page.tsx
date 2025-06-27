@@ -35,7 +35,7 @@ export default async function ReviewPage({ params }: { params: Promise<{ id: str
         <ReviewSection currentUserId={currentUserId} reviewId={reviewId} session={session} />
       </Suspense>
       {/* 댓글 섹션 */}
-      <CommentSection reviewId={reviewId} currentUserId={currentUserId} />
+      <CommentSection session={session} reviewId={reviewId} currentUserId={currentUserId} />
     </>
   )
 }
