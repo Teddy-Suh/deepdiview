@@ -44,7 +44,10 @@ export default function Rating({
               name='rating'
               value={number}
               defaultChecked={number === rating}
-              onChange={() => setSelected(number)}
+              onChange={(e) => {
+                register?.onChange(e)
+                setSelected(number)
+              }}
               required
             />
           )
