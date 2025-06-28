@@ -10,9 +10,9 @@ import { USER_CODES } from '@/constants/messages/users'
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth()
-  if (!session || !session.user) redirect('/login')
-
   const { id } = await params
+  if (!session || !session.user) redirect(`/login?from=/profile/${id}`)
+
   const { userId } = session.user
   const isCurrentUser = userId === Number(id)
 
@@ -39,9 +39,10 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 export default async function ProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth()
-  if (!session || !session.user) redirect('/login')
-
   const [{ id }, { isSunday }] = await Promise.all([params, getIsSunday()])
+
+  if (!session || !session.user) redirect(`/login?from=/profile/${id}`)
+
   const { userId, role } = session.user
   const isCurrentUser = userId === Number(id)
 

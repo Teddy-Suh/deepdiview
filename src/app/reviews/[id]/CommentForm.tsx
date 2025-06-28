@@ -195,7 +195,7 @@ export default function CommentForm({
                   )}
                 </>
               ) : (
-                <Link className='btn btn-primary' href='/login'>
+                <Link className='btn btn-primary' href={`/login?from=/reviews/${reviewId}`}>
                   로그인
                 </Link>
               )}

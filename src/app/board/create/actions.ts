@@ -9,7 +9,7 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
 export const createBoardReviewAction = async (
-  state: { code: string; resReviewId: string },
+  state: { code: string; resReviewId: string; isEdit: boolean },
   formData: FormData
 ) => {
   const session = await auth()

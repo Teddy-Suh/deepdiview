@@ -26,7 +26,7 @@ export default function MyReviewSection({
           {session ? (
             <>
               {myReview ? (
-                <ReviewItem review={myReview} withMovie={false} />
+                <ReviewItem from={`/board`} review={myReview} withMovie={false} />
               ) : (
                 <Suspense fallback={<div className='skeleton h-18 rounded-3xl' />}>
                   <MyReviewWrapper session={session} movieId={movieId} movieTitle={movieTitle} />
@@ -39,7 +39,7 @@ export default function MyReviewSection({
                 <span className='font-bold'>DeepDiview</span> 회원이 되셔서 이 영화에 대한 생각을
                 공유해주세요!
               </p>
-              <Link className='btn btn-primary' href='/login'>
+              <Link className='btn btn-primary' href='/login?from=/board'>
                 로그인하고 리뷰 작성하기
               </Link>
             </div>

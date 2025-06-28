@@ -7,6 +7,7 @@ import type { Review, ReviewSortField } from '@/types/api/common'
 import { Session } from 'next-auth'
 import { getUserComments, getUserReviews } from '@/lib/api/user'
 import { ReviewWithComment } from '@/types/api/user'
+import { usePathname, useSearchParams } from 'next/navigation'
 
 export default function ReviewList({
   session,
@@ -31,6 +32,11 @@ export default function ReviewList({
   sort?: ReviewSortField
   certifiedFilter?: boolean
 }) {
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const fullPath =
+    searchParams.toString().length > 0 ? `${pathname}?${searchParams.toString()}` : pathname
+
   const [reviews, setReviews] = useState<Review[] | ReviewWithComment[]>([])
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState<boolean>()
@@ -130,6 +136,7 @@ export default function ReviewList({
         {reviews.map((review) => (
           <ReviewItem
             key={withComment && 'comment' in review ? review.comment.id : review.reviewId}
+            from={fullPath}
             review={review}
             withMovie={withMovie}
             withComment={withComment}

@@ -30,7 +30,7 @@ export default function MyReviewSection({
           {myReview ? (
             // 작성한 리뷰가 있는 경우
             // ReviewItem으로 작성한 리뷰 출력
-            <ReviewItem review={myReview} withMovie={false} />
+            <ReviewItem from={`/movies/${movieId}`} review={myReview} withMovie={false} />
           ) : (
             // 작성한 리뷰가 없는 경우
             <div className='bg-base-300 flex flex-col items-center gap-4 rounded-3xl p-4 md:flex-row md:justify-between md:gap-0'>
@@ -102,7 +102,7 @@ export default function MyReviewSection({
             <span className='font-bold'>DeepDiview</span> 회원이 되셔서 이 영화에 대한 생각을
             공유해주세요!
           </p>
-          <Link className='btn btn-primary' href='/login'>
+          <Link className='btn btn-primary' href={`/login?from=/movies/${movieId}`}>
             로그인하고 리뷰 작성하기
           </Link>
         </div>

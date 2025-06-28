@@ -4,6 +4,7 @@ import { Review } from '@/types/api/common'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useRef, useState, useEffect } from 'react'
 import ReviewItem from './ReviewItem'
+import { usePathname, useSearchParams } from 'next/navigation'
 
 export default function ReviewCarousel({
   reviews,
@@ -12,6 +13,11 @@ export default function ReviewCarousel({
   reviews: Review[]
   withMovie?: boolean
 }) {
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const fullPath =
+    searchParams.toString().length > 0 ? `${pathname}?${searchParams.toString()}` : pathname
+
   const scrollContainerRef = useRef<HTMLDivElement | null>(null)
   const [isAtStart, setIsAtStart] = useState(true)
   const [isAtEnd, setIsAtEnd] = useState(false)
@@ -62,7 +68,7 @@ export default function ReviewCarousel({
             className='w-full flex-shrink-0 snap-start md:w-[calc((100%-8px)/2)] lg:w-[calc((100%-24px)/3)]'
             key={review.reviewId}
           >
-            <ReviewItem review={review} withMovie={withMovie} />
+            <ReviewItem from={fullPath} review={review} withMovie={withMovie} />
           </div>
         ))}
       </div>

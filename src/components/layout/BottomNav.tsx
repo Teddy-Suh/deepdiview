@@ -12,8 +12,12 @@ import { useUserStore } from '@/stores/useUserStore'
 
 export default function BottomNav({ session }: { session: Session | null }) {
   const profileImageUrl = useUserStore((state) => state.profileImageUrl)
+
   const pathname = usePathname()
   const searchParams = useSearchParams()
+  const fullPath =
+    searchParams.toString().length > 0 ? `${pathname}?${searchParams.toString()}` : pathname
+
   const isFromNav = searchParams.get('from') === 'nav'
   const { isKeyboardVisible } = useMobileKeyboard()
 
@@ -71,7 +75,7 @@ export default function BottomNav({ session }: { session: Session | null }) {
           </>
         ) : (
           <Link
-            href='/login'
+            href={`/login?from=${encodeURIComponent(fullPath)}`}
             className={clsx({
               'dock-active text-primary': pathname.startsWith('/login'),
             })}

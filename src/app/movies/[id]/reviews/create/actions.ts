@@ -10,7 +10,7 @@ import { redirect } from 'next/navigation'
 
 export const createReviewAction = async (
   tmdbId: string,
-  state: { code: string; resReviewId: string },
+  state: { code: string; resReviewId: string; isEdit: boolean },
   formData: FormData
 ) => {
   const session = await auth()

@@ -43,7 +43,7 @@ export default function VoteSection({
                     <span className='font-bold'>DeepDiview</span> 의 회원이 되셔서 다음주 영화에
                     투표해 주세요!
                   </p>
-                  <Link className='btn btn-primary' href='/login'>
+                  <Link className='btn btn-primary' href='/login?from=/board'>
                     로그인하고 투표하기
                   </Link>
                 </div>
