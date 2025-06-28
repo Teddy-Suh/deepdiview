@@ -31,61 +31,63 @@ export default function TopNav({ session }: { session: Session | null }) {
     <>
       <nav
         className={clsx(
-          'container-wrapper fixed right-0 left-0 z-50 hidden h-16 items-center border-b-1 transition-colors duration-200 md:flex',
+          'fixed right-0 left-0 z-50 hidden border-b-1 transition-colors duration-200 md:block',
           !isOverlaid || scrolled
             ? 'bg-base-300 border-b-gray-300 dark:border-b-gray-800'
             : 'border-b-transparent text-gray-100'
         )}
       >
-        <div className='flex-1'>
-          <Link
-            className='btn btn-ghost hover:text-primary p-0 hover:border-transparent hover:bg-transparent hover:shadow-none'
-            href='/'
-          >
-            <h1 className='text-primary text-2xl font-black'>DEEPDIVIEW</h1>
-          </Link>
-        </div>
-        <div className='hidden md:flex md:gap-6'>
-          <SearchForm />
-          <Link
-            href='/board'
-            className='btn btn-ghost hover:text-primary p-0 text-base hover:border-transparent hover:bg-transparent hover:shadow-none'
-          >
-            게시판
-          </Link>
-
-          {session?.user ? (
-            <>
-              <Link
-                href='/notifications'
-                className='btn btn-ghost hover:text-primary p-0 text-base hover:border-transparent hover:bg-transparent hover:shadow-none'
-              >
-                <div className='relative'>
-                  알림
-                  <NotificationBadge />
-                </div>
-              </Link>
-              <Link
-                className='btn btn-ghost hover:text-primary p-0 hover:border-transparent hover:bg-transparent hover:shadow-none'
-                href={`/profile/${session.user.userId}?from=nav`}
-              >
-                <Image
-                  className='rounded-full'
-                  src={profileImageUrl || session?.user.profileImageUrl}
-                  width={35}
-                  height={35}
-                  alt='프로필 사진'
-                />
-              </Link>
-            </>
-          ) : (
+        <div className='container-wrapper flex h-16 items-center'>
+          <div className='flex-1'>
             <Link
-              className='btn btn-ghost hover:text-primary p-0 text-base hover:border-transparent hover:bg-transparent hover:shadow-none'
-              href='/login'
+              className='btn btn-ghost hover:text-primary p-0 hover:border-transparent hover:bg-transparent hover:shadow-none'
+              href='/'
             >
-              로그인
+              <h1 className='text-primary text-2xl font-black'>DEEPDIVIEW</h1>
             </Link>
-          )}
+          </div>
+          <div className='hidden md:flex md:gap-6'>
+            <SearchForm />
+            <Link
+              href='/board'
+              className='btn btn-ghost hover:text-primary p-0 text-base hover:border-transparent hover:bg-transparent hover:shadow-none'
+            >
+              게시판
+            </Link>
+
+            {session?.user ? (
+              <>
+                <Link
+                  href='/notifications'
+                  className='btn btn-ghost hover:text-primary p-0 text-base hover:border-transparent hover:bg-transparent hover:shadow-none'
+                >
+                  <div className='relative'>
+                    알림
+                    <NotificationBadge />
+                  </div>
+                </Link>
+                <Link
+                  className='btn btn-ghost hover:text-primary p-0 hover:border-transparent hover:bg-transparent hover:shadow-none'
+                  href={`/profile/${session.user.userId}?from=nav`}
+                >
+                  <Image
+                    className='rounded-full'
+                    src={profileImageUrl || session?.user.profileImageUrl}
+                    width={35}
+                    height={35}
+                    alt='프로필 사진'
+                  />
+                </Link>
+              </>
+            ) : (
+              <Link
+                className='btn btn-ghost hover:text-primary p-0 text-base hover:border-transparent hover:bg-transparent hover:shadow-none'
+                href='/login'
+              >
+                로그인
+              </Link>
+            )}
+          </div>
         </div>
       </nav>
       {!isOverlaid && <div className='hidden pb-16 md:block' />}
