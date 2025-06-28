@@ -20,12 +20,12 @@ export default function OverlaidMovieHero({
 }) {
   return (
     <section
-      className='overlaid-bg container-wrapper pt-16 pb-8 text-gray-100'
+      className='overlaid-bg pt-16 pb-8 text-gray-100'
       style={{
         backgroundImage: `url(https://image.tmdb.org/t/p/w1280${movie.backdrop_path})`,
       }}
     >
-      <div className='relative z-10'>
+      <div className='container-wrapper relative z-10'>
         {withTitle && (
           <h3 className='mb-3 text-xl font-semibold'>{isSunday ? '다음주 영화' : '이주의 영화'}</h3>
         )}
