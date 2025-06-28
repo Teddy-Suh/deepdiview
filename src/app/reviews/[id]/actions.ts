@@ -6,6 +6,7 @@ import { REVIEW_CODES } from '@/constants/messages/review'
 import { createComment, deleteComment, updateComment } from '@/lib/api/comment'
 import { deleteReview } from '@/lib/api/review'
 import { commentSchema } from '@/schemas/review/commentSchema'
+import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
 export const createCommentAction = async (reviewId: string, content: string) => {
@@ -24,6 +25,7 @@ export const createCommentAction = async (reviewId: string, content: string) => 
     const comment = await createComment(reviewId, session.accessToken, {
       content: validatedContent,
     })
+    revalidatePath(`/profile/${session.user?.userId}/comments`)
     return { code: COMMON_CODES.SUCCESS, comment }
   } catch (error) {
     const errorCode = (error as Error).message
@@ -57,6 +59,7 @@ export const updateCommentAction = async (reviewId: string, commentId: string, c
       { content: validatedContent },
       session.accessToken
     )
+    revalidatePath(`/profile/${session.user?.userId}/comments`)
     return { code: COMMON_CODES.SUCCESS, comment: comment }
   } catch (error) {
     const errorCode = (error as Error).message
@@ -81,6 +84,7 @@ export const deleteCommentAction = async (
 
   try {
     await deleteComment(reviewId, commentId, session.accessToken)
+    revalidatePath(`/profile/${session.user?.userId}/comments`)
     return { ...state, code: COMMON_CODES.SUCCESS as string, commentId }
   } catch (error) {
     const errorCode = (error as Error).message

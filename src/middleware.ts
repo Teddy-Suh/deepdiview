@@ -47,7 +47,10 @@ const privateRoutes = [
   '/board/create',
   '/movies/:path/reviews/create',
   '/notifications',
-  '/profile/*path',
+  '/profile/:path/*path',
+  '/profile/delete-account',
+  '/profile/submit-certification',
+  '/profile/update-password',
   '/reviews/:path/edit',
 ]
 

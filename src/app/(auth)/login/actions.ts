@@ -6,7 +6,11 @@ import { USER_CODES } from '@/constants/messages/users'
 import { loginSchema } from '@/schemas/auth/loginSchema'
 import { redirect } from 'next/navigation'
 
-export const signInWithCredentials = async (state: { code: string }, formData: FormData) => {
+export const signInWithCredentials = async (
+  from: string | null,
+  state: { code: string },
+  formData: FormData
+) => {
   const validatedFields = loginSchema.safeParse({
     email: formData.get('email'),
     password: formData.get('password'),
@@ -41,5 +45,13 @@ export const signInWithCredentials = async (state: { code: string }, formData: F
         throw new Error(COMMON_CODES.UNHANDLED_ERROR)
     }
   }
-  redirect('/') // 로그인 성공시 홈으로 리디렉션
+
+  const isSafeFrom =
+    from &&
+    from.startsWith('/') &&
+    !from.startsWith('//') &&
+    !from.startsWith('/login') &&
+    !from.startsWith('/register')
+
+  redirect(isSafeFrom ? from : '/')
 }

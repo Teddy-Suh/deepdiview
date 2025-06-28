@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState, useEffect } from 'react'
+import { useActionState, useEffect, useRef } from 'react'
 import { signInWithCredentials } from './actions'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -10,9 +10,26 @@ import Link from 'next/link'
 import AuthFormInput from '@/components/form/AuthFormInput'
 import AuthSubmitButton from '@/components/form/AuthSubmitButton'
 import { USER_CODES, USER_MESSAGES } from '@/constants/messages/users'
+import { useSearchParams } from 'next/navigation'
+import toast from 'react-hot-toast'
 
 export default function LoginForm() {
-  const [state, formAction, isPending] = useActionState(signInWithCredentials, { code: '' })
+  const searchParams = useSearchParams()
+  const from = searchParams.get('from')
+  const toastShownRef = useRef(false)
+
+  useEffect(() => {
+    if (toastShownRef.current) return
+    if (!from) return
+    if (from.startsWith('/profile')) {
+      toast.error('프로필은 로그인 후 볼 수 있습니다.')
+      toastShownRef.current = true
+    }
+  }, [from])
+
+  const [state, formAction, isPending] = useActionState(signInWithCredentials.bind(null, from), {
+    code: '',
+  })
 
   const {
     register,

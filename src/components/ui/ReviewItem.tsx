@@ -11,12 +11,14 @@ import ReviewWithCommentWrapper from '@/app/profile/[id]/comments/ReviewWithComm
 import { ReviewWithComment } from '@/types/api/user'
 
 export default function ReviewItem({
+  from,
   review,
   withMovie = true,
   withComment = false,
   isDetail = false,
   isUserReviewsPage = false,
 }: {
+  from?: string
   review: Review | ReviewWithComment
   withMovie?: boolean
   withComment?: boolean
@@ -138,5 +140,9 @@ export default function ReviewItem({
   // 리뷰 상세 페이지
   if (isDetail) return <>{content}</>
 
-  return <Link href={`/reviews/${review.reviewId}`}>{content}</Link>
+  return (
+    <Link href={`/reviews/${review.reviewId}?from=${encodeURIComponent(from || '')}`}>
+      {content}
+    </Link>
+  )
 }

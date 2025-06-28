@@ -4,7 +4,7 @@ import Link from 'next/link'
 import SearchForm from '@/components/form/SearchForm'
 import { useEffect, useState } from 'react'
 import clsx from 'clsx'
-import { usePathname } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import NotificationBadge from '../ui/NotificationBadge'
 import { Session } from 'next-auth'
@@ -13,7 +13,11 @@ import { useUserStore } from '@/stores/useUserStore'
 export default function TopNav({ session }: { session: Session | null }) {
   const profileImageUrl = useUserStore((state) => state.profileImageUrl)
   const [scrolled, setScrolled] = useState(false)
+
   const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const fullPath =
+    searchParams.toString().length > 0 ? `${pathname}?${searchParams.toString()}` : pathname
 
   const overlaidPaths = ['/', '/board']
   const overlaidDynamicPaths = /^\/(movies)\/[^/]+$/.test(pathname)
@@ -82,7 +86,7 @@ export default function TopNav({ session }: { session: Session | null }) {
             ) : (
               <Link
                 className='btn btn-ghost hover:text-primary p-0 text-base hover:border-transparent hover:bg-transparent hover:shadow-none'
-                href='/login'
+                href={`/login?from=${encodeURIComponent(fullPath)}`}
               >
                 로그인
               </Link>

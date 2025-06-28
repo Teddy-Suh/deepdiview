@@ -4,11 +4,12 @@ import { auth } from '@/auth'
 import { COMMON_CODES } from '@/constants/messages/common'
 import { updateReview } from '@/lib/api/review'
 import { updateReviewServerSchema } from '@/schemas/review/updateReviewSchema'
+import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
 export const updateReviewAction = async (
   reviewId: string,
-  state: { code: string; resReviewId: string },
+  state: { code: string; resReviewId: string; isEdit: boolean },
   formData: FormData
 ) => {
   const session = await auth()
@@ -32,7 +33,13 @@ export const updateReviewAction = async (
       content,
       rating,
     })
-    return { ...state, code: COMMON_CODES.SUCCESS, resReviewId: resReviewId.toString() }
+    revalidatePath(`/reviews/${reviewId}`)
+    return {
+      ...state,
+      code: COMMON_CODES.SUCCESS,
+      resReviewId: resReviewId.toString(),
+      isEdit: true,
+    }
   } catch (error) {
     const errorCode = (error as Error).message
     switch (errorCode) {

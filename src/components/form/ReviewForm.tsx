@@ -19,9 +19,9 @@ export default function ReviewForm({
   certified,
 }: {
   action: (
-    state: { code: string; resReviewId: string },
+    state: { code: string; resReviewId: string; isEdit: boolean },
     formData: FormData
-  ) => Promise<{ code: string; resReviewId: string }>
+  ) => Promise<{ code: string; resReviewId: string; isEdit: boolean }>
   movieTitle: string
   initialValue?: { title: string; content: string; rating: number }
   certified: boolean
@@ -30,6 +30,7 @@ export default function ReviewForm({
   const [state, formAction, isPending] = useActionState(action, {
     code: '',
     resReviewId: '',
+    isEdit: false,
   })
   const router = useRouter()
 
@@ -56,7 +57,11 @@ export default function ReviewForm({
     if (state.code === '') return
 
     if (state.code === COMMON_CODES.SUCCESS) {
-      return router.replace(`/reviews/${state.resReviewId}`)
+      if (isEdit) {
+        return router.back()
+      } else {
+        return router.replace(`/reviews/${state.resReviewId}`)
+      }
     }
 
     if (state.code === COMMON_CODES.NETWORK_ERROR) {
@@ -69,7 +74,7 @@ export default function ReviewForm({
       toast.error(REVIEW_MESSAGES.ALREADY_COMMITTED_REVIEW)
       return router.push('/')
     }
-  }, [reset, router, state, watch])
+  }, [isEdit, reset, router, state, watch])
 
   return (
     <form action={formAction} className='flex flex-1 flex-col'>
