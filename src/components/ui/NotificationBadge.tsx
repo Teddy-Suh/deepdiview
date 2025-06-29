@@ -25,7 +25,7 @@ export default function NotificationBadge() {
       {hasUnread && (
         <div
           className={clsx(
-            'badge badge-primary absolute -top-1 -right-1 aspect-square -translate-y-1/2 translate-x-1/2 rounded-full p-0! transition-all duration-200 md:top-0 md:-right-2',
+            'badge bg-primary/50 absolute -top-1 -right-1 aspect-square -translate-y-1/2 translate-x-1/2 rounded-full border-0 p-0! transition-all duration-200 md:top-0 md:-right-2',
             !emoji && 'badge-xs'
           )}
         >
