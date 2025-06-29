@@ -128,7 +128,7 @@
       background-color: oklch(82% 0.189 84.429 / 0.2);
     }
     100% {
-      background-color: oklch(58% 0.233 277.117/0.2);
+      background-color: oklch(0.5814 0.2349 27.99 / 0.2);
     }
   }
 }
