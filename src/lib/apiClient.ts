@@ -41,10 +41,13 @@ export async function apiClient<T, B = undefined>(
   let res: Response
   try {
     res = await fetch(fullUrl, fetchOptions)
-    console.info(`✅ [apiClient] ${method} ${path} → ${res.status}`)
-  } catch (err) {
-    console.error(`❌ [apiClient] 네트워크 에러: ${method} ${path}`)
-    console.error(err)
+    if (process.env.NODE_ENV === 'development') {
+      console.info(`[apiClient] ${method} ${path} → ${res.status}`)
+    }
+  } catch (error) {
+    if (process.env.NODE_ENV === 'development') {
+      console.error(`[apiClient] NETWORK_ERROR: ${method} ${path} `, error)
+    }
     throw new Error('NETWORK_ERROR')
   }
 
@@ -58,7 +61,9 @@ export async function apiClient<T, B = undefined>(
     }
   } catch {
     const raw = await res.text()
-    console.error('❌ [apiClient] JSON 파싱 실패: ', raw)
+    if (process.env.NODE_ENV === 'development') {
+      console.error('[apiClient] INVALID_JSON_RESPONSE: ', raw)
+    }
     throw new Error('INVALID_JSON_RESPONSE')
   }
 
@@ -69,13 +74,16 @@ export async function apiClient<T, B = undefined>(
     const errorCode =
       typeof maybeError.errorCode === 'string' ? maybeError.errorCode : 'UNEXPECTED_ERROR'
 
-    console.error(`❌ [apiClient] API 에러: ${method} ${path}`)
-    console.error(`📦 상태 코드: ${res.status}`)
-    console.error(`📦 에러 코드: ${errorCode}`)
+    // ErrorCode있는 예상 가능한 에러
+    if (process.env.NODE_ENV === 'development') {
+      console.error(`[apiClient] EXPECTED_ERROR: ${method} ${path} `, errorCode)
+    }
 
     // 디버깅을 위해 전체 응답 출력
     if (errorCode === 'UNEXPECTED_ERROR') {
-      console.error('🧾 예상치 못한 에러 응답:', data)
+      if (process.env.NODE_ENV === 'development') {
+        console.error('[apiClient] UNEXPECTED_ERROR: ', data)
+      }
     }
 
     throw new Error(errorCode)

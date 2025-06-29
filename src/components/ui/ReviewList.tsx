@@ -101,7 +101,6 @@ export default function ReviewList({
           }
           // 특정 사용자가 작성한 리뷰 페이지
           else if (userId && sort && session) {
-            console.log('내가쓴 리뷰')
             res = await getUserReviews(session.accessToken, userId, {
               page,
               size: 12,

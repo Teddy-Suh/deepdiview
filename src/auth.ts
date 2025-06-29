@@ -58,7 +58,7 @@ export const {
             accessTokenExpires: Date.now() + 3600 * 1000,
           }
         } catch (error) {
-          console.error('❌ [jwt] 액세스 토큰 재발급 실패:', error)
+          console.error(error)
 
           const e = error as Error
           throw new Error(e.message)

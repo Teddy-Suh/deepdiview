@@ -49,7 +49,6 @@ export default function CertificationList({
           isFetchingRef.current = true
           setIsFetching(true)
 
-          console.log('certificationId', certificationId)
           const res = await getCertifications(session?.accessToken, {
             createdAt: createdAt,
             certificationId: certificationId,
