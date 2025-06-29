@@ -20,7 +20,10 @@ export default function NotificationClient({ session }: { session: Session | nul
         const { hasUnread } = await getUnreadExists(session.accessToken)
         setHasUnread(hasUnread)
       } catch (error) {
-        console.warn('초기 알림 상태 확인 실패', error)
+        const errorCode = (error as Error).message
+        if (process.env.NODE_ENV === 'development') {
+          console.error('[NotificationClient] API_ERROR: ', errorCode)
+        }
       }
     }
 
@@ -32,11 +35,8 @@ export default function NotificationClient({ session }: { session: Session | nul
     const token = session?.accessToken
 
     if (!userId || !token) {
-      console.warn('SSE 구독 조건 부족 (userId 또는 token 없음)')
       return
     }
-
-    console.log('SSE 구독 시도')
 
     const eventSource = new EventSourcePolyfill(
       `${process.env.NEXT_PUBLIC_API_URL}/notifications/subscribe`,
@@ -50,16 +50,10 @@ export default function NotificationClient({ session }: { session: Session | nul
     )
 
     // 연결 성공 (connect 이벤트)
-    eventSource.addEventListener('connect', (event) => {
-      const data = (event as MessageEvent).data
-      console.log('SSE 연결 성공', data)
-    })
+    eventSource.addEventListener('connect', () => {})
 
     // 핑 수신 (ping 이벤트)
-    eventSource.addEventListener('ping', (event) => {
-      const data = (event as MessageEvent).data
-      console.log('핑 수신', data)
-    })
+    eventSource.addEventListener('ping', () => {})
 
     // 알림 수신
     eventSource.onmessage = (event) => {
@@ -76,18 +70,21 @@ export default function NotificationClient({ session }: { session: Session | nul
           timerRef.current = null
         }, 2000)
       } catch (error) {
-        console.error('알림 파싱 실패:', error)
+        if (process.env.NODE_ENV === 'development') {
+          console.error('[NotificationClient] SSE_MESSAGE_Error: ', error)
+        }
       }
     }
 
     // 에러 처리
     eventSource.onerror = (error) => {
-      console.error('SSE 연결 오류', error)
+      if (process.env.NODE_ENV === 'development') {
+        console.error('[NotificationClient] SSE_CONNECTION_ERROR: ', error)
+      }
     }
 
     // 언마운트 시 연결 종료
     return () => {
-      console.log('SSE 구독 종료')
       if (timerRef.current) clearTimeout(timerRef.current)
       eventSource.close()
     }
